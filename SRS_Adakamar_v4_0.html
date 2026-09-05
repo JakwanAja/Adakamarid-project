@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SRS Adakamar.id v4.0</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F7F8FA;
+    --surface: #FFFFFF;
+    --border: #E2E6ED;
+    --accent: #2563EB;
+    --accent-light: #EFF4FF;
+    --text: #111827;
+    --muted: #6B7280;
+    --tag-bg: #F0F5FF;
+    --tag-text: #2563EB;
+    --admin-bg: #FFF7ED;
+    --admin-border: #FED7AA;
+    --admin-accent: #EA580C;
+    --guest-bg: #F0FDF4;
+    --guest-border: #BBF7D0;
+    --guest-accent: #16A34A;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--accent);
+    color: #fff;
+    padding: 36px 48px 32px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+  header h1 span { opacity: 0.7; font-weight: 400; font-size: 16px; display: block; margin-bottom: 4px; }
+  .header-meta {
+    text-align: right;
+    font-size: 13px;
+    opacity: 0.85;
+    line-height: 1.8;
+    white-space: nowrap;
+  }
+  .header-meta strong { display: block; font-size: 15px; opacity: 1; }
+
+  /* ── LAYOUT ── */
+  .page { max-width: 1100px; margin: 0 auto; padding: 40px 48px 80px; }
+
+  /* ── SECTION ── */
+  section { margin-bottom: 40px; }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border);
+  }
+  .section-num {
+    background: var(--accent);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    width: 26px; height: 26px;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  h2 { font-size: 16px; font-weight: 700; }
+
+  /* ── TABLE ── */
+  .info-table { width: 100%; border-collapse: collapse; }
+  .info-table th, .info-table td {
+    padding: 9px 14px;
+    text-align: left;
+    border: 1px solid var(--border);
+    font-size: 13.5px;
+  }
+  .info-table th {
+    background: var(--accent-light);
+    color: var(--accent);
+    font-weight: 600;
+    width: 200px;
+  }
+  .info-table tr:nth-child(even) td { background: var(--bg); }
+
+  /* ── ORDERED LIST ── */
+  ol.content-list { padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
+  ol.content-list li { font-size: 13.5px; }
+
+  /* ── FEATURE GRID ── */
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 12px;
+  }
+  .feature-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: flex;
+    gap: 12px;
+  }
+  .feature-card .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent);
+    background: var(--accent-light);
+    width: 24px; height: 24px;
+    border-radius: 5px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .feature-card p { font-size: 13px; line-height: 1.5; }
+
+  /* ── TECH STACK ── */
+  .tech-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 10px;
+  }
+  .tech-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 11px 14px;
+    display: flex; gap: 10px; align-items: flex-start;
+  }
+  .tech-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    background: var(--tag-bg);
+    color: var(--tag-text);
+    padding: 2px 7px;
+    border-radius: 4px;
+    white-space: nowrap;
+    margin-top: 1px;
+    flex-shrink: 0;
+  }
+  .tech-item p { font-size: 12.5px; color: var(--muted); line-height: 1.45; }
+
+  /* ── ROLE CARDS ── */
+  .role-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .role-card {
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .role-admin { background: var(--admin-bg); border: 1.5px solid var(--admin-border); }
+  .role-guest { background: var(--guest-bg); border: 1.5px solid var(--guest-border); }
+  .role-title {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .role-admin .role-title { color: var(--admin-accent); }
+  .role-guest .role-title { color: var(--guest-accent); }
+  .dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    display: inline-block; flex-shrink: 0;
+  }
+  .dot-admin { background: var(--admin-accent); }
+  .dot-guest { background: var(--guest-accent); }
+  .role-card ul { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+  .role-card ul li {
+    font-size: 12.5px;
+    padding-left: 12px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .role-card ul li::before {
+    content: '–';
+    position: absolute; left: 0;
+    color: var(--muted);
+  }
+
+  /* ── FUNCTIONAL REQUIREMENTS ── */
+  .func-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .func-col h3 {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    padding: 8px 14px;
+    border-radius: 6px;
+  }
+  .func-col.admin h3 { background: var(--admin-bg); color: var(--admin-accent); border: 1px solid var(--admin-border); }
+  .func-col.guest h3 { background: var(--guest-bg); color: var(--guest-accent); border: 1px solid var(--guest-border); }
+
+  .func-group { margin-bottom: 16px; }
+  .func-group-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 6px;
+  }
+  .func-group ul { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+  .func-group ul li {
+    font-size: 12.5px;
+    padding-left: 14px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .func-group ul li::before {
+    content: '·';
+    position: absolute; left: 4px;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  /* ── NON-FUNCTIONAL ── */
+  .nonfunc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+  }
+  .nonfunc-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .nonfunc-card .label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent);
+    background: var(--accent-light);
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .nonfunc-card p { font-size: 12.5px; color: var(--text); line-height: 1.5; }
+
+  /* ── ARCH LIST ── */
+  .arch-list { display: flex; flex-direction: column; gap: 10px; }
+  .arch-item {
+    display: flex; gap: 12px; align-items: flex-start;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 11px 14px;
+  }
+  .arch-item .idx {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent);
+    background: var(--accent-light);
+    padding: 2px 7px;
+    border-radius: 4px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .arch-item p { font-size: 13px; line-height: 1.5; }
+
+  /* ── LEARN & REF ── */
+  .tag-cloud { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag {
+    background: var(--tag-bg);
+    color: var(--tag-text);
+    font-size: 12.5px;
+    font-weight: 500;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .ref-list { display: flex; flex-direction: column; gap: 8px; }
+  .ref-item {
+    display: flex; gap: 10px; align-items: center;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+  }
+  .ref-item .ref-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+  .ref-item a {
+    color: var(--accent);
+    font-size: 13px;
+    text-decoration: none;
+    word-break: break-all;
+  }
+  .ref-item a:hover { text-decoration: underline; }
+
+  @media (max-width: 760px) {
+    header { padding: 24px; flex-direction: column; align-items: flex-start; }
+    .header-meta { text-align: left; }
+    .page { padding: 24px 20px 60px; }
+    .role-grid, .func-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1><span>Software Requirement Specification</span>Adakamar.id</h1>
+  </div>
+  <div class="header-meta">
+    <strong>v4.0</strong>
+    4 September 2026
+  </div>
+</header>
+
+<div class="page">
+
+  <!-- 1. Informasi Umum -->
+  <section>
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <h2>Informasi Umum</h2>
+    </div>
+    <p style="margin-bottom:14px;font-size:13.5px;">Adakamar.id adalah platform iklan properti kos khusus area Yogyakarta. Seluruh listing dikelola oleh admin — pemilik kos tidak dapat mendaftar secara mandiri. Tidak ada proses booking atau pembayaran online; calon penyewa menghubungi pemilik kos secara langsung.</p>
+    <table class="info-table">
+      <tr><th>Nama aplikasi</th><td>Adakamar.id</td></tr>
+      <tr><th>Tujuan</th><td>Platform iklan properti kos area Jogja — kurated, tanpa booking online</td></tr>
+      <tr><th>Pengguna</th><td>Pengunjung (Guest) dan Admin</td></tr>
+      <tr><th>Platform</th><td>Web application</td></tr>
+    </table>
+  </section>
+
+  <!-- 2. Tujuan -->
+  <section>
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <h2>Tujuan</h2>
+    </div>
+    <ol class="content-list">
+      <li>Menyediakan platform iklan kos Jogja yang menampilkan listing lengkap dengan informasi harga per tipe sewa (harian, bulanan, tahunan).</li>
+      <li>Memudahkan calon penyewa menemukan kos yang sesuai kebutuhan melalui pencarian dan filter yang informatif.</li>
+      <li>Menampilkan informasi lengkap setiap listing: deskripsi kos, harga, fasilitas, lokasi, dan kontak pemilik kos.</li>
+      <li>Menyediakan panel admin terpusat untuk mengelola seluruh listing kos yang bermitra.</li>
+    </ol>
+  </section>
+
+  <!-- 3. Ruang Lingkup -->
+  <section>
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <h2>Ruang Lingkup</h2>
+    </div>
+    <ol class="content-list">
+      <li>Hanya mencakup kos di area Yogyakarta yang telah bermitra resmi dengan Adakamar.</li>
+      <li>Unit data utama adalah Kos. Tidak ada entitas Kamar.</li>
+      <li>Satu kos dapat memiliki harga yang berbeda per tipe sewa: harian, bulanan, dan tahunan. Admin dapat mengaktifkan satu atau lebih tipe sewa per kos.</li>
+      <li>Tidak ada proses booking atau pembayaran di dalam platform. Calon penyewa menghubungi pemilik kos langsung via kontak yang tercantum di listing.</li>
+      <li>Lokasi kos dipilih dari daftar kecamatan yang telah ditentukan sebelumnya (dropdown).</li>
+    </ol>
+  </section>
+
+  <!-- 4. Fitur Utama -->
+  <section>
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <h2>Fitur Utama</h2>
+    </div>
+    <div class="feature-grid">
+      <div class="feature-card"><div class="num">1</div><p>Pencarian dan filter kos berdasarkan tipe sewa (harian/bulanan/tahunan), lokasi/kecamatan (dropdown), rentang harga, dan tipe kos (putra/putri/campur).</p></div>
+      <div class="feature-card"><div class="num">2</div><p>Halaman detail kos: menampilkan deskripsi, informasi umum, harga per tipe sewa, fasilitas, lokasi peta, kontak pemilik, dan ulasan.</p></div>
+      <div class="feature-card"><div class="num">3</div><p>Label "Plus" di samping nama kos untuk membedakan kos dengan fasilitas unggulan.</p></div>
+      <div class="feature-card"><div class="num">4</div><p>Ulasan dan rating dari penghuni sebelumnya, terikat ke kos, langsung tampil publik tanpa moderasi.</p></div>
+      <div class="feature-card"><div class="num">5</div><p>Dashboard admin untuk manajemen seluruh listing kos.</p></div>
+      <div class="feature-card"><div class="num">6</div><p>Manajemen master fasilitas: admin dapat menambah, mengedit, dan menghapus item fasilitas beserta kelompoknya (fasilitas kamar, bersama, atau sekitar). Saat mendaftarkan kos, admin mencentang fasilitas dari daftar ini.</p></div>
+      <div class="feature-card"><div class="num">7</div><p>Manajemen akun: register, login, dan login Google (OAuth) khusus untuk guest; manajemen user admin dan guest oleh admin.</p></div>
+      <div class="feature-card"><div class="num">8</div><p>Pengaturan platform: nama platform dan logo dapat dikelola dari sistem.</p></div>
+    </div>
+  </section>
+
+  <!-- 5. Teknologi -->
+  <section>
+    <div class="section-header">
+      <div class="section-num">5</div>
+      <h2>Teknologi</h2>
+    </div>
+    <div class="tech-grid">
+      <div class="tech-item"><span class="tech-badge">Laravel 12</span><p>Backend, routing, autentikasi manual, dan logika bisnis.</p></div>
+      <div class="tech-item"><span class="tech-badge">React + Inertia.js</span><p>Frontend berbasis komponen, terintegrasi langsung ke Laravel tanpa REST API terpisah.</p></div>
+      <div class="tech-item"><span class="tech-badge">Tailwind CSS</span><p>Seluruh visual utama Adakamar dibuat custom.</p></div>
+      <div class="tech-item"><span class="tech-badge">shadcn/ui</span><p>Hanya untuk komponen utilitas: dialog, dropdown, date picker, tabs, sheet, dan form.</p></div>
+      <div class="tech-item"><span class="tech-badge">Flowbite</span><p>UI untuk panel dashboard admin.</p></div>
+      <div class="tech-item"><span class="tech-badge">MySQL</span><p>Database dirancang dengan pendekatan database-first via MySQL Workbench.</p></div>
+      <div class="tech-item"><span class="tech-badge">Vite</span><p>Build tool untuk aset frontend.</p></div>
+      <div class="tech-item"><span class="tech-badge">Laravel Socialite</span><p>Google OAuth untuk autentikasi guest.</p></div>
+    </div>
+  </section>
+
+  <!-- 6. Role dan Hak Akses -->
+  <section>
+    <div class="section-header">
+      <div class="section-num">6</div>
+      <h2>Role dan Hak Akses</h2>
+    </div>
+    <div class="role-grid">
+      <div class="role-card role-admin">
+        <div class="role-title"><span class="dot dot-admin"></span>Admin</div>
+        <ul>
+          <li>Mengelola data kos: tambah, edit, nonaktifkan, dan hapus listing beserta foto dan fasilitasnya.</li>
+          <li>Mengatur harga per tipe sewa.</li>
+          <li>Mengisi informasi umum kos (atribut seperti AC, WiFi, kamar mandi dalam) sebagai field tersendiri saat mendaftarkan atau mengedit kos.</li>
+          <li>Mengelola master fasilitas: tambah, edit, dan hapus item fasilitas beserta pengelompokannya.</li>
+          <li>Mencentang fasilitas yang dimiliki kos dari daftar master fasilitas saat mendaftarkan atau mengedit kos.</li>
+          <li>Memberikan atau mencabut label "Plus" pada kos melalui toggle di panel admin.</li>
+          <li>Mengelola kontak pemilik kos (nomor WhatsApp/telepon) yang tampil di setiap listing.</li>
+          <li>Mengaktifkan atau menonaktifkan listing kos.</li>
+          <li>Menghapus ulasan dari dashboard admin.</li>
+          <li>Memantau statistik platform: jumlah kos aktif dan jumlah ulasan.</li>
+          <li>Mengatur nama platform dan logo melalui halaman pengaturan.</li>
+          <li>Mengelola data user: akun admin dan akun guest yang telah terdaftar.</li>
+        </ul>
+      </div>
+      <div class="role-card role-guest">
+        <div class="role-title"><span class="dot dot-guest"></span>Guest / Penyewa</div>
+        <ul>
+          <li>Browsing dan filter kos tanpa login.</li>
+          <li>Melihat detail kos lengkap tanpa login.</li>
+          <li>Mendaftar akun (register) dan login menggunakan email/password atau akun Google (OAuth).</li>
+          <li>Memberikan ulasan dan rating pada kos (wajib login).</li>
+          <li>Menghubungi pemilik kos langsung via nomor WhatsApp/telepon yang tercantum di listing.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Kebutuhan Fungsional -->
+  <section>
+    <div class="section-header">
+      <div class="section-num">7</div>
+      <h2>Kebutuhan Fungsional</h2>
+    </div>
+    <div class="func-grid">
+      <!-- Admin -->
+      <div class="func-col admin">
+        <h3>Admin</h3>
+
+        <div class="func-group">
+          <div class="func-group-title">Dashboard</div>
+          <ul>
+            <li>Menampilkan ringkasan: jumlah kos aktif, jumlah kos dengan label "Plus", dan jumlah ulasan yang masuk.</li>
+            <li>Menampilkan daftar listing terbaru yang baru ditambahkan.</li>
+            <li>Menampilkan ulasan terbaru yang masuk.</li>
+          </ul>
+        </div>
+
+        <div class="func-group">
+          <div class="func-group-title">Manajemen Kos</div>
+          <ul>
+            <li>Admin menambah dan mengedit data kos: nama, deskripsi, tipe kos (putra/putri/campur), lokasi koordinat Google Maps, foto, informasi umum, fasilitas, dan peraturan kos.</li>
+            <li>Admin mengatur harga per tipe sewa (harian/bulanan/tahunan) di level kos. Setiap tipe sewa dapat diaktifkan atau dinonaktifkan secara terpisah.</li>
+            <li>Admin memberikan atau mencabut label "Plus" pada kos melalui toggle.</li>
+            <li>Admin mengelola informasi kontak pemilik kos (nama, nomor WhatsApp, nomor telepon).</li>
+            <li>Admin mengaktifkan atau menonaktifkan listing kos.</li>
+          </ul>
+        </div>
+
+        <div class="func-group">
+          <div class="func-group-title">Manajemen Master Fasilitas</div>
+          <ul>
+            <li>Admin dapat menambah item fasilitas baru dengan menentukan nama dan kelompoknya (fasilitas kamar, fasilitas bersama, atau fasilitas sekitar).</li>
+            <li>Admin dapat mengedit nama atau kelompok item fasilitas yang sudah ada.</li>
+            <li>Admin dapat menghapus item fasilitas. Jika item fasilitas dihapus, relasi ke kos yang mencentang fasilitas tersebut ikut terhapus.</li>
+          </ul>
+        </div>
+
+        <div class="func-group">
+          <div class="func-group-title">Manajemen Ulasan</div>
+          <ul>
+            <li>Admin dapat melihat daftar seluruh ulasan yang masuk beserta informasi kos yang diulas, nama reviewer, rating, dan tanggal ulasan.</li>
+            <li>Admin dapat menghapus ulasan dari dashboard.</li>
+          </ul>
+        </div>
+
+        <div class="func-group">
+          <div class="func-group-title">Manajemen User</div>
+          <ul>
+            <li>Admin dapat melihat daftar akun admin yang terdaftar dan akun guest yang telah terdaftar.</li>
+            <li>Admin dapat menambah, mengedit, atau menonaktifkan akun admin lain.</li>
+            <li>Admin dapat melihat dan menonaktifkan akun guest.</li>
+          </ul>
+        </div>
+
+        <div class="func-group">
+          <div class="func-group-title">Pengaturan Platform</div>
+          <ul>
+            <li>Admin dapat mengubah nama platform dan logo melalui halaman pengaturan.</li>
+          </ul>
+        </div>
+
+        <div class="func-group">
+          <div class="func-group-title">Laporan / Statistik</div>
+          <ul>
+            <li>Admin dapat melihat statistik platform: jumlah kos aktif, jumlah kos per tipe, jumlah kos berlabel "Plus", dan jumlah ulasan.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Guest -->
+      <div class="func-col guest">
+        <h3>Guest / Penyewa</h3>
+
+        <div class="func-group">
+          <div class="func-group-title">Autentikasi Guest</div>
+          <ul>
+            <li>Guest dapat mendaftar akun baru (register) menggunakan email dan password.</li>
+            <li>Guest dapat login menggunakan email/password atau akun Google (OAuth).</li>
+            <li>Akses browsing, pencarian, dan melihat detail listing tetap tersedia tanpa login.</li>
+          </ul>
+        </div>
+
+        <div class="func-group">
+          <div class="func-group-title">Landing Page</div>
+          <ul>
+            <li>Menampilkan hero section dengan headline, deskripsi singkat platform, dan search bar utama.</li>
+            <li>Menampilkan daftar kos unggulan atau terbaru sebagai pratinjau listing yang tersedia.</li>
+            <li>Menampilkan kategori pencarian cepat berdasarkan tipe sewa (harian, bulanan, tahunan) atau tipe kos (putra/putri/campur).</li>
+            <li>Menampilkan keunggulan platform: listing terkurasi, kos bermitra resmi, dan informasi lengkap.</li>
+            <li>Menyediakan tautan ke halaman listing lengkap dan halaman tentang platform.</li>
+          </ul>
+        </div>
+
+        <div class="func-group">
+          <div class="func-group-title">Pencarian &amp; Filter Kos</div>
+          <ul>
+            <li>Guest dapat mencari kos dengan filter: tipe sewa, rentang harga, lokasi/kecamatan (dropdown), dan tipe kos.</li>
+            <li>Hasil pencarian menampilkan: foto utama kos, nama kos, label "Plus" (jika ada), lokasi, tipe kos, dan rating rata-rata.</li>
+            <li>Guest dapat browsing seluruh listing tanpa perlu login.</li>
+          </ul>
+        </div>
+
+        <div class="func-group">
+          <div class="func-group-title">Halaman Detail Kos</div>
+          <ul>
+            <li>Menampilkan galeri foto kos.</li>
+            <li>Menampilkan nama kos dan label "Plus" (jika berlaku) di samping nama.</li>
+            <li>Menampilkan harga per tipe sewa yang aktif (harian/bulanan/tahunan).</li>
+            <li>Menampilkan informasi umum kos sebagai atribut tersendiri (seperti AC, WiFi, kamar mandi dalam). Atribut yang ditampilkan ditentukan saat development mengacu pada referensi visual sewakost.com.</li>
+            <li>Menampilkan fasilitas dalam tiga kelompok: fasilitas kamar, fasilitas bersama, dan fasilitas sekitar.</li>
+            <li>Menampilkan lokasi kos: nama kecamatan, alamat lengkap, dan embed Google Maps.</li>
+            <li>Menampilkan peraturan kos.</li>
+            <li>Menampilkan kontak pemilik kos: nama, nomor WhatsApp (tombol langsung), dan nomor telepon.</li>
+            <li>Menampilkan ulasan dan rating dari penyewa sebelumnya.</li>
+            <li>Menampilkan rekomendasi kos lain di bagian bawah halaman.</li>
+          </ul>
+        </div>
+
+        <div class="func-group">
+          <div class="func-group-title">Ulasan &amp; Rating</div>
+          <ul>
+            <li>Guest wajib login untuk dapat memberikan ulasan.</li>
+            <li>Ulasan memuat: rating bintang (1–5), komentar teks, dan foto (opsional, maksimal 3 foto dengan ukuran maksimal 2 MB per foto).</li>
+            <li>Guest tidak dapat mengedit atau menghapus ulasan setelah disubmit.</li>
+            <li>Rating kos dihitung sebagai rata-rata dari seluruh ulasan yang masuk untuk kos tersebut.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. Kebutuhan Non-Fungsional -->
+  <section>
+    <div class="section-header">
+      <div class="section-num">8</div>
+      <h2>Kebutuhan Non-Fungsional</h2>
+    </div>
+    <div class="nonfunc-grid">
+      <div class="nonfunc-card">
+        <div class="label">Keamanan</div>
+        <p>Autentikasi admin dibangun manual menggunakan Auth::attempt(), Hash::make(), middleware auth, dan session Laravel — tanpa package scaffolding eksternal. Autentikasi guest menggunakan Laravel Socialite untuk login Google. Seluruh form dilindungi CSRF token.</p>
+      </div>
+      <div class="nonfunc-card">
+        <div class="label">Performa</div>
+        <p>Lazy loading untuk gambar pada halaman listing. Eager loading Eloquent untuk menghindari N+1 query.</p>
+      </div>
+      <div class="nonfunc-card">
+        <div class="label">Usability</div>
+        <p>Tampilan halaman publik mengacu pada referensi visual sewakost.com — bersih, informatif, dan fokus pada konten listing. Dashboard admin menggunakan Flowbite dengan layout sidebar yang konsisten.</p>
+      </div>
+      <div class="nonfunc-card">
+        <div class="label">Responsivitas</div>
+        <p>Mendukung desktop dan mobile menggunakan Tailwind CSS.</p>
+      </div>
+      <div class="nonfunc-card">
+        <div class="label">Maintainability</div>
+        <p>Struktur kode mengikuti pola Controller → Service → Repository dengan tanggung jawab yang terpisah jelas.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. Arsitektur dan Implementasi -->
+  <section>
+    <div class="section-header">
+      <div class="section-num">9</div>
+      <h2>Arsitektur dan Implementasi</h2>
+    </div>
+    <div class="arch-list">
+      <div class="arch-item"><span class="idx">01</span><p><strong>Controller:</strong> menerima request HTTP dari Inertia, memanggil Service, mengembalikan Inertia page.</p></div>
+      <div class="arch-item"><span class="idx">02</span><p><strong>Service:</strong> menjalankan logika bisnis (filter pencarian, manajemen fasilitas, manajemen user), lalu memanggil Repository.</p></div>
+      <div class="arch-item"><span class="idx">03</span><p><strong>Repository:</strong> menangani seluruh query Eloquent — tanpa logika bisnis.</p></div>
+      <div class="arch-item"><span class="idx">04</span><p><strong>React Components:</strong> mengonsumsi props dari Inertia. State lokal dikelola dengan useState/useReducer.</p></div>
+      <div class="arch-item"><span class="idx">05</span><p><strong>Komponen UI:</strong> dibagi dua — visual utama dibuat custom dengan Tailwind; komponen utilitas interaktif menggunakan shadcn/ui.</p></div>
+      <div class="arch-item"><span class="idx">06</span><p><strong>Laravel Storage:</strong> untuk menyimpan foto kos, logo platform, dan foto ulasan.</p></div>
+      <div class="arch-item"><span class="idx">07</span><p><strong>Laravel Socialite:</strong> untuk autentikasi Google OAuth khusus guest.</p></div>
+      <div class="arch-item"><span class="idx">08</span><p><strong>Database:</strong> skema dirancang di MySQL Workbench (database-first), lalu disinkronkan ke Laravel.</p></div>
+    </div>
+  </section>
+
+  <!-- 10. Hal yang Perlu Dipelajari -->
+  <section>
+    <div class="section-header">
+      <div class="section-num">10</div>
+      <h2>Hal yang Perlu Dipelajari</h2>
+    </div>
+    <div class="tag-cloud">
+      <span class="tag">Laravel 12</span>
+      <span class="tag">React</span>
+      <span class="tag">Inertia.js</span>
+      <span class="tag">Tailwind CSS</span>
+      <span class="tag">shadcn/ui</span>
+      <span class="tag">Repository Pattern</span>
+      <span class="tag">Service Pattern</span>
+      <span class="tag">Laravel Storage</span>
+      <span class="tag">Autentikasi Manual Laravel</span>
+      <span class="tag">Laravel Socialite</span>
+      <span class="tag">Git &amp; GitHub + Gitflow</span>
+      <span class="tag">MySQL Workbench</span>
+    </div>
+  </section>
+
+  <!-- 12. Referensi Visual -->
+  <section>
+    <div class="section-header">
+      <div class="section-num">12</div>
+      <h2>Referensi Visual</h2>
+    </div>
+    <div class="ref-list">
+      <div class="ref-item"><span class="ref-num">1</span><a href="https://mamikos.com/" target="_blank">https://mamikos.com/</a><span style="margin-left:10px;font-size:12px;color:var(--muted);">Referensi untuk keseluruhan UI</span></div>
+      <div class="ref-item"><span class="ref-num">2</span><a href="https://www.sewakost.com/" target="_blank">https://www.sewakost.com/</a><span style="margin-left:10px;font-size:12px;color:var(--muted);">Referensi UI utama dan model bisnis</span></div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>
