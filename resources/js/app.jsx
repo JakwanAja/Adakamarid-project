@@ -2,11 +2,15 @@ import '../css/app.css';
 import { createRoot } from 'react-dom/client';
 import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+import { route } from 'ziggy-js';
 
-const appName = document.querySelector('meta[name="app-name"]')?.content ?? 'Adakamar.id';
+// Expose route() globally so all components can use it
+window.route = route;
+
+const appName = 'Adakamar.id';
 
 createInertiaApp({
-    title: (title) => `${title} â€” ${appName}`,
+    title: (title) => `${title} — ${appName}`,
     resolve: (name) =>
         resolvePageComponent(
             `./Pages/${name}.jsx`,
