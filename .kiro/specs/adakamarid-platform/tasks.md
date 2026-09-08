@@ -12,14 +12,14 @@ Rencana implementasi ini mencakup **Phase 2–10** dari platform Adakamar.id. Ph
 
 ### Phase 2: Master Fasilitas Admin
 
-- [ ] 1. Buat Repository dan Service layer untuk Fasilitas
-  - [ ] 1.1 Implementasi `FacilityRepository` (concrete class)
+- [x] 1. Buat Repository dan Service layer untuk Fasilitas
+  - [x] 1.1 Implementasi `FacilityRepository` (concrete class)
     - Buat `app/Repositories/FacilityRepository.php` yang mengimplementasikan method: `allGroupedByCategory()`, `findById()`, `create()`, `update()`, `delete()`, `existsByName()`
     - `allGroupedByCategory()` mengembalikan array `['kamar'=>[...],'bersama'=>[...],'sekitar'=>[...]]`
     - `existsByName()` menerima parameter opsional `$excludeId` untuk validasi edit
     - _Requirements: 10.1, 10.2, 10.3, 10.6_
 
-  - [ ] 1.2 Implementasi `FacilityService`
+  - [x] 1.2 Implementasi `FacilityService`
     - Buat `app/Services/Admin/FacilityService.php`
     - Method `store(array $data): Facility` — cek nama unik via `existsByName()`, lalu panggil `FacilityRepository@create()`
     - Method `update(Facility $facility, array $data): Facility` — cek nama unik (exclude id sendiri), lalu `FacilityRepository@update()`
@@ -34,13 +34,13 @@ Rencana implementasi ini mencakup **Phase 2–10** dari platform Adakamar.id. Ph
     - Tag: `// Feature: adakamarid-platform, Property 15`
     - **Validates: Requirements 10.5**
 
-- [ ] 2. Buat Controller, Request, Route, dan Halaman untuk Master Fasilitas
-  - [ ] 2.1 Buat Form Requests untuk Fasilitas
+- [x] 2. Buat Controller, Request, Route, dan Halaman untuk Master Fasilitas
+  - [x] 2.1 Buat Form Requests untuk Fasilitas
     - Buat `app/Http/Requests/Admin/StoreFacilityRequest.php`: validasi `name` (required, string, max:100), `category` (required, in:kamar,bersama,sekitar)
     - Buat `app/Http/Requests/Admin/UpdateFacilityRequest.php`: validasi sama, `sometimes` pada rules
     - _Requirements: 10.1, 10.2, 10.4_
 
-  - [ ] 2.2 Implementasi `FacilityController`
+  - [x] 2.2 Implementasi `FacilityController`
     - Buat `app/Http/Controllers/Admin/FacilityController.php`
     - Method `index()`: panggil `FacilityService` lewat `FacilityRepository@allGroupedByCategory()`, return `Inertia::render('Admin/Facilities/Index', ['facilities' => ...])`
     - Method `store(StoreFacilityRequest $request)`: panggil `FacilityService@store()`, redirect back dengan flash `success`
@@ -49,11 +49,11 @@ Rencana implementasi ini mencakup **Phase 2–10** dari platform Adakamar.id. Ph
     - Tangkap `\InvalidArgumentException` dan redirect back dengan flash `error`
     - _Requirements: 10.1, 10.2, 10.3, 10.4, 10.5, 10.6_
 
-  - [ ] 2.3 Daftarkan routes Fasilitas di `web.php`
+  - [x] 2.3 Daftarkan routes Fasilitas di `web.php`
     - Tambahkan di dalam grup `admin` protected: `GET /admin/facilities`, `POST /admin/facilities`, `PUT /admin/facilities/{facility}`, `DELETE /admin/facilities/{facility}`
     - _Requirements: 10.1, 10.2, 10.3_
 
-  - [ ] 2.4 Buat halaman `Admin/Facilities/Index.jsx`
+  - [x] 2.4 Buat halaman `Admin/Facilities/Index.jsx`
     - Tampilkan tabel fasilitas dikelompokkan per kategori (3 section/accordion menggunakan Flowbite)
     - Setiap section memiliki inline form tambah fasilitas (nama + select kategori) di bagian bawah tabel
     - Setiap baris tabel mendukung edit inline (klik ikon edit → row berubah menjadi input)
@@ -64,14 +64,14 @@ Rencana implementasi ini mencakup **Phase 2–10** dari platform Adakamar.id. Ph
     - Buat komponen `resources/js/Components/Shared/FlashMessage.jsx`
     - _Requirements: 10.1, 10.2, 10.3, 10.4, 10.5, 10.6_
 
-- [ ] 3. Checkpoint Phase 2 — Pastikan semua tes lulus, tanyakan ke user jika ada pertanyaan.
+- [~] 3. Checkpoint Phase 2 — Pastikan semua tes lulus, tanyakan ke user jika ada pertanyaan.
 
 ---
 
 ### Phase 3: Manajemen Kos Admin
 
 - [ ] 4. Buat Repository dan Service layer untuk Kos
-  - [ ] 4.1 Implementasi `KosRepository`
+  - [~] 4.1 Implementasi `KosRepository`
     - Buat `app/Repositories/KosRepository.php`
     - Method `all(array $filters)`: query dengan filter search (nama/alamat LIKE), type, district, paginated 15 per page
     - Method `findBySlug()`, `findById()`, `create()`, `update()`, `delete()`
@@ -82,18 +82,18 @@ Rencana implementasi ini mencakup **Phase 2–10** dari platform Adakamar.id. Ph
     - Method `updateRating(Kos $kos)`: panggil `$kos->recalculateRating()`
     - _Requirements: 8.1, 8.2, 8.3, 8.11_
 
-  - [ ] 4.2 Implementasi `KosPhotoRepository`
+  - [~] 4.2 Implementasi `KosPhotoRepository`
     - Buat `app/Repositories/KosPhotoRepository.php`
     - Method `store()`, `setPrimary()`, `delete()`, `getNextSortOrder()`, `countForKos()`
     - `setPrimary()`: unset semua foto `is_primary = 0` milik kos, lalu set foto target `is_primary = 1` dalam satu transaksi DB
     - _Requirements: 8.4, 8.5, 8.6_
 
-  - [ ] 4.3 Implementasi `KosPriceRepository`
+  - [~] 4.3 Implementasi `KosPriceRepository`
     - Buat `app/Repositories/KosPriceRepository.php`
     - Method `upsertForKos(Kos $kos, array $prices)`: gunakan `updateOrCreate` untuk setiap tipe (harian, bulanan, tahunan)
     - _Requirements: 9.1, 9.2, 9.3_
 
-  - [ ] 4.4 Implementasi `Admin\KosService`
+  - [~] 4.4 Implementasi `Admin\KosService`
     - Buat `app/Services/Admin/KosService.php`
     - Method `store(array $data, array $facilityIds, array $prices): Kos` — generate slug unik, buat kos, sync facilities, upsert prices
     - Method `update(Kos $kos, array $data, array $facilityIds, array $prices): Kos` — update data, regenerate slug jika nama berubah
@@ -128,14 +128,14 @@ Rencana implementasi ini mencakup **Phase 2–10** dari platform Adakamar.id. Ph
     - **Validates: Requirements 8.4**
 
 - [ ] 5. Buat Form Requests, Controller, Routes, dan Halaman Kos Admin
-  - [ ] 5.1 Buat Form Requests untuk Kos
+  - [~] 5.1 Buat Form Requests untuk Kos
     - Buat `app/Http/Requests/Admin/StoreKosRequest.php`: validasi semua field wajib (name max:150, type enum, district, address, contact_name, contact_whatsapp regex digits 10-13)
     - Buat `app/Http/Requests/Admin/UpdateKosRequest.php`: validasi sama dengan `sometimes`
     - Buat `app/Http/Requests/Admin/StoreKosPhotoRequest.php`: validasi `photo` (required, image, mimes:jpeg,png,webp, max:2048)
     - Buat `app/Http/Requests/Admin/StoreKosPriceRequest.php`: validasi array `prices` dengan setiap item memiliki type, price (numeric, min:1, max:999999999), is_active
     - _Requirements: 8.1, 8.4, 9.4_
 
-  - [ ] 5.2 Implementasi `KosController` (Admin)
+  - [~] 5.2 Implementasi `KosController` (Admin)
     - Buat `app/Http/Controllers/Admin/KosController.php`
     - Method `index()`: return `Admin/Kos/Index` dengan props `{ kos: [...] }` dari `KosRepository@getAdminList()`
     - Method `create()`: return `Admin/Kos/Create` dengan props `{ facilities: allGroupedByCategory, districts: [...] }`
@@ -151,11 +151,11 @@ Rencana implementasi ini mencakup **Phase 2–10** dari platform Adakamar.id. Ph
     - Method `updateFacilities(Request $request, Kos $kos)`: panggil `KosService@updateFacilities()`
     - _Requirements: 8.1, 8.2, 8.3, 8.4, 8.5, 8.6, 8.7, 8.8, 8.9, 8.10, 8.11_
 
-  - [ ] 5.3 Daftarkan semua routes Kos Admin di `web.php`
+  - [~] 5.3 Daftarkan semua routes Kos Admin di `web.php`
     - Tambahkan semua routes sesuai desain routing di design.md: Kos CRUD, foto, harga, fasilitas
     - _Requirements: 8.1, 8.3, 8.4, 8.5, 8.6, 8.8, 8.9, 8.10, 9.1, 9.2, 9.3_
 
-  - [ ] 5.4 Buat halaman `Admin/Kos/Index.jsx`
+  - [~] 5.4 Buat halaman `Admin/Kos/Index.jsx`
     - Tabel semua kos menggunakan Flowbite table classes
     - Kolom: nama, tipe, kecamatan, status aktif (toggle Flowbite), status Plus (toggle Flowbite), tanggal dibuat, aksi
     - Tombol aksi: Edit (link ke halaman edit), Hapus (buka ConfirmDeleteDialog) menggunakan shadcn/ui DropdownMenu
@@ -163,13 +163,13 @@ Rencana implementasi ini mencakup **Phase 2–10** dari platform Adakamar.id. Ph
     - Tombol "Tambah Kos" link ke `admin.kos.create`
     - _Requirements: 8.8, 8.9, 8.10, 8.11_
 
-  - [ ] 5.5 Buat halaman `Admin/Kos/Create.jsx` dan komponen `KosForm`
+  - [~] 5.5 Buat halaman `Admin/Kos/Create.jsx` dan komponen `KosForm`
     - Buat `resources/js/Components/Admin/KosForm.jsx` (shared antara Create dan Edit)
     - Field: nama, deskripsi, peraturan, tipe (select), kecamatan (select dropdown dari konstanta), alamat, latitude, longitude, nama kontak, nomor WhatsApp, has_ac/has_wifi/has_private_bathroom (checkbox)
     - Gunakan `useForm` dari Inertia, submit ke `admin.kos.store`
     - _Requirements: 8.1_
 
-  - [ ] 5.6 Buat halaman `Admin/Kos/Edit.jsx` dengan Tabs
+  - [~] 5.6 Buat halaman `Admin/Kos/Edit.jsx` dengan Tabs
     - Gunakan shadcn/ui `<Tabs>` dengan 4 tab: Info Dasar, Foto, Harga Sewa, Fasilitas
     - **Tab Info Dasar**: render `<KosForm>` dengan data kos yang ada, submit ke `admin.kos.update`
     - **Tab Foto**: render komponen `<PhotoManager>`
@@ -177,7 +177,7 @@ Rencana implementasi ini mencakup **Phase 2–10** dari platform Adakamar.id. Ph
     - **Tab Fasilitas**: render komponen `<FacilitySelector>`
     - _Requirements: 8.3, 8.4, 8.5, 8.6, 9.1, 9.2, 9.3, 11.1, 11.2, 11.3_
 
-  - [ ] 5.7 Buat komponen `PhotoManager.jsx`
+  - [~] 5.7 Buat komponen `PhotoManager.jsx`
     - Buat `resources/js/Components/Admin/PhotoManager.jsx`
     - Tampilkan grid foto kos yang sudah ada dengan tombol "Set Utama" dan "Hapus" per foto
     - Foto utama ditandai dengan badge/border berbeda
@@ -188,7 +188,7 @@ Rencana implementasi ini mencakup **Phase 2–10** dari platform Adakamar.id. Ph
     - Buat komponen `resources/js/Components/Shared/ImageWithFallback.jsx`
     - _Requirements: 8.4, 8.5, 8.6, 8.7_
 
-  - [ ] 5.8 Buat komponen `PriceManager.jsx`
+  - [~] 5.8 Buat komponen `PriceManager.jsx`
     - Buat `resources/js/Components/Admin/PriceManager.jsx`
     - Tampilkan 3 baris (harian, bulanan, tahunan), masing-masing dengan toggle aktif dan input harga
     - Toggle diimplementasikan dengan Flowbite toggle switch
@@ -196,27 +196,27 @@ Rencana implementasi ini mencakup **Phase 2–10** dari platform Adakamar.id. Ph
     - Validasi client-side: harga > 0 jika tipe aktif
     - _Requirements: 9.1, 9.2, 9.3, 9.4, 9.5_
 
-  - [ ] 5.9 Buat komponen `FacilitySelector.jsx`
+  - [~] 5.9 Buat komponen `FacilitySelector.jsx`
     - Buat `resources/js/Components/Admin/FacilitySelector.jsx`
     - Tampilkan fasilitas dikelompokkan per kategori (kamar/bersama/sekitar) sebagai checkbox group
     - State lokal checkbox, submit semua id yang dicentang via `router.put(route('admin.kos.facilities.update', kos.id))`
     - Pre-check fasilitas yang sudah terkait dengan kos saat edit
     - _Requirements: 11.1, 11.2, 11.3_
 
-- [ ] 6. Checkpoint Phase 3 — Pastikan semua tes lulus, tanyakan ke user jika ada pertanyaan.
+- [~] 6. Checkpoint Phase 3 — Pastikan semua tes lulus, tanyakan ke user jika ada pertanyaan.
 
 ---
 
 ### Phase 4: Landing Page + Halaman Listing Publik (Guest)
 
 - [ ] 7. Buat Repository dan Service layer untuk Guest
-  - [ ] 7.1 Implementasi `SettingRepository`
+  - [~] 7.1 Implementasi `SettingRepository`
     - Buat `app/Repositories/SettingRepository.php`
     - Method `get(string $key, mixed $default)`, `set(string $key, mixed $value)`, `getMultiple(array $keys)`
     - Delegasi ke `Setting::get()` dan `Setting::set()` yang sudah ada di model
     - _Requirements: 14.6_
 
-  - [ ] 7.2 Implementasi `Guest\KosService`
+  - [~] 7.2 Implementasi `Guest\KosService`
     - Buat `app/Services/Guest/KosService.php`
     - Method `getHomepageListing()`: panggil `KosRepository@getActiveForHomepage()`
     - Method `getFilteredListing(array $filters)`: panggil `KosRepository@all($filters)` (filter: search, type, district, price_type, price_min, price_max)
@@ -247,19 +247,19 @@ Rencana implementasi ini mencakup **Phase 2–10** dari platform Adakamar.id. Ph
     - **Validates: Requirements 4.8**
 
 - [ ] 8. Buat Controllers, Routes, dan Halaman untuk Publik (Landing + Listing)
-  - [ ] 8.1 Buat `Guest\HomeController` dan `Guest\KosController` (index)
+  - [~] 8.1 Buat `Guest\HomeController` dan `Guest\KosController` (index)
     - Buat `app/Http/Controllers/Guest/HomeController.php`
     - Method `index()`: ambil `featuredKos` dari `Guest\KosService@getHomepageListing()` dan daftar kecamatan, return `Inertia::render('Guest/Home', [...])`
     - Buat `app/Http/Controllers/Guest/KosController.php`
     - Method `index(Request $request)`: ambil filters dari query params, validasi price_min ≤ price_max (lempar ValidationException jika tidak valid), panggil `Guest\KosService@getFilteredListing($filters)`, return `Inertia::render('Guest/Kos/Index', [...])`
     - _Requirements: 3.1, 3.2, 4.1, 4.2, 4.3, 4.4, 4.5, 4.6, 4.7, 4.8, 4.9_
 
-  - [ ] 8.2 Daftarkan routes publik di `web.php` dan perbarui route homepage
+  - [~] 8.2 Daftarkan routes publik di `web.php` dan perbarui route homepage
     - Ganti closure homepage dengan `Guest\HomeController@index`
     - Tambahkan `GET /kos` → `Guest\KosController@index` dengan nama `kos.index`
     - _Requirements: 3.1, 4.1_
 
-  - [ ] 8.3 Buat halaman `Guest/Home.jsx`
+  - [~] 8.3 Buat halaman `Guest/Home.jsx`
     - Hero section: headline, deskripsi singkat, `<SearchBar>` (input teks, validasi tidak boleh kosong sebelum submit)
     - Quick filter chips: tipe sewa (harian/bulanan/tahunan) dan tipe kos (putra/putri/campur) — klik redirect ke `/kos?type=...` atau `/kos?price_type=...`
     - Grid 8 kos menggunakan komponen `<KosCard>`
@@ -270,7 +270,7 @@ Rencana implementasi ini mencakup **Phase 2–10** dari platform Adakamar.id. Ph
     - Buat komponen `resources/js/Components/Guest/KosCard.jsx`
     - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8_
 
-  - [ ] 8.4 Buat halaman `Guest/Kos/Index.jsx`
+  - [~] 8.4 Buat halaman `Guest/Kos/Index.jsx`
     - Layout dua kolom: sidebar filter kiri + grid listing kanan
     - Buat komponen `resources/js/Components/Guest/FilterPanel.jsx`: filter tipe sewa, kecamatan (dropdown), rentang harga (input min/max), tipe kos
     - Filter state disimpan di URL query params via `router.get(route('kos.index'), filters, { preserveState: true, replace: true })`
@@ -280,14 +280,14 @@ Rencana implementasi ini mencakup **Phase 2–10** dari platform Adakamar.id. Ph
     - Buat komponen `resources/js/Components/Shared/Pagination.jsx`
     - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5, 4.6, 4.7, 4.8, 4.9, 4.10_
 
-- [ ] 9. Checkpoint Phase 4 — Pastikan semua tes lulus, tanyakan ke user jika ada pertanyaan.
+- [~] 9. Checkpoint Phase 4 — Pastikan semua tes lulus, tanyakan ke user jika ada pertanyaan.
 
 ---
 
 ### Phase 5: Halaman Detail Kos
 
 - [ ] 10. Buat Controller dan Halaman Detail Kos
-  - [ ] 10.1 Implementasi `Guest\KosController@show`
+  - [~] 10.1 Implementasi `Guest\KosController@show`
     - Tambahkan method `show(string $slug)` ke `Guest\KosController`
     - Eager load relasi: `photos` (orderBy sort_order), `activePrices`, `facilities`, `reviews.user`, `reviews.photos`
     - Panggil `Guest\KosService@getDetailBySlug($slug)` — otomatis 404 jika tidak ada / nonaktif
@@ -311,7 +311,7 @@ Rencana implementasi ini mencakup **Phase 2–10** dari platform Adakamar.id. Ph
     - Tag: `// Feature: adakamarid-platform, Property 14`
     - **Validates: Requirements 5.3**
 
-  - [ ] 10.4 Buat halaman `Guest/Kos/Show.jsx`
+  - [~] 10.4 Buat halaman `Guest/Kos/Show.jsx`
     - Galeri foto: foto utama besar + thumbnail strip, foto diurutkan by sort_order, fallback placeholder jika tidak ada foto, gunakan `<ImageWithFallback>`
     - Nama kos + badge "Plus" jika `is_plus=true`
     - Harga per tipe aktif sebagai pill/badge; fallback "Hubungi pemilik untuk informasi harga" jika kosong
@@ -328,21 +328,21 @@ Rencana implementasi ini mencakup **Phase 2–10** dari platform Adakamar.id. Ph
     - Gunakan `<LoadingSpinner>` untuk state loading; buat `resources/js/Components/Shared/LoadingSpinner.jsx`
     - _Requirements: 5.1, 5.3, 5.4, 5.5, 5.6, 5.7, 5.8, 5.9, 5.10, 5.11, 5.12, 5.14_
 
-- [ ] 11. Checkpoint Phase 5 — Pastikan semua tes lulus, tanyakan ke user jika ada pertanyaan.
+- [~] 11. Checkpoint Phase 5 — Pastikan semua tes lulus, tanyakan ke user jika ada pertanyaan.
 
 ---
 
 ### Phase 6: Autentikasi Guest
 
 - [ ] 12. Buat Repository dan Service untuk User Guest Auth
-  - [ ] 12.1 Implementasi `UserRepository`
+  - [~] 12.1 Implementasi `UserRepository`
     - Buat `app/Repositories/UserRepository.php`
     - Method `allAdmins()`, `allGuests()`, `findById()`, `create()`, `update()`, `toggleActive()`
     - Method `existsByEmail(string $email, ?int $excludeId)`: cek duplikat email
     - Method `findByGoogleId(string $googleId)`, `findByEmail(string $email)`
     - _Requirements: 2.1, 2.6, 13.1, 13.2, 13.3, 13.4_
 
-  - [ ] 12.2 Implementasi `Guest\AuthController`
+  - [~] 12.2 Implementasi `Guest\AuthController`
     - Buat `app/Http/Controllers/Guest/AuthController.php`
     - Method `showLogin()` → return `Inertia::render('Guest/Auth/Login')`
     - Method `login(LoginRequest $request)` → auth, cek `is_active`, redirect ke `intended('/')`
@@ -353,30 +353,30 @@ Rencana implementasi ini mencakup **Phase 2–10** dari platform Adakamar.id. Ph
     - Method `handleGoogleCallback()` → `Socialite::driver('google')->user()`, cari via `findByGoogleId()` atau buat baru, auto-login, redirect ke `/`; tangkap exception OAuth dan redirect ke login dengan error
     - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 2.9, 2.10_
 
-  - [ ] 12.3 Buat Form Requests Guest Auth
+  - [~] 12.3 Buat Form Requests Guest Auth
     - Buat `app/Http/Requests/Guest/LoginRequest.php`: validasi `email` (required, email, max:254), `password` (required)
     - Buat `app/Http/Requests/Guest/RegisterRequest.php`: validasi `name` (required, max:255), `email` (required, email, max:254, unique:users), `password` (required, min:8, max:72, confirmed)
     - _Requirements: 2.1, 2.2_
 
-  - [ ] 12.4 Daftarkan routes Guest Auth di `web.php`
+  - [~] 12.4 Daftarkan routes Guest Auth di `web.php`
     - Tambahkan grup `middleware('guest')` untuk: `GET/POST /login`, `GET/POST /register`, `GET /auth/google`, `GET /auth/google/callback`
     - Tambahkan `POST /logout` dengan `middleware('auth')`
     - _Requirements: 2.1, 2.3, 2.5, 2.8_
 
-  - [ ] 12.5 Buat halaman `Guest/Auth/Login.jsx` dan `Guest/Auth/Register.jsx`
+  - [~] 12.5 Buat halaman `Guest/Auth/Login.jsx` dan `Guest/Auth/Register.jsx`
     - `Login.jsx`: form email + password, tombol "Masuk", tombol "Login dengan Google" (link ke `route('guest.auth.google')`), link ke halaman register; tampilkan error dari `errors` prop
     - `Register.jsx`: form nama, email, password, konfirmasi password; link ke halaman login
     - Gunakan `GuestLayout` (atau layout minimal tanpa navbar)
     - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5_
 
-- [ ] 13. Checkpoint Phase 6 — Pastikan semua tes lulus, tanyakan ke user jika ada pertanyaan.
+- [~] 13. Checkpoint Phase 6 — Pastikan semua tes lulus, tanyakan ke user jika ada pertanyaan.
 
 ---
 
 ### Phase 7: Ulasan & Rating
 
 - [ ] 14. Buat Repository, Service, Controller, dan Halaman untuk Ulasan Guest
-  - [ ] 14.1 Implementasi `ReviewRepository`
+  - [~] 14.1 Implementasi `ReviewRepository`
     - Buat `app/Repositories/ReviewRepository.php`
     - Method `allWithRelations(array $filters)`: paginated, eager load `kos`, `user`
     - Method `forKos(Kos $kos)`: `orderBy('created_at', 'desc')` eager load `user`, `photos`
@@ -385,19 +385,19 @@ Rencana implementasi ini mencakup **Phase 2–10** dari platform Adakamar.id. Ph
     - Method `storePhoto(Review $review, string $path): ReviewPhoto`
     - _Requirements: 6.2, 6.3, 12.1_
 
-  - [ ] 14.2 Implementasi `Guest\ReviewService`
+  - [~] 14.2 Implementasi `Guest\ReviewService`
     - Buat `app/Services/Guest/ReviewService.php`
     - Method `store(Kos $kos, User $user, array $data, array $files): Review`
     - Internal: simpan review via `ReviewRepository@create()`, upload setiap foto ke `storage/app/public/review-photos/`, simpan via `ReviewRepository@storePhoto()`, panggil `KosRepository@updateRating($kos)`
     - Lempar exception jika foto > 3 atau ukuran > 2MB (double-check setelah Form Request)
     - _Requirements: 6.2, 6.3, 6.6, 6.7, 6.8, 6.9_
 
-  - [ ] 14.3 Buat Form Request `Guest\StoreReviewRequest`
+  - [~] 14.3 Buat Form Request `Guest\StoreReviewRequest`
     - Buat `app/Http/Requests/Guest/StoreReviewRequest.php`
     - Validasi: `rating` (required, integer, min:1, max:5), `comment` (nullable, string, max:1000), `photos` (nullable, array, max:3), `photos.*` (image, mimes:jpeg,png, max:2048)
     - _Requirements: 6.2, 6.4, 6.5, 6.6, 6.7, 6.8_
 
-  - [ ] 14.4 Implementasi `Guest\ReviewController`
+  - [~] 14.4 Implementasi `Guest\ReviewController`
     - Buat `app/Http/Controllers/Guest/ReviewController.php`
     - Method `store(StoreReviewRequest $request, Kos $kos)` dengan middleware `auth`
     - Panggil `Guest\ReviewService@store($kos, Auth::user(), $request->validated(), $request->file('photos', []))`
@@ -405,7 +405,7 @@ Rencana implementasi ini mencakup **Phase 2–10** dari platform Adakamar.id. Ph
     - Daftarkan route `POST /kos/{kos:slug}/reviews` → `Guest\ReviewController@store` dengan nama `reviews.store` di grup `middleware(['auth'])`
     - _Requirements: 6.1, 6.2, 6.3, 6.4, 6.5, 6.6, 6.7, 6.8, 6.9, 6.10, 6.11_
 
-  - [ ] 14.5 Buat komponen `ReviewForm.jsx` dan wire ke `Guest/Kos/Show.jsx`
+  - [~] 14.5 Buat komponen `ReviewForm.jsx` dan wire ke `Guest/Kos/Show.jsx`
     - Buat `resources/js/Components/Guest/ReviewForm.jsx`
     - `useForm` dengan field: `rating` (input `<StarRating>`), `comment` (textarea), `photos` (file input multi)
     - Submit ke `route('reviews.store', kos.slug)` dengan `forceFormData: true`
@@ -434,14 +434,14 @@ Rencana implementasi ini mencakup **Phase 2–10** dari platform Adakamar.id. Ph
     - Tag: `// Feature: adakamarid-platform, Property 12`
     - **Validates: Requirements 6.7**
 
-- [ ] 15. Checkpoint Phase 7 — Pastikan semua tes lulus, tanyakan ke user jika ada pertanyaan.
+- [~] 15. Checkpoint Phase 7 — Pastikan semua tes lulus, tanyakan ke user jika ada pertanyaan.
 
 ---
 
 ### Phase 8: Dashboard Admin Real + Statistik Platform
 
 - [ ] 16. Implementasi Dashboard Admin dan Halaman Statistik
-  - [ ] 16.1 Implementasi `DashboardController`
+  - [~] 16.1 Implementasi `DashboardController`
     - Buat `app/Http/Controllers/Admin/DashboardController.php`
     - Query: `Kos::active()->count()`, `Kos::active()->plus()->count()`, `Review::count()`
     - `recent_kos`: 5 kos terbaru `orderBy('created_at','desc')->limit(5)->get(['id','name','district','created_at'])`
@@ -449,27 +449,27 @@ Rencana implementasi ini mencakup **Phase 2–10** dari platform Adakamar.id. Ph
     - Ganti closure route `/admin/dashboard` dengan `DashboardController@index`
     - _Requirements: 7.1, 7.2, 7.3, 7.4, 7.5_
 
-  - [ ] 16.2 Implementasi `StatisticsController`
+  - [~] 16.2 Implementasi `StatisticsController`
     - Buat `app/Http/Controllers/Admin/StatisticsController.php`
     - Query: total kos, kos aktif, kos per tipe (putra/putri/campur), kos Plus aktif, total ulasan
     - Return `Inertia::render('Admin/Statistics/Index', ['stats' => $stats])`
     - Daftarkan route `GET /admin/statistics` → `StatisticsController@index` dengan nama `admin.statistics.index`
     - _Requirements: 16.1, 16.2_
 
-  - [ ] 16.3 Buat halaman `Admin/Statistics/Index.jsx`
+  - [~] 16.3 Buat halaman `Admin/Statistics/Index.jsx`
     - Grid kartu statistik: total kos, kos aktif, kos per tipe (3 kartu), kos Plus, total ulasan
     - Setiap kartu menampilkan angka 0 jika nilai nol (tidak kosong/tersembunyi)
     - Gunakan `AdminLayout`
     - _Requirements: 16.1, 16.2_
 
-- [ ] 17. Checkpoint Phase 8 — Pastikan semua tes lulus, tanyakan ke user jika ada pertanyaan.
+- [~] 17. Checkpoint Phase 8 — Pastikan semua tes lulus, tanyakan ke user jika ada pertanyaan.
 
 ---
 
 ### Phase 9: Manajemen Ulasan & User Admin
 
 - [ ] 18. Implementasi Manajemen Ulasan Admin
-  - [ ] 18.1 Implementasi `Admin\ReviewService`
+  - [~] 18.1 Implementasi `Admin\ReviewService`
     - Buat `app/Services/Admin/ReviewService.php`
     - Method `delete(Review $review): void`
     - Hapus semua file foto ulasan dari Storage (`Storage::delete($photo->path)` untuk setiap `review->photos`)
@@ -478,33 +478,33 @@ Rencana implementasi ini mencakup **Phase 2–10** dari platform Adakamar.id. Ph
     - Lempar `\RuntimeException` jika penghapusan file gagal
     - _Requirements: 12.3, 12.4_
 
-  - [ ] 18.2 Implementasi `ReviewController` (Admin)
+  - [~] 18.2 Implementasi `ReviewController` (Admin)
     - Buat `app/Http/Controllers/Admin/ReviewController.php`
     - Method `index()`: ambil semua ulasan paginated dengan eager load `kos`, `user`, `photos`; return `Admin/Reviews/Index`
     - Method `destroy(Review $review)`: panggil `Admin\ReviewService@delete()`, tangkap `RuntimeException`, redirect back dengan flash
     - Daftarkan routes: `GET /admin/reviews`, `DELETE /admin/reviews/{review}`
     - _Requirements: 12.1, 12.2, 12.3, 12.4_
 
-  - [ ] 18.3 Buat halaman `Admin/Reviews/Index.jsx`
+  - [~] 18.3 Buat halaman `Admin/Reviews/Index.jsx`
     - Tabel ulasan: nama kos, nama reviewer, rating (bintang), cuplikan komentar (max 100 char), tanggal, tombol hapus
     - Tombol hapus membuka `<ConfirmDeleteDialog>` sebelum eksekusi
     - Paginasi menggunakan `<Pagination>`
     - _Requirements: 12.1, 12.2, 12.3, 12.4_
 
 - [ ] 19. Implementasi Manajemen User Admin
-  - [ ] 19.1 Implementasi `Admin\UserService`
+  - [~] 19.1 Implementasi `Admin\UserService`
     - Buat `app/Services/Admin/UserService.php`
     - Method `storeAdmin(array $data): User` — cek email unik via `UserRepository@existsByEmail()`, buat user dengan role `admin`
     - Method `update(User $user, array $data): User` — cek email unik (exclude id sendiri)
     - Method `toggleActive(User $user, User $currentAdmin): void` — guard: jika `$user->id === $currentAdmin->id` lempar `\InvalidArgumentException('Anda tidak dapat menonaktifkan akun Anda sendiri')`; lalu panggil `UserRepository@toggleActive($user)`
     - _Requirements: 13.2, 13.3, 13.4, 13.5, 13.7, 13.8, 13.9_
 
-  - [ ] 19.2 Buat Form Requests User Admin
+  - [~] 19.2 Buat Form Requests User Admin
     - Buat `app/Http/Requests/Admin/StoreAdminUserRequest.php`: validasi `name` (required, max:255), `email` (required, email, max:254, unique:users), `password` (required, min:8, max:255)
     - Buat `app/Http/Requests/Admin/UpdateAdminUserRequest.php`: validasi `name` (required, max:255), `email` (required, email, max:254, unique:users,email,{route parameter id})
     - _Requirements: 13.2, 13.3, 13.4, 13.8_
 
-  - [ ] 19.3 Implementasi `UserController` (Admin)
+  - [~] 19.3 Implementasi `UserController` (Admin)
     - Buat `app/Http/Controllers/Admin/UserController.php`
     - Method `index()`: ambil `admins` dan `guests` via `UserRepository`, return `Admin/Users/Index`
     - Method `storeAdmin(StoreAdminUserRequest $request)`: panggil `Admin\UserService@storeAdmin()`, redirect back dengan flash
@@ -513,7 +513,7 @@ Rencana implementasi ini mencakup **Phase 2–10** dari platform Adakamar.id. Ph
     - Daftarkan routes: `GET /admin/users`, `POST /admin/users/admin`, `PUT /admin/users/{user}`, `PATCH /admin/users/{user}/toggle-active`
     - _Requirements: 13.1, 13.2, 13.3, 13.5, 13.6, 13.7, 13.9_
 
-  - [ ] 19.4 Buat halaman `Admin/Users/Index.jsx`
+  - [~] 19.4 Buat halaman `Admin/Users/Index.jsx`
     - Dua tab (shadcn/ui `<Tabs>`): "Admin" dan "Guest"
     - Tab Admin: tabel admin (nama, email, status, tanggal) + form inline/modal tambah admin baru di atas tabel
     - Tab Guest: tabel guest (nama, email, status, tanggal)
@@ -521,21 +521,21 @@ Rencana implementasi ini mencakup **Phase 2–10** dari platform Adakamar.id. Ph
     - Tombol edit nama/email via form kecil atau modal
     - _Requirements: 13.1, 13.2, 13.3, 13.4, 13.5, 13.7, 13.9_
 
-- [ ] 20. Checkpoint Phase 9 — Pastikan semua tes lulus, tanyakan ke user jika ada pertanyaan.
+- [~] 20. Checkpoint Phase 9 — Pastikan semua tes lulus, tanyakan ke user jika ada pertanyaan.
 
 ---
 
 ### Phase 10: Pengaturan Platform
 
 - [ ] 21. Implementasi Pengaturan Platform
-  - [ ] 21.1 Implementasi `Admin\SettingService`
+  - [~] 21.1 Implementasi `Admin\SettingService`
     - Buat `app/Services/Admin/SettingService.php`
     - Method `update(array $data, ?UploadedFile $logoFile): void`
     - Jika `platform_name` ada: panggil `SettingRepository@set('platform_name', $data['platform_name'])`
     - Jika `logoFile` ada: simpan ke `storage/app/public/logo/`, panggil `SettingRepository@get('platform_logo')` untuk ambil path lama, hapus file lama via `Storage::delete()`, update `platform_logo` di settings
     - _Requirements: 14.2, 14.3_
 
-  - [ ] 21.2 Buat Form Request dan Controller Pengaturan
+  - [~] 21.2 Buat Form Request dan Controller Pengaturan
     - Buat `app/Http/Requests/Admin/UpdateSettingRequest.php`: validasi `platform_name` (required, string, max:100), `logo` (nullable, file, mimes:png,jpg,svg, max:2048)
     - Buat `app/Http/Controllers/Admin/SettingController.php`
     - Method `index()`: ambil `platform_name` dan `platform_logo` via `SettingRepository@getMultiple([...])`, return `Admin/Settings/Index`
@@ -543,7 +543,7 @@ Rencana implementasi ini mencakup **Phase 2–10** dari platform Adakamar.id. Ph
     - Daftarkan routes: `GET /admin/settings`, `PUT /admin/settings`
     - _Requirements: 14.1, 14.2, 14.3, 14.4, 14.5, 14.6_
 
-  - [ ] 21.3 Buat halaman `Admin/Settings/Index.jsx`
+  - [~] 21.3 Buat halaman `Admin/Settings/Index.jsx`
     - Form nama platform (input teks dengan value saat ini)
     - Preview logo saat ini (gambar atau placeholder "Belum ada logo")
     - File input upload logo baru dengan info format dan ukuran max
@@ -551,7 +551,7 @@ Rencana implementasi ini mencakup **Phase 2–10** dari platform Adakamar.id. Ph
     - Tampilkan flash success/error
     - _Requirements: 14.1, 14.2, 14.3, 14.4, 14.5, 14.6_
 
-- [ ] 22. Final Checkpoint — Pastikan semua tes lulus dan semua halaman dapat diakses. Tanyakan ke user jika ada pertanyaan.
+- [~] 22. Final Checkpoint — Pastikan semua tes lulus dan semua halaman dapat diakses. Tanyakan ke user jika ada pertanyaan.
 
 ---
 

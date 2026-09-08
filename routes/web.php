@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\FacilityController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -29,4 +30,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
             'recent_reviews' => [],
         ]);
     })->name('dashboard');
+
+    // ── Master Fasilitas ──────────────────────────────────────
+    Route::get('/facilities', [FacilityController::class, 'index'])->name('facilities.index');
+    Route::post('/facilities', [FacilityController::class, 'store'])->name('facilities.store');
+    Route::put('/facilities/{facility}', [FacilityController::class, 'update'])->name('facilities.update');
+    Route::delete('/facilities/{facility}', [FacilityController::class, 'destroy'])->name('facilities.destroy');
 });
