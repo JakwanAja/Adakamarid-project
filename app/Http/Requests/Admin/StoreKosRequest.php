@@ -26,6 +26,12 @@ class StoreKosRequest extends FormRequest
             'has_private_bathroom' => ['boolean'],
             'is_plus'              => ['boolean'],
             'is_active'            => ['boolean'],
+            'prices'               => ['nullable', 'array'],
+            'prices.*.type'        => ['required_with:prices', 'in:harian,bulanan,tahunan'],
+            'prices.*.price'       => ['nullable', 'numeric', 'min:0', 'max:999999999'],
+            'prices.*.is_active'   => ['nullable'],
+            'facility_ids'         => ['nullable', 'array'],
+            'facility_ids.*'       => ['integer'],
         ];
     }
 

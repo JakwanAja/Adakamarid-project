@@ -55,10 +55,18 @@ class KosController extends Controller
         $facilityIds = $request->input('facility_ids', []);
         $prices      = $request->input('prices', []);
 
-        $this->kosService->store($data, $facilityIds, $prices);
+        // Cast is_active di setiap price dari string/int ke boolean
+        $prices = array_map(function ($price) {
+            $price['is_active'] = filter_var($price['is_active'] ?? false, FILTER_VALIDATE_BOOLEAN);
+            $price['price']     = isset($price['price']) ? (float) $price['price'] : 0;
+            return $price;
+        }, $prices);
 
-        return redirect()->route('admin.kos.index')
-            ->with('success', 'Kos berhasil ditambahkan.');
+        $kos = $this->kosService->store($data, $facilityIds, $prices);
+
+        // Redirect ke halaman edit dengan flash message informatif
+        return redirect()->route('admin.kos.edit', $kos->slug)
+            ->with('success', 'Kos berhasil disimpan! Silakan tambahkan foto, sesuaikan harga, dan pilih fasilitas kos.');
     }
 
     public function edit(Kos $kos)
@@ -133,7 +141,16 @@ class KosController extends Controller
 
     public function updatePrices(StoreKosPriceRequest $request, Kos $kos)
     {
-        $this->kosService->updatePrices($kos, $request->validated()['prices']);
+        $prices = $request->validated()['prices'];
+
+        // Cast is_active dari berbagai format (bool, int, string) ke boolean
+        $prices = array_map(function ($price) {
+            $price['is_active'] = filter_var($price['is_active'] ?? false, FILTER_VALIDATE_BOOLEAN);
+            $price['price']     = isset($price['price']) && $price['price'] !== '' ? (float) $price['price'] : 0;
+            return $price;
+        }, $prices);
+
+        $this->kosService->updatePrices($kos, $prices);
 
         return back()->with('success', 'Harga sewa berhasil diperbarui.');
     }

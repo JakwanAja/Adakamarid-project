@@ -39,13 +39,15 @@ export default function PriceManager({ kos, prices }) {
     function handleSave() {
         const payload = PRICE_TYPES.map(({ key }) => ({
             type:      key,
-            price:     priceData[key].price || 0,
-            is_active: priceData[key].is_active,
+            price:     priceData[key].price !== '' ? Number(priceData[key].price) : 0,
+            is_active: priceData[key].is_active === true ? 1 : 0,
         }));
 
         setSaving(true);
         router.put(route('admin.kos.prices.update', kos.slug), { prices: payload }, {
             preserveScroll: true,
+            onSuccess: () => setSaving(false),
+            onError: () => setSaving(false),
             onFinish: () => setSaving(false),
         });
     }
