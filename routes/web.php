@@ -11,6 +11,7 @@ use Inertia\Inertia;
 // ── Public ────────────────────────────────────────────────────
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/kos', [GuestKosController::class, 'index'])->name('kos.index');
+Route::get('/kos/{kos:slug}', [GuestKosController::class, 'show'])->name('kos.show');
 
 // ── Admin Auth ────────────────────────────────────────────────
 Route::prefix('admin')->name('admin.')->group(function () {
@@ -30,13 +31,11 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
         ]);
     })->name('dashboard');
 
-    // Master Fasilitas
     Route::get('/facilities', [FacilityController::class, 'index'])->name('facilities.index');
     Route::post('/facilities', [FacilityController::class, 'store'])->name('facilities.store');
     Route::put('/facilities/{facility}', [FacilityController::class, 'update'])->name('facilities.update');
     Route::delete('/facilities/{facility}', [FacilityController::class, 'destroy'])->name('facilities.destroy');
 
-    // Manajemen Kos
     Route::get('/kos', [AdminKosController::class, 'index'])->name('kos.index');
     Route::get('/kos/create', [AdminKosController::class, 'create'])->name('kos.create');
     Route::post('/kos', [AdminKosController::class, 'store'])->name('kos.store');
@@ -46,7 +45,6 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::patch('/kos/{kos}/toggle-active', [AdminKosController::class, 'toggleActive'])->name('kos.toggleActive');
     Route::patch('/kos/{kos}/toggle-plus', [AdminKosController::class, 'togglePlus'])->name('kos.togglePlus');
 
-    // Foto Kos
     Route::post('/kos/{kos}/photos', [AdminKosController::class, 'storePhoto'])->name('kos.photos.store');
     Route::patch('/kos/{kos}/photos/{photo}/primary', [AdminKosController::class, 'setPrimaryPhoto'])->name('kos.photos.setPrimary');
     Route::delete('/kos/{kos}/photos/{photo}', [AdminKosController::class, 'destroyPhoto'])->name('kos.photos.destroy');
