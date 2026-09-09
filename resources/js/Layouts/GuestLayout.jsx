@@ -1,60 +1,110 @@
 import { Link, usePage } from '@inertiajs/react';
+import { useState } from 'react';
 
 export default function GuestLayout({ children }) {
-    const { auth, appName } = usePage().props;
+    const { auth } = usePage().props;
+    const [searchValue, setSearchValue] = useState('');
+
+    function handleSearch(e) {
+        e.preventDefault();
+        if (!searchValue.trim()) return;
+        window.location.href = `/kos?search=${encodeURIComponent(searchValue.trim())}`;
+    }
 
     return (
-        <div className="min-h-screen flex flex-col bg-white">
-            {/* Navbar */}
-            <header className="sticky top-0 z-40 bg-white border-b border-gray-100 shadow-sm">
+        <div className="min-h-screen flex flex-col" style={{ backgroundColor: '#FBF7F5' }}>
+
+            {/* ── Navbar ─────────────────────────────────────── */}
+            <header className="sticky top-0 z-40 bg-white"
+                style={{ borderBottom: '1px solid #EAE0DC', boxShadow: '0 1px 4px rgba(45,27,24,0.06)' }}>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex items-center justify-between h-16">
+                    <div className="flex items-center h-16 gap-4">
+
                         {/* Logo */}
-                        <Link href="/" className="text-xl font-bold text-blue-600">
-                            {appName ?? 'Adakamar.id'}
+                        <Link href="/" className="shrink-0">
+                            <img src="/image/logo.png" alt="AdaKamar.id"
+                                className="h-8 w-auto object-contain" />
                         </Link>
 
-                        {/* Nav links */}
-                        <nav className="hidden md:flex items-center gap-6">
-                            <Link href="/kos" className="text-sm text-gray-600 hover:text-blue-600 transition-colors">
-                                Cari Kos
-                            </Link>
-                            <Link href="/tentang" className="text-sm text-gray-600 hover:text-blue-600 transition-colors">
-                                Tentang
-                            </Link>
-                        </nav>
+                        {/* Search bar — selalu tampil, stretch */}
+                        <form onSubmit={handleSearch} className="flex-1 max-w-xl mx-4">
+                            <div className="flex items-center rounded-lg overflow-hidden"
+                                style={{ border: '1.5px solid #EAE0DC', backgroundColor: '#FFFFFF' }}>
+                                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 ml-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="#8C6B63" strokeWidth={2}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                                <input
+                                    type="text"
+                                    value={searchValue}
+                                    onChange={e => setSearchValue(e.target.value)}
+                                    placeholder="Masukan nama lokasi/area/alamat"
+                                    className="flex-1 px-3 py-2.5 text-sm outline-none bg-transparent"
+                                    style={{ color: '#2D1B18' }}
+                                />
+                                <button type="submit"
+                                    className="px-5 py-2.5 text-sm font-semibold transition-colors shrink-0"
+                                    style={{ backgroundColor: '#C0392B', color: '#FFFFFF' }}
+                                    onMouseEnter={e => e.currentTarget.style.backgroundColor = '#A93226'}
+                                    onMouseLeave={e => e.currentTarget.style.backgroundColor = '#C0392B'}>
+                                    Cari
+                                </button>
+                            </div>
+                        </form>
 
-                        {/* Auth */}
-                        <div className="flex items-center gap-3">
+                        {/* Nav links + Auth */}
+                        <div className="flex items-center gap-1 shrink-0">
+                            {/* Pusat Bantuan */}
+                            <a href="#"
+                                onClick={e => e.preventDefault()}
+                                className="hidden lg:block px-3 py-2 text-sm transition-colors rounded-lg"
+                                style={{ color: '#8C6B63' }}
+                                onMouseEnter={e => { e.currentTarget.style.color = '#2D1B18'; e.currentTarget.style.backgroundColor = '#F5EDE9'; }}
+                                onMouseLeave={e => { e.currentTarget.style.color = '#8C6B63'; e.currentTarget.style.backgroundColor = 'transparent'; }}>
+                                Pusat Bantuan
+                            </a>
+
+                            {/* Syarat dan Ketentuan */}
+                            <a href="#"
+                                onClick={e => e.preventDefault()}
+                                className="hidden lg:block px-3 py-2 text-sm transition-colors rounded-lg"
+                                style={{ color: '#8C6B63' }}
+                                onMouseEnter={e => { e.currentTarget.style.color = '#2D1B18'; e.currentTarget.style.backgroundColor = '#F5EDE9'; }}
+                                onMouseLeave={e => { e.currentTarget.style.color = '#8C6B63'; e.currentTarget.style.backgroundColor = 'transparent'; }}>
+                                Syarat dan Ketentuan
+                            </a>
+
+                            {/* Divider */}
+                            <div className="hidden lg:block w-px h-5 mx-1" style={{ backgroundColor: '#EAE0DC' }} />
+
+                            {/* Auth */}
                             {auth?.user ? (
-                                <div className="flex items-center gap-3">
-                                    <span className="text-sm text-gray-600">{auth.user.name}</span>
-                                    <Link
-                                        href="/logout"
-                                        method="post"
-                                        as="button"
-                                        className="text-sm text-gray-500 hover:text-red-500"
-                                    >
+                                <div className="flex items-center gap-2">
+                                    <span className="text-sm font-medium" style={{ color: '#2D1B18' }}>
+                                        {auth.user.name}
+                                    </span>
+                                    <Link href="/logout" method="post" as="button"
+                                        className="px-3 py-1.5 text-sm rounded-lg transition-colors"
+                                        style={{ color: '#8C6B63' }}
+                                        onMouseEnter={e => e.currentTarget.style.color = '#C0392B'}
+                                        onMouseLeave={e => e.currentTarget.style.color = '#8C6B63'}>
                                         Keluar
                                     </Link>
                                 </div>
                             ) : (
-                                <>
-                                    <Link
-                                        href="/login"
-                                        className="text-sm text-gray-600 hover:text-blue-600"
-                                    >
-                                        Masuk
-                                    </Link>
-                                    <Link
-                                        href="/register"
-                                        className="text-sm bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-                                    >
-                                        Daftar
-                                    </Link>
-                                </>
+                                <Link href="/admin/login"
+                                    className="ml-1 px-4 py-2 text-sm font-semibold rounded-lg transition-colors"
+                                    style={{
+                                        border: '1.5px solid #2D1B18',
+                                        color: '#2D1B18',
+                                        backgroundColor: 'transparent',
+                                    }}
+                                    onMouseEnter={e => { e.currentTarget.style.backgroundColor = '#F5EDE9'; }}
+                                    onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; }}>
+                                    Masuk
+                                </Link>
                             )}
                         </div>
+
                     </div>
                 </div>
             </header>
@@ -64,17 +114,81 @@ export default function GuestLayout({ children }) {
                 {children}
             </main>
 
-            {/* Footer */}
-            <footer className="bg-gray-900 text-gray-300">
+            {/* ── Footer ─────────────────────────────────────── */}
+            <footer style={{ backgroundColor: '#2D1B18' }}>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-                    <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+
+                    {/* Grid 3 kolom */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+
+                        {/* Kolom 1 — Brand */}
                         <div>
-                            <p className="text-white font-bold text-lg">{appName ?? 'Adakamar.id'}</p>
-                            <p className="text-sm mt-1">Platform iklan kos terpercaya area Yogyakarta</p>
+                            <img src="/image/logo.png" alt="AdaKamar.id"
+                                className="h-8 w-auto object-contain object-left mb-3"
+                                style={{ filter: 'brightness(0) invert(1)' }} />
+                            <p className="text-sm leading-relaxed" style={{ color: 'rgba(245,237,233,0.55)' }}>
+                                Platform iklan kos terkurasi untuk area Yogyakarta. Informasi lengkap, kontak langsung ke pemilik.
+                            </p>
                         </div>
-                        <p className="text-sm text-gray-500">
-                            &copy; {new Date().getFullYear()} Adakamar.id
-                        </p>
+
+                        {/* Kolom 2 — Layanan */}
+                        <div>
+                            <p className="text-xs font-bold uppercase tracking-wider mb-4"
+                                style={{ color: 'rgba(245,237,233,0.4)' }}>
+                                Layanan
+                            </p>
+                            <ul className="space-y-2.5">
+                                {[
+                                    { label: 'Cari Kos', href: '/kos' },
+                                    { label: 'Pusat Bantuan', href: '#' },
+                                    { label: 'Syarat dan Ketentuan', href: '#' },
+                                    { label: 'Waspada Penipuan', href: '#' },
+                                ].map(item => (
+                                    <li key={item.label}>
+                                        <a href={item.href}
+                                            onClick={item.href === '#' ? e => e.preventDefault() : undefined}
+                                            className="text-sm transition-colors"
+                                            style={{ color: 'rgba(245,237,233,0.6)' }}
+                                            onMouseEnter={e => e.currentTarget.style.color = '#FBF7F5'}
+                                            onMouseLeave={e => e.currentTarget.style.color = 'rgba(245,237,233,0.6)'}>
+                                            {item.label}
+                                        </a>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+
+                        {/* Kolom 3 — Tentang */}
+                        <div>
+                            <p className="text-xs font-bold uppercase tracking-wider mb-4"
+                                style={{ color: 'rgba(245,237,233,0.4)' }}>
+                                Tentang
+                            </p>
+                            <p className="text-sm leading-relaxed" style={{ color: 'rgba(245,237,233,0.55)' }}>
+                                AdaKamar.id adalah platform iklan kos khusus area Yogyakarta. Seluruh listing dikelola oleh tim kami untuk memastikan informasi yang akurat dan terpercaya.
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Divider */}
+                    <div className="pt-6" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+                        <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+                            <p className="text-xs" style={{ color: 'rgba(245,237,233,0.35)' }}>
+                                &copy; {new Date().getFullYear()} AdaKamar.id — Let's Place, Let's Ease
+                            </p>
+                            <div className="flex items-center gap-4">
+                                {['Pusat Bantuan', 'Syarat dan Ketentuan', 'Waspada Penipuan'].map(item => (
+                                    <a key={item} href="#"
+                                        onClick={e => e.preventDefault()}
+                                        className="text-xs transition-colors"
+                                        style={{ color: 'rgba(245,237,233,0.35)' }}
+                                        onMouseEnter={e => e.currentTarget.style.color = 'rgba(245,237,233,0.7)'}
+                                        onMouseLeave={e => e.currentTarget.style.color = 'rgba(245,237,233,0.35)'}>
+                                        {item}
+                                    </a>
+                                ))}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </footer>
