@@ -91,17 +91,22 @@ export default function GuestLayout({ children }) {
                                     </Link>
                                 </div>
                             ) : (
-                                <Link href="/admin/login"
-                                    className="ml-1 px-4 py-2 text-sm font-semibold rounded-lg transition-colors"
-                                    style={{
-                                        border: '1.5px solid #2D1B18',
-                                        color: '#2D1B18',
-                                        backgroundColor: 'transparent',
-                                    }}
-                                    onMouseEnter={e => { e.currentTarget.style.backgroundColor = '#F5EDE9'; }}
-                                    onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; }}>
-                                    Masuk
-                                </Link>
+                                <div className="flex items-center gap-2">
+                                    <Link href="/login"
+                                        className="px-3 py-2 text-sm font-medium transition-colors rounded-lg"
+                                        style={{ color: '#2D1B18' }}
+                                        onMouseEnter={e => { e.currentTarget.style.color = '#C0392B'; }}
+                                        onMouseLeave={e => { e.currentTarget.style.color = '#2D1B18'; }}>
+                                        Masuk
+                                    </Link>
+                                    <Link href="/register"
+                                        className="ml-1 px-4 py-2 text-sm font-semibold rounded-lg transition-colors"
+                                        style={{ border: '1.5px solid #C0392B', color: '#C0392B', backgroundColor: 'transparent' }}
+                                        onMouseEnter={e => { e.currentTarget.style.backgroundColor = '#FEF2F0'; }}
+                                        onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; }}>
+                                        Daftar
+                                    </Link>
+                                </div>
                             )}
                         </div>
 

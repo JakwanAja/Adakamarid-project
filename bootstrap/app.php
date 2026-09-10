@@ -20,8 +20,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'admin' => \App\Http\Middleware\EnsureUserIsAdmin::class,
         ]);
 
-        // Redirect unauthenticated requests ke admin.login, bukan route 'login'
-        $middleware->redirectGuestsTo(fn () => route('admin.login'));
+        // Redirect unauthenticated requests ke guest.login
+        $middleware->redirectGuestsTo(fn () => route('guest.login'));
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

@@ -11,7 +11,7 @@ class EnsureUserIsAdmin
     public function handle(Request $request, Closure $next): Response
     {
         if (!$request->user() || !$request->user()->isAdmin()) {
-            return redirect()->route('admin.login');
+            return redirect()->route('guest.login');
         }
 
         return $next($request);

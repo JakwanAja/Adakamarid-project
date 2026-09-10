@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\FacilityController;
 use App\Http\Controllers\Admin\KosController as AdminKosController;
+use App\Http\Controllers\Guest\AuthController as GuestAuthController;
 use App\Http\Controllers\Guest\HomeController;
 use App\Http\Controllers\Guest\KosController as GuestKosController;
 use Illuminate\Support\Facades\Route;
@@ -13,12 +13,19 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/kos', [GuestKosController::class, 'index'])->name('kos.index');
 Route::get('/kos/{kos:slug}', [GuestKosController::class, 'show'])->name('kos.show');
 
-// ── Admin Auth ────────────────────────────────────────────────
-Route::prefix('admin')->name('admin.')->group(function () {
-    Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-    Route::post('/login', [AuthController::class, 'login'])->name('login.post');
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+// ── Guest Auth ────────────────────────────────────────────────
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [GuestAuthController::class, 'showLogin'])->name('guest.login');
+    Route::post('/login', [GuestAuthController::class, 'login'])->name('guest.login.post');
+    Route::get('/register', [GuestAuthController::class, 'showRegister'])->name('guest.register');
+    Route::post('/register', [GuestAuthController::class, 'register'])->name('guest.register.post');
+    Route::get('/auth/google', [GuestAuthController::class, 'redirectToGoogle'])->name('guest.auth.google');
+    Route::get('/auth/google/callback', [GuestAuthController::class, 'handleGoogleCallback'])->name('guest.auth.google.callback');
 });
+
+Route::post('/logout', [GuestAuthController::class, 'logout'])
+    ->name('guest.logout')
+    ->middleware('auth');
 
 // ── Admin Protected ───────────────────────────────────────────
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {

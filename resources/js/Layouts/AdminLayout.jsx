@@ -124,7 +124,7 @@ export default function AdminLayout({ children, title }) {
                         </div>
                     </div>
                     <Link
-                        href="/admin/logout"
+                        href="/logout"
                         method="post"
                         as="button"
                         className="flex items-center gap-2 w-full px-3 py-2 rounded-lg text-xs transition-colors"
