@@ -1,7 +1,7 @@
 import GuestLayout from '@/Layouts/GuestLayout';
 import KosCard from '@/Components/Guest/KosCard';
-import { Head, Link, usePage } from '@inertiajs/react';
-import { useState } from 'react';
+import { Head, Link, usePage, router } from '@inertiajs/react';
+import { useState, useRef } from 'react';
 
 // ── Constants ─────────────────────────────────────────────────
 const TYPE_LABELS = { putra: 'Putra', putri: 'Putri', campur: 'Campur' };
@@ -32,7 +32,7 @@ function formatDate(dateStr) {
     });
 }
 
-// ── Star Rating ───────────────────────────────────────────────
+// ── Star Display (read-only) ──────────────────────────────────
 function StarDisplay({ rating, size = 'sm' }) {
     const sz = size === 'sm' ? 'w-3.5 h-3.5' : 'w-4 h-4';
     return (
@@ -44,6 +44,212 @@ function StarDisplay({ rating, size = 'sm' }) {
                 </svg>
             ))}
         </div>
+    );
+}
+
+// ── Star Rating (interactive) ─────────────────────────────────
+function StarRating({ value, onChange }) {
+    const [hover, setHover] = useState(0);
+    return (
+        <div className="flex items-center gap-1">
+            {[1, 2, 3, 4, 5].map(i => (
+                <button
+                    key={i}
+                    type="button"
+                    onClick={() => onChange(i)}
+                    onMouseEnter={() => setHover(i)}
+                    onMouseLeave={() => setHover(0)}
+                    className="transition-transform hover:scale-110"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-7 h-7"
+                        viewBox="0 0 20 20"
+                        fill={(hover || value) >= i ? '#C0392B' : '#EAE0DC'}>
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                </button>
+            ))}
+            {value > 0 && (
+                <span className="text-xs ml-2" style={{ color: '#8C6B63' }}>
+                    {['', 'Sangat Buruk', 'Buruk', 'Cukup', 'Bagus', 'Sangat Bagus'][value]}
+                </span>
+            )}
+        </div>
+    );
+}
+
+// ── Review Form ───────────────────────────────────────────────
+function ReviewForm({ kos, existingReview = null }) {
+    const isEdit = !!existingReview;
+    const fileInputRef = useRef(null);
+
+    const [rating, setRating] = useState(existingReview?.rating ?? 0);
+    const [comment, setComment] = useState(existingReview?.comment ?? '');
+    const [photos, setPhotos] = useState([]);
+    const [previewUrls, setPreviewUrls] = useState([]);
+    const [processing, setProcessing] = useState(false);
+    const [errors, setErrors] = useState({});
+
+    function handlePhotoChange(e) {
+        const files = Array.from(e.target.files);
+        setPhotos(files);
+        const urls = files.map(f => URL.createObjectURL(f));
+        setPreviewUrls(urls);
+    }
+
+    function handleSubmit(e) {
+        e.preventDefault();
+        if (rating === 0) return;
+        setProcessing(true);
+        setErrors({});
+
+        const formData = new FormData();
+        formData.append('rating', rating);
+        formData.append('comment', comment ?? '');
+
+        // Method spoofing untuk PUT — tambahkan _method ke FormData
+        if (isEdit) {
+            formData.append('_method', 'PUT');
+        }
+
+        photos.forEach((photo, i) => {
+            formData.append(`photos[${i}]`, photo);
+        });
+
+        const url = isEdit
+            ? route('reviews.update', { kos: kos.slug, review: existingReview.id })
+            : route('reviews.store', { kos: kos.slug });
+
+        router.post(url, formData, {
+            forceFormData: true,
+            onSuccess: () => {
+                if (!isEdit) {
+                    setRating(0);
+                    setComment('');
+                }
+                setPhotos([]);
+                setPreviewUrls([]);
+                if (fileInputRef.current) fileInputRef.current.value = '';
+            },
+            onError: (errs) => setErrors(errs),
+            onFinish: () => setProcessing(false),
+        });
+    }
+
+    return (
+        <form onSubmit={handleSubmit} className="space-y-4">
+
+            {/* Rating */}
+            <div>
+                <label className="block text-sm font-medium mb-2" style={{ color: '#2D1B18' }}>
+                    Rating <span style={{ color: '#C0392B' }}>*</span>
+                </label>
+                <StarRating value={rating} onChange={setRating} />
+                {errors.rating && (
+                    <p className="mt-1 text-xs" style={{ color: '#C0392B' }}>{errors.rating}</p>
+                )}
+            </div>
+
+            {/* Komentar */}
+            <div>
+                <label className="block text-sm font-medium mb-1.5" style={{ color: '#2D1B18' }}>
+                    Komentar <span className="text-xs font-normal" style={{ color: '#8C6B63' }}>(opsional)</span>
+                </label>
+                <textarea
+                    value={comment}
+                    onChange={e => setComment(e.target.value)}
+                    rows={3}
+                    maxLength={1000}
+                    placeholder="Ceritakan pengalamanmu di kos ini..."
+                    className="w-full px-3.5 py-2.5 text-sm rounded-xl outline-none resize-none transition-all"
+                    style={{
+                        border: `1px solid ${errors.comment ? '#C0392B' : '#EAE0DC'}`,
+                        backgroundColor: '#FFFFFF',
+                        color: '#2D1B18',
+                    }}
+                    onFocus={e => { e.target.style.borderColor = '#C0392B'; e.target.style.boxShadow = '0 0 0 3px rgba(192,57,43,0.1)'; }}
+                    onBlur={e => { e.target.style.borderColor = errors.comment ? '#C0392B' : '#EAE0DC'; e.target.style.boxShadow = 'none'; }}
+                />
+                <div className="flex justify-between mt-1">
+                    {errors.comment ? (
+                        <p className="text-xs" style={{ color: '#C0392B' }}>{errors.comment}</p>
+                    ) : <span />}
+                    <span className="text-xs" style={{ color: '#8C6B63' }}>
+                        {(comment ?? '').length}/1000
+                    </span>
+                </div>
+            </div>
+
+            {/* Foto */}
+            <div>
+                <label className="block text-sm font-medium mb-1.5" style={{ color: '#2D1B18' }}>
+                    Foto <span className="text-xs font-normal" style={{ color: '#8C6B63' }}>
+                        (opsional, maks 3 foto · JPEG/PNG · maks 2MB)
+                    </span>
+                </label>
+
+                {/* Preview foto yang sudah ada (mode edit) */}
+                {isEdit && existingReview.photos?.length > 0 && previewUrls.length === 0 && (
+                    <div className="flex gap-2 mb-2 flex-wrap">
+                        {existingReview.photos.map(p => (
+                            <img key={p.id}
+                                src={`/storage/${p.path}`}
+                                alt="Foto ulasan"
+                                className="w-16 h-16 object-cover rounded-lg"
+                                style={{ border: '1px solid #EAE0DC' }}
+                                onError={e => { e.currentTarget.src = '/image/placeholder_empty.png'; }}
+                            />
+                        ))}
+                        <p className="text-xs self-center" style={{ color: '#8C6B63' }}>
+                            Upload foto baru untuk mengganti
+                        </p>
+                    </div>
+                )}
+
+                {/* Preview foto baru */}
+                {previewUrls.length > 0 && (
+                    <div className="flex gap-2 mb-2 flex-wrap">
+                        {previewUrls.map((url, i) => (
+                            <img key={i} src={url} alt={`Preview ${i + 1}`}
+                                className="w-16 h-16 object-cover rounded-lg"
+                                style={{ border: '1px solid #C0392B' }}
+                            />
+                        ))}
+                    </div>
+                )}
+
+                <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/jpeg,image/png"
+                    multiple
+                    onChange={handlePhotoChange}
+                    className="w-full text-sm"
+                    style={{ color: '#2D1B18' }}
+                />
+                {errors['photos.0'] && (
+                    <p className="mt-1 text-xs" style={{ color: '#C0392B' }}>{errors['photos.0']}</p>
+                )}
+                {errors.photos && typeof errors.photos === 'string' && (
+                    <p className="mt-1 text-xs" style={{ color: '#C0392B' }}>{errors.photos}</p>
+                )}
+            </div>
+
+            {/* Submit */}
+            <button
+                type="submit"
+                disabled={processing || rating === 0}
+                className="w-full py-2.5 text-sm font-semibold rounded-xl transition-colors"
+                style={{
+                    backgroundColor: (processing || rating === 0) ? '#EAE0DC' : '#C0392B',
+                    color: (processing || rating === 0) ? '#8C6B63' : '#FFFFFF',
+                    cursor: (processing || rating === 0) ? 'not-allowed' : 'pointer',
+                }}
+                onMouseEnter={e => { if (!processing && rating > 0) e.currentTarget.style.backgroundColor = '#A93226'; }}
+                onMouseLeave={e => { if (!processing && rating > 0) e.currentTarget.style.backgroundColor = '#C0392B'; }}
+            >
+                {processing ? 'Mengirim...' : isEdit ? 'Perbarui Ulasan' : 'Kirim Ulasan'}
+            </button>
+        </form>
     );
 }
 
@@ -158,7 +364,7 @@ function PhotoGallery({ photos }) {
 }
 
 // ── Main Page ─────────────────────────────────────────────────
-export default function KosShow({ kos, facilitiesByCategory, similarKos }) {
+export default function KosShow({ kos, facilitiesByCategory, similarKos, userReview }) {
     const { auth } = usePage().props;
     const typeColor = TYPE_COLORS[kos.type] ?? { bg: '#F5F5F5', text: '#666' };
 
@@ -354,14 +560,12 @@ export default function KosShow({ kos, facilitiesByCategory, similarKos }) {
                             )}
 
                             {/* Ulasan */}
-                            <div className="bg-white rounded-2xl p-5"
-                                style={{ border: '1px solid #EAE0DC' }}>
+                            <div className="bg-white rounded-2xl p-5" style={{ border: '1px solid #EAE0DC' }}>
                                 <div className="flex items-center justify-between mb-5">
                                     <h2 className="text-base font-semibold" style={{ color: '#2D1B18' }}>
                                         Ulasan
                                         {kos.review_count > 0 && (
-                                            <span className="ml-2 text-sm font-normal"
-                                                style={{ color: '#8C6B63' }}>
+                                            <span className="ml-2 text-sm font-normal" style={{ color: '#8C6B63' }}>
                                                 ({kos.review_count})
                                             </span>
                                         )}
@@ -369,28 +573,23 @@ export default function KosShow({ kos, facilitiesByCategory, similarKos }) {
                                     {kos.rating_avg > 0 && (
                                         <div className="flex items-center gap-2">
                                             <StarDisplay rating={kos.rating_avg} size="md" />
-                                            <span className="text-lg font-bold"
-                                                style={{ color: '#2D1B18' }}>
+                                            <span className="text-lg font-bold" style={{ color: '#2D1B18' }}>
                                                 {Number(kos.rating_avg).toFixed(1)}
                                             </span>
                                         </div>
                                     )}
                                 </div>
 
-                                {/* CTA login untuk ulasan (form aktif di Phase 7) */}
-                                <div className="rounded-xl p-4 mb-5 flex items-center gap-3"
-                                    style={{ backgroundColor: '#F5EDE9', border: '1px solid #EAE0DC' }}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 shrink-0"
-                                        fill="none" viewBox="0 0 24 24" stroke="#8C6B63" strokeWidth={1.8}>
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                    </svg>
-                                    {auth?.user ? (
+                                {/* Form ulasan atau CTA login */}
+                                {!auth?.user ? (
+                                    <div className="rounded-xl p-4 mb-5 flex items-center gap-3"
+                                        style={{ backgroundColor: '#F5EDE9', border: '1px solid #EAE0DC' }}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 shrink-0"
+                                            fill="none" viewBox="0 0 24 24" stroke="#8C6B63" strokeWidth={1.8}>
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                        </svg>
                                         <p className="text-sm" style={{ color: '#8C6B63' }}>
-                                            Fitur ulasan akan segera tersedia
-                                        </p>
-                                    ) : (
-                                        <p className="text-sm" style={{ color: '#8C6B63' }}>
-                                            <a href="/login"
+                                            <a href={`/login?redirect=/kos/${kos.slug}`}
                                                 style={{ color: '#C0392B', fontWeight: 600 }}
                                                 onMouseEnter={e => e.currentTarget.style.color = '#A93226'}
                                                 onMouseLeave={e => e.currentTarget.style.color = '#C0392B'}>
@@ -398,8 +597,15 @@ export default function KosShow({ kos, facilitiesByCategory, similarKos }) {
                                             </a>
                                             {' '}untuk memberikan ulasan
                                         </p>
-                                    )}
-                                </div>
+                                    </div>
+                                ) : (
+                                    <div className="mb-6 p-4 rounded-xl" style={{ backgroundColor: '#FAFAF9', border: '1px solid #EAE0DC' }}>
+                                        <p className="text-sm font-semibold mb-4" style={{ color: '#2D1B18' }}>
+                                            {userReview ? '✏️ Edit Ulasanmu' : '📝 Tulis Ulasan'}
+                                        </p>
+                                        <ReviewForm kos={kos} existingReview={userReview} />
+                                    </div>
+                                )}
 
                                 {/* Daftar ulasan */}
                                 {kos.reviews && kos.reviews.length > 0 ? (
@@ -409,33 +615,34 @@ export default function KosShow({ kos, facilitiesByCategory, similarKos }) {
                                                 className={idx < kos.reviews.length - 1 ? 'pb-5' : ''}
                                                 style={idx < kos.reviews.length - 1 ? { borderBottom: '1px solid #EAE0DC' } : {}}>
                                                 <div className="flex items-start gap-3 mb-2">
-                                                    {/* Avatar initials */}
                                                     <div className="w-9 h-9 rounded-full shrink-0 flex items-center justify-center text-sm font-bold"
                                                         style={{ backgroundColor: '#F5EDE9', color: '#C0392B' }}>
                                                         {review.user?.name?.charAt(0)?.toUpperCase() ?? '?'}
                                                     </div>
                                                     <div className="flex-1 min-w-0">
                                                         <div className="flex items-center justify-between gap-2 flex-wrap">
-                                                            <p className="text-sm font-semibold"
-                                                                style={{ color: '#2D1B18' }}>
+                                                            <p className="text-sm font-semibold" style={{ color: '#2D1B18' }}>
                                                                 {review.user?.name ?? 'Pengguna'}
+                                                                {/* Badge "Ulasanmu" jika ini ulasan user yang login */}
+                                                                {auth?.user && review.user_id === auth.user.id && (
+                                                                    <span className="ml-2 text-xs px-1.5 py-0.5 rounded-full"
+                                                                        style={{ backgroundColor: '#FEF2F0', color: '#C0392B' }}>
+                                                                        Ulasanmu
+                                                                    </span>
+                                                                )}
                                                             </p>
-                                                            <span className="text-xs"
-                                                                style={{ color: '#8C6B63' }}>
+                                                            <span className="text-xs" style={{ color: '#8C6B63' }}>
                                                                 {formatDate(review.created_at)}
                                                             </span>
                                                         </div>
                                                         <StarDisplay rating={review.rating} />
                                                     </div>
                                                 </div>
-
                                                 {review.comment && (
-                                                    <p className="text-sm leading-relaxed ml-12"
-                                                        style={{ color: '#5C4A45' }}>
+                                                    <p className="text-sm leading-relaxed ml-12" style={{ color: '#5C4A45' }}>
                                                         {review.comment}
                                                     </p>
                                                 )}
-
                                                 {review.photos && review.photos.length > 0 && (
                                                     <div className="flex gap-2 mt-3 ml-12 flex-wrap">
                                                         {review.photos.map(photo => (
@@ -453,8 +660,7 @@ export default function KosShow({ kos, facilitiesByCategory, similarKos }) {
                                         ))}
                                     </div>
                                 ) : (
-                                    <p className="text-sm italic text-center py-6"
-                                        style={{ color: '#8C6B63' }}>
+                                    <p className="text-sm italic text-center py-6" style={{ color: '#8C6B63' }}>
                                         Belum ada ulasan untuk kos ini
                                     </p>
                                 )}

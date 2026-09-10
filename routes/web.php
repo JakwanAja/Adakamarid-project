@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\KosController as AdminKosController;
 use App\Http\Controllers\Guest\AuthController as GuestAuthController;
 use App\Http\Controllers\Guest\HomeController;
 use App\Http\Controllers\Guest\KosController as GuestKosController;
+use App\Http\Controllers\Guest\ReviewController as GuestReviewController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -26,6 +27,12 @@ Route::middleware('guest')->group(function () {
 Route::post('/logout', [GuestAuthController::class, 'logout'])
     ->name('guest.logout')
     ->middleware('auth');
+
+// ── Guest Protected ───────────────────────────────────────────
+Route::middleware('auth')->group(function () {
+    Route::post('/kos/{kos:slug}/reviews', [GuestReviewController::class, 'store'])->name('reviews.store');
+    Route::put('/kos/{kos:slug}/reviews/{review}', [GuestReviewController::class, 'update'])->name('reviews.update');
+});
 
 // ── Admin Protected ───────────────────────────────────────────
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {

@@ -131,21 +131,24 @@ Platform dibangun di atas Laravel 12 (backend), React + Inertia.js (frontend), M
 
 ### Requirement 6: Ulasan dan Rating
 
-**User Story:** Sebagai Guest yang telah login, saya ingin dapat memberikan ulasan dan rating pada kos yang pernah saya tinggali, agar calon penyewa lain dapat membuat keputusan yang lebih baik.
+**User Story:** Sebagai Guest yang telah login, saya ingin dapat memberikan, mengedit ulasan dan rating pada kos yang pernah saya tinggali, agar calon penyewa lain dapat membuat keputusan yang lebih baik.
 
 #### Acceptance Criteria
 
 1. WHILE Guest belum memiliki sesi aktif, THE System SHALL menyembunyikan form pengiriman Ulasan dan menampilkan tombol "Login untuk memberi ulasan" pada halaman detail Kos.
-2. WHEN Guest yang telah login mengirimkan Ulasan dengan rating berupa bilangan bulat antara 1 sampai 5, THE System SHALL menyimpan Ulasan ke database.
-3. WHEN Ulasan berhasil disimpan, THE System SHALL menampilkan Ulasan tersebut secara publik di halaman detail Kos tanpa moderasi dan memperbarui nilai `rating_avg` dan `review_count` pada data Kos yang bersangkutan.
-4. IF Guest yang telah login mengirimkan Ulasan tanpa rating, THEN THE System SHALL menampilkan pesan validasi "Rating wajib diisi".
-5. IF Guest mengirimkan komentar teks yang melebihi 1000 karakter, THEN THE System SHALL menampilkan pesan validasi "Komentar maksimal 1000 karakter" dan menolak pengiriman Ulasan.
-6. WHERE Guest menyertakan foto dalam Ulasan, THE System SHALL menerima file dengan format JPEG atau PNG, menyimpan foto ke penyimpanan aplikasi, dan menyimpan referensinya ke database.
-7. IF Guest mengunggah foto Ulasan dengan ukuran melebihi 2 MB per file, THEN THE System SHALL menampilkan pesan validasi "Ukuran foto maksimal 2 MB per foto" dan menolak pengiriman Ulasan.
-8. IF Guest mengunggah lebih dari 3 foto dalam satu Ulasan, THEN THE System SHALL menampilkan pesan validasi "Maksimal 3 foto per ulasan" dan menolak pengiriman Ulasan.
-9. THE System SHALL menghitung `rating_avg` Kos sebagai rata-rata aritmetika dari seluruh nilai rating Ulasan untuk Kos tersebut, dibulatkan hingga 2 angka desimal.
-10. THE System SHALL memperbolehkan setiap akun Guest mengirimkan lebih dari satu Ulasan untuk Kos yang sama.
-11. THE System SHALL menampilkan field komentar teks sebagai opsional; Ulasan dapat disubmit hanya dengan rating tanpa komentar.
+2. IF Guest yang telah login belum pernah memberikan Ulasan untuk Kos tersebut, THEN THE System SHALL menampilkan form pengiriman Ulasan baru.
+3. IF Guest yang telah login sudah pernah memberikan Ulasan untuk Kos tersebut, THEN THE System SHALL menampilkan form edit Ulasan yang sudah ada (bukan form baru), sehingga setiap Guest hanya dapat memiliki satu Ulasan per Kos.
+4. WHEN Guest yang telah login mengirimkan Ulasan baru dengan rating berupa bilangan bulat antara 1 sampai 5, THE System SHALL menyimpan Ulasan ke database.
+5. WHEN Guest yang telah login mengirimkan perubahan pada Ulasan yang sudah ada, THE System SHALL memperbarui data Ulasan tersebut di database.
+6. WHEN Ulasan berhasil disimpan atau diperbarui, THE System SHALL menampilkan Ulasan tersebut secara publik di halaman detail Kos tanpa moderasi dan memperbarui nilai `rating_avg` dan `review_count` pada data Kos yang bersangkutan.
+7. IF Guest yang telah login mengirimkan Ulasan tanpa rating, THEN THE System SHALL menampilkan pesan validasi "Rating wajib diisi".
+8. IF Guest mengirimkan komentar teks yang melebihi 1000 karakter, THEN THE System SHALL menampilkan pesan validasi "Komentar maksimal 1000 karakter" dan menolak pengiriman Ulasan.
+9. WHERE Guest menyertakan foto dalam Ulasan, THE System SHALL menerima file dengan format JPEG atau PNG, menyimpan foto ke penyimpanan aplikasi, dan menyimpan referensinya ke database.
+10. IF Guest mengunggah foto Ulasan dengan ukuran melebihi 2 MB per file, THEN THE System SHALL menampilkan pesan validasi "Ukuran foto maksimal 2 MB per foto" dan menolak pengiriman Ulasan.
+11. IF Guest mengunggah lebih dari 3 foto dalam satu Ulasan, THEN THE System SHALL menampilkan pesan validasi "Maksimal 3 foto per ulasan" dan menolak pengiriman Ulasan.
+12. THE System SHALL menghitung `rating_avg` Kos sebagai rata-rata aritmetika dari seluruh nilai rating Ulasan untuk Kos tersebut, dibulatkan hingga 2 angka desimal; nilai ini diperbarui setiap kali Ulasan dibuat, diperbarui, atau dihapus.
+13. THE System SHALL menampilkan field komentar teks sebagai opsional; Ulasan dapat disubmit hanya dengan rating tanpa komentar.
+14. THE System SHALL tidak menyediakan tombol atau fitur hapus Ulasan di sisi Guest; hanya Admin yang dapat menghapus Ulasan.
 
 ---
 

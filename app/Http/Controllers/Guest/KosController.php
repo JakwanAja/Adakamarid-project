@@ -44,12 +44,10 @@ class KosController extends Controller
 
     public function show(Kos $kos): Response
     {
-        // 404 jika kos nonaktif
         if (!$kos->is_active) {
             abort(404);
         }
 
-        // Eager load semua relasi
         $kos->load([
             'photos',
             'activePrices',
@@ -60,23 +58,28 @@ class KosController extends Controller
             },
         ]);
 
-        // Increment views
         $this->kosService->incrementViews($kos);
-
-        // Kos serupa dari kecamatan yang sama
         $similarKos = $this->kosService->getSimilarKos($kos);
 
-        // Group fasilitas per kategori
         $facilitiesByCategory = [
             'kamar'   => $kos->facilities->where('category', 'kamar')->values(),
             'bersama' => $kos->facilities->where('category', 'bersama')->values(),
             'sekitar' => $kos->facilities->where('category', 'sekitar')->values(),
         ];
 
+        // Cari ulasan milik user yang sedang login (null jika belum login atau belum review)
+        $userReview = null;
+        if (auth()->check()) {
+            $userReview = $kos->reviews
+                ->where('user_id', auth()->id())
+                ->first();
+        }
+
         return Inertia::render('Guest/Kos/Show', [
             'kos'                  => $kos,
             'facilitiesByCategory' => $facilitiesByCategory,
             'similarKos'           => $similarKos,
+            'userReview'           => $userReview,
         ]);
     }
 }

@@ -132,7 +132,7 @@ export default function GuestLayout({ children }) {
                                 className="h-8 w-auto object-contain object-left mb-3"
                                 style={{ filter: 'brightness(0) invert(1)' }} />
                             <p className="text-sm leading-relaxed" style={{ color: 'rgba(245,237,233,0.55)' }}>
-                                Platform iklan kos terkurasi untuk area Yogyakarta. Informasi lengkap, kontak langsung ke pemilik.
+                                Platform iklan kos untuk area Yogyakarta. Informasi lengkap, kontak langsung ke pemilik.
                             </p>
                         </div>
 
@@ -179,7 +179,7 @@ export default function GuestLayout({ children }) {
                     <div className="pt-6" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
                         <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
                             <p className="text-xs" style={{ color: 'rgba(245,237,233,0.35)' }}>
-                                &copy; {new Date().getFullYear()} AdaKamar.id — Let's Place, Let's Ease
+                                &copy; {new Date().getFullYear()} AdaKamar.id - Let's Place, Let's Ease
                             </p>
                             <div className="flex items-center gap-4">
                                 {['Pusat Bantuan', 'Syarat dan Ketentuan', 'Waspada Penipuan'].map(item => (

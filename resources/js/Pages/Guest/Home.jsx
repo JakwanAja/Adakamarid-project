@@ -52,7 +52,7 @@ export default function Home({ featuredKos, districts }) {
                         Temukan Kos Terbaik<br />di Yogyakarta
                     </h1>
                     <p className="text-base mt-3" style={{ color: 'rgba(255,255,255,0.75)' }}>
-                        Listing terkurasi, informasi lengkap, langsung hubungi pemilik
+                        Listing pilihan, informasi lengkap, langsung hubungi pemilik
                     </p>
                 </div>
             </section>
@@ -199,8 +199,8 @@ export default function Home({ featuredKos, districts }) {
                         <h2 className="text-lg font-bold" style={{ color: '#2D1B18' }}>Kos Tersedia di Yogyakarta</h2>
                         <p className="text-sm mt-0.5" style={{ color: '#8C6B63' }}>
                             {featuredKos?.length > 0
-                                ? `${featuredKos.length} kos terkurasi`
-                                : 'Listing terkurasi, langsung dari pemilik'}
+                                ? `${featuredKos.length} kos bisa kamu booking`
+                                : 'Listing pilihan, langsung dari pemilik'}
                         </p>
                     </div>
                     <Link href="/kos"
@@ -241,7 +241,7 @@ export default function Home({ featuredKos, districts }) {
                     </h2>
                     <div className="space-y-4 text-sm leading-relaxed" style={{ color: '#5C4A45' }}>
                         <p>
-                            Kabar baik untuk kamu yang sedang mencari kos di Yogyakarta. <strong style={{ color: '#2D1B18' }}>AdaKamar.id</strong> hadir sebagai platform iklan kos terkurasi yang menghubungkan calon penyewa langsung dengan pemilik kos terpercaya di area Yogyakarta.
+                            Kabar baik untuk kamu yang sedang mencari kos di Yogyakarta. <strong style={{ color: '#2D1B18' }}>AdaKamar.id</strong> hadir sebagai platform iklan kos yang menghubungkan calon penyewa langsung dengan pemilik kos terpercaya di area Yogyakarta.
                         </p>
                         <p>
                             AdaKamar.id berkomitmen memberi kemudahan dalam menemukan kos yang sesuai kebutuhan. Semua listing yang tersedia di AdaKamar.id adalah kos yang telah <strong style={{ color: '#2D1B18' }}>bermitra resmi</strong> dan bukan listing sembarangan. Kamu bisa menelusuri informasi lengkap setiap kos, mulai dari foto, fasilitas, harga per tipe sewa, lokasi, hingga kontak pemilik, semuanya dalam satu halaman.
