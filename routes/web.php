@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Admin\FacilityController;
 use App\Http\Controllers\Admin\KosController as AdminKosController;
+use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Guest\AuthController as GuestAuthController;
 use App\Http\Controllers\Guest\HomeController;
 use App\Http\Controllers\Guest\KosController as GuestKosController;
@@ -45,11 +47,13 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
         ]);
     })->name('dashboard');
 
+    // Fasilitas
     Route::get('/facilities', [FacilityController::class, 'index'])->name('facilities.index');
     Route::post('/facilities', [FacilityController::class, 'store'])->name('facilities.store');
     Route::put('/facilities/{facility}', [FacilityController::class, 'update'])->name('facilities.update');
     Route::delete('/facilities/{facility}', [FacilityController::class, 'destroy'])->name('facilities.destroy');
 
+    // Kos
     Route::get('/kos', [AdminKosController::class, 'index'])->name('kos.index');
     Route::get('/kos/create', [AdminKosController::class, 'create'])->name('kos.create');
     Route::post('/kos', [AdminKosController::class, 'store'])->name('kos.store');
@@ -58,10 +62,20 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::delete('/kos/{kos}', [AdminKosController::class, 'destroy'])->name('kos.destroy');
     Route::patch('/kos/{kos}/toggle-active', [AdminKosController::class, 'toggleActive'])->name('kos.toggleActive');
     Route::patch('/kos/{kos}/toggle-plus', [AdminKosController::class, 'togglePlus'])->name('kos.togglePlus');
-
     Route::post('/kos/{kos}/photos', [AdminKosController::class, 'storePhoto'])->name('kos.photos.store');
     Route::patch('/kos/{kos}/photos/{photo}/primary', [AdminKosController::class, 'setPrimaryPhoto'])->name('kos.photos.setPrimary');
     Route::delete('/kos/{kos}/photos/{photo}', [AdminKosController::class, 'destroyPhoto'])->name('kos.photos.destroy');
     Route::put('/kos/{kos}/prices', [AdminKosController::class, 'updatePrices'])->name('kos.prices.update');
     Route::put('/kos/{kos}/facilities', [AdminKosController::class, 'updateFacilities'])->name('kos.facilities.update');
+
+    // Ulasan
+    Route::get('/reviews', [AdminReviewController::class, 'index'])->name('reviews.index');
+    Route::delete('/reviews/{review}', [AdminReviewController::class, 'destroy'])->name('reviews.destroy');
+
+    // Users
+    Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
+    Route::post('/users/admin', [AdminUserController::class, 'storeAdmin'])->name('users.storeAdmin');
+    Route::put('/users/{user}', [AdminUserController::class, 'update'])->name('users.update');
+    Route::patch('/users/{user}/toggle-active', [AdminUserController::class, 'toggleActive'])->name('users.toggleActive');
+    Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
 });
