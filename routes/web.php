@@ -1,15 +1,16 @@
 <?php
 
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FacilityController;
 use App\Http\Controllers\Admin\KosController as AdminKosController;
 use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
+use App\Http\Controllers\Admin\StatisticsController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Guest\AuthController as GuestAuthController;
 use App\Http\Controllers\Guest\HomeController;
 use App\Http\Controllers\Guest\KosController as GuestKosController;
 use App\Http\Controllers\Guest\ReviewController as GuestReviewController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 // ── Public ────────────────────────────────────────────────────
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -39,13 +40,9 @@ Route::middleware('auth')->group(function () {
 // ── Admin Protected ───────────────────────────────────────────
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
 
-    Route::get('/dashboard', function () {
-        return Inertia::render('Admin/Dashboard', [
-            'stats'          => ['active_kos' => 0, 'plus_kos' => 0, 'total_reviews' => 0],
-            'recent_kos'     => [],
-            'recent_reviews' => [],
-        ]);
-    })->name('dashboard');
+    // Dashboard & Statistik
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/statistics', [StatisticsController::class, 'index'])->name('statistics.index');
 
     // Fasilitas
     Route::get('/facilities', [FacilityController::class, 'index'])->name('facilities.index');
