@@ -3,12 +3,15 @@
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FacilityController;
 use App\Http\Controllers\Admin\KosController as AdminKosController;
+use App\Http\Controllers\Admin\PageController as AdminPageController;
 use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
+use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\StatisticsController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Guest\AuthController as GuestAuthController;
 use App\Http\Controllers\Guest\HomeController;
 use App\Http\Controllers\Guest\KosController as GuestKosController;
+use App\Http\Controllers\Guest\PageController as GuestPageController;
 use App\Http\Controllers\Guest\ReviewController as GuestReviewController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,6 +19,14 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/kos', [GuestKosController::class, 'index'])->name('kos.index');
 Route::get('/kos/{kos:slug}', [GuestKosController::class, 'show'])->name('kos.show');
+
+// ── Halaman Konten Publik ─────────────────────────────────────
+Route::get('/syarat-ketentuan', [GuestPageController::class, 'show'])->defaults('slug', 'syarat-ketentuan')
+    ->name('pages.syarat-ketentuan');
+Route::get('/pusat-bantuan', [GuestPageController::class, 'show'])->defaults('slug', 'pusat-bantuan')
+    ->name('pages.pusat-bantuan');
+Route::get('/waspada-penipuan', [GuestPageController::class, 'show'])->defaults('slug', 'waspada-penipuan')
+    ->name('pages.waspada-penipuan');
 
 // ── Guest Auth ────────────────────────────────────────────────
 Route::middleware('guest')->group(function () {
@@ -39,17 +50,14 @@ Route::middleware('auth')->group(function () {
 
 // ── Admin Protected ───────────────────────────────────────────
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
-
     // Dashboard & Statistik
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/statistics', [StatisticsController::class, 'index'])->name('statistics.index');
-
     // Fasilitas
     Route::get('/facilities', [FacilityController::class, 'index'])->name('facilities.index');
     Route::post('/facilities', [FacilityController::class, 'store'])->name('facilities.store');
     Route::put('/facilities/{facility}', [FacilityController::class, 'update'])->name('facilities.update');
     Route::delete('/facilities/{facility}', [FacilityController::class, 'destroy'])->name('facilities.destroy');
-
     // Kos
     Route::get('/kos', [AdminKosController::class, 'index'])->name('kos.index');
     Route::get('/kos/create', [AdminKosController::class, 'create'])->name('kos.create');
@@ -64,15 +72,19 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::delete('/kos/{kos}/photos/{photo}', [AdminKosController::class, 'destroyPhoto'])->name('kos.photos.destroy');
     Route::put('/kos/{kos}/prices', [AdminKosController::class, 'updatePrices'])->name('kos.prices.update');
     Route::put('/kos/{kos}/facilities', [AdminKosController::class, 'updateFacilities'])->name('kos.facilities.update');
-
     // Ulasan
     Route::get('/reviews', [AdminReviewController::class, 'index'])->name('reviews.index');
     Route::delete('/reviews/{review}', [AdminReviewController::class, 'destroy'])->name('reviews.destroy');
-
     // Users
     Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
     Route::post('/users/admin', [AdminUserController::class, 'storeAdmin'])->name('users.storeAdmin');
     Route::put('/users/{user}', [AdminUserController::class, 'update'])->name('users.update');
     Route::patch('/users/{user}/toggle-active', [AdminUserController::class, 'toggleActive'])->name('users.toggleActive');
     Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
+    // Pengaturan
+    Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+    Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
+    // Halaman Konten
+    Route::get('/pages/{page}/edit', [AdminPageController::class, 'edit'])->name('pages.edit');
+    Route::put('/pages/{page}', [AdminPageController::class, 'update'])->name('pages.update');
 });

@@ -54,24 +54,22 @@ export default function GuestLayout({ children }) {
                         {/* Nav links + Auth */}
                         <div className="flex items-center gap-1 shrink-0">
                             {/* Pusat Bantuan */}
-                            <a href="#"
-                                onClick={e => e.preventDefault()}
+                            <Link href="/pusat-bantuan"
                                 className="hidden lg:block px-3 py-2 text-sm transition-colors rounded-lg"
                                 style={{ color: '#8C6B63' }}
                                 onMouseEnter={e => { e.currentTarget.style.color = '#2D1B18'; e.currentTarget.style.backgroundColor = '#F5EDE9'; }}
                                 onMouseLeave={e => { e.currentTarget.style.color = '#8C6B63'; e.currentTarget.style.backgroundColor = 'transparent'; }}>
                                 Pusat Bantuan
-                            </a>
+                            </Link>
 
                             {/* Syarat dan Ketentuan */}
-                            <a href="#"
-                                onClick={e => e.preventDefault()}
+                            <Link href="/syarat-ketentuan"
                                 className="hidden lg:block px-3 py-2 text-sm transition-colors rounded-lg"
                                 style={{ color: '#8C6B63' }}
                                 onMouseEnter={e => { e.currentTarget.style.color = '#2D1B18'; e.currentTarget.style.backgroundColor = '#F5EDE9'; }}
                                 onMouseLeave={e => { e.currentTarget.style.color = '#8C6B63'; e.currentTarget.style.backgroundColor = 'transparent'; }}>
                                 Syarat dan Ketentuan
-                            </a>
+                            </Link>
 
                             {/* Divider */}
                             <div className="hidden lg:block w-px h-5 mx-1" style={{ backgroundColor: '#EAE0DC' }} />
@@ -144,14 +142,13 @@ export default function GuestLayout({ children }) {
                             </p>
                             <ul className="space-y-2.5">
                                 {[
-                                    { label: 'Cari Kos', href: '/kos' },
-                                    { label: 'Pusat Bantuan', href: '#' },
-                                    { label: 'Syarat dan Ketentuan', href: '#' },
-                                    { label: 'Waspada Penipuan', href: '#' },
+                                    { label: 'Cari Kos',             href: '/kos' },
+                                    { label: 'Pusat Bantuan',        href: '/pusat-bantuan' },
+                                    { label: 'Syarat dan Ketentuan', href: '/syarat-ketentuan' },
+                                    { label: 'Waspada Penipuan',     href: '/waspada-penipuan' },
                                 ].map(item => (
                                     <li key={item.label}>
                                         <a href={item.href}
-                                            onClick={item.href === '#' ? e => e.preventDefault() : undefined}
                                             className="text-sm transition-colors"
                                             style={{ color: 'rgba(245,237,233,0.6)' }}
                                             onMouseEnter={e => e.currentTarget.style.color = '#FBF7F5'}
@@ -182,14 +179,17 @@ export default function GuestLayout({ children }) {
                                 &copy; {new Date().getFullYear()} AdaKamar.id - Let's Place, Let's Ease
                             </p>
                             <div className="flex items-center gap-4">
-                                {['Pusat Bantuan', 'Syarat dan Ketentuan', 'Waspada Penipuan'].map(item => (
-                                    <a key={item} href="#"
-                                        onClick={e => e.preventDefault()}
+                                {[
+                                    { label: 'Pusat Bantuan',        href: '/pusat-bantuan' },
+                                    { label: 'Syarat dan Ketentuan', href: '/syarat-ketentuan' },
+                                    { label: 'Waspada Penipuan',     href: '/waspada-penipuan' },
+                                ].map(item => (
+                                    <a key={item.label} href={item.href}
                                         className="text-xs transition-colors"
                                         style={{ color: 'rgba(245,237,233,0.35)' }}
                                         onMouseEnter={e => e.currentTarget.style.color = 'rgba(245,237,233,0.7)'}
                                         onMouseLeave={e => e.currentTarget.style.color = 'rgba(245,237,233,0.35)'}>
-                                        {item}
+                                        {item.label}
                                     </a>
                                 ))}
                             </div>
