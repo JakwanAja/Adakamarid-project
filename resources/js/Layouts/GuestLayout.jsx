@@ -1,9 +1,37 @@
 import { Link, usePage } from '@inertiajs/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import AuthModal from '@/Components/Guest/AuthModal';
 
 export default function GuestLayout({ children }) {
     const { auth } = usePage().props;
     const [searchValue, setSearchValue] = useState('');
+    const [authModal, setAuthModal] = useState({ open: false, mode: 'login' });
+
+    function openModal(mode) {
+        setAuthModal({ open: true, mode });
+    }
+
+    function closeModal() {
+        setAuthModal({ open: false, mode: 'login' });
+        // Hapus hash dari URL tanpa reload
+        if (window.location.hash === '#login' || window.location.hash === '#register') {
+            window.history.replaceState(null, '', window.location.pathname + window.location.search);
+        }
+    }
+
+    // Buka modal dari URL hash (misal dari link "Login" di halaman detail kos)
+    useEffect(() => {
+        function checkHash() {
+            if (window.location.hash === '#login') {
+                setAuthModal({ open: true, mode: 'login' });
+            } else if (window.location.hash === '#register') {
+                setAuthModal({ open: true, mode: 'register' });
+            }
+        }
+        checkHash();
+        window.addEventListener('hashchange', checkHash);
+        return () => window.removeEventListener('hashchange', checkHash);
+    }, []);
 
     function handleSearch(e) {
         e.preventDefault();
@@ -26,7 +54,7 @@ export default function GuestLayout({ children }) {
                                 className="h-8 w-auto object-contain" />
                         </Link>
 
-                        {/* Search bar — selalu tampil, stretch */}
+                        {/* Search bar */}
                         <form onSubmit={handleSearch} className="flex-1 max-w-xl mx-4">
                             <div className="flex items-center rounded-lg overflow-hidden"
                                 style={{ border: '1.5px solid #EAE0DC', backgroundColor: '#FFFFFF' }}>
@@ -53,7 +81,6 @@ export default function GuestLayout({ children }) {
 
                         {/* Nav links + Auth */}
                         <div className="flex items-center gap-1 shrink-0">
-                            {/* Pusat Bantuan */}
                             <Link href="/pusat-bantuan"
                                 className="hidden lg:block px-3 py-2 text-sm transition-colors rounded-lg"
                                 style={{ color: '#8C6B63' }}
@@ -62,16 +89,14 @@ export default function GuestLayout({ children }) {
                                 Pusat Bantuan
                             </Link>
 
-                            {/* Syarat dan Ketentuan */}
                             <Link href="/syarat-ketentuan"
                                 className="hidden lg:block px-3 py-2 text-sm transition-colors rounded-lg"
                                 style={{ color: '#8C6B63' }}
                                 onMouseEnter={e => { e.currentTarget.style.color = '#2D1B18'; e.currentTarget.style.backgroundColor = '#F5EDE9'; }}
                                 onMouseLeave={e => { e.currentTarget.style.color = '#8C6B63'; e.currentTarget.style.backgroundColor = 'transparent'; }}>
-                                Syarat & Ketentuan
+                                Syarat dan Ketentuan
                             </Link>
 
-                            {/* Divider */}
                             <div className="hidden lg:block w-px h-5 mx-1" style={{ backgroundColor: '#EAE0DC' }} />
 
                             {/* Auth */}
@@ -90,17 +115,27 @@ export default function GuestLayout({ children }) {
                                 </div>
                             ) : (
                                 <div className="flex items-center gap-2">
-                                    <Link href="/login"
+                                    {/* Masuk — buka modal */}
+                                    <button
+                                        onClick={() => openModal('login')}
+                                        className="px-3 py-2 text-sm font-medium transition-colors rounded-lg"
+                                        style={{ color: '#2D1B18' }}
+                                        onMouseEnter={e => e.currentTarget.style.color = '#C0392B'}
+                                        onMouseLeave={e => e.currentTarget.style.color = '#2D1B18'}>
+                                        Masuk
+                                    </button>
+                                    {/* Daftar — buka modal */}
+                                    <button
+                                        onClick={() => openModal('register')}
                                         className="ml-1 px-4 py-2 text-sm font-semibold rounded-lg transition-colors"
                                         style={{ border: '1.5px solid #C0392B', color: '#C0392B', backgroundColor: 'transparent' }}
-                                        onMouseEnter={e => { e.currentTarget.style.backgroundColor = '#FEF2F0'; }}
-                                        onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; }}>
-                                        Masuk/Daftar
-                                    </Link>
+                                        onMouseEnter={e => e.currentTarget.style.backgroundColor = '#FEF2F0'}
+                                        onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}>
+                                        Daftar
+                                    </button>
                                 </div>
                             )}
                         </div>
-
                     </div>
                 </div>
             </header>
@@ -113,21 +148,15 @@ export default function GuestLayout({ children }) {
             {/* ── Footer ─────────────────────────────────────── */}
             <footer style={{ backgroundColor: '#2D1B18' }}>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-
-                    {/* Grid 3 kolom */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-
-                        {/* Kolom 1 — Brand */}
                         <div>
                             <img src="/image/logo.png" alt="AdaKamar.id"
                                 className="h-8 w-auto object-contain object-left mb-3"
                                 style={{ filter: 'brightness(0) invert(1)' }} />
                             <p className="text-sm leading-relaxed" style={{ color: 'rgba(245,237,233,0.55)' }}>
-                                Platform iklan kos untuk area Yogyakarta. Informasi lengkap, kontak langsung ke pemilik.
+                                Platform iklan kos terkurasi untuk area Yogyakarta. Informasi lengkap, kontak langsung ke pemilik.
                             </p>
                         </div>
-
-                        {/* Kolom 2 — Layanan */}
                         <div>
                             <p className="text-xs font-bold uppercase tracking-wider mb-4"
                                 style={{ color: 'rgba(245,237,233,0.4)' }}>
@@ -137,7 +166,7 @@ export default function GuestLayout({ children }) {
                                 {[
                                     { label: 'Cari Kos',             href: '/kos' },
                                     { label: 'Pusat Bantuan',        href: '/pusat-bantuan' },
-                                    { label: 'Syarat & Ketentuan', href: '/syarat-ketentuan' },
+                                    { label: 'Syarat dan Ketentuan', href: '/syarat-ketentuan' },
                                     { label: 'Waspada Penipuan',     href: '/waspada-penipuan' },
                                 ].map(item => (
                                     <li key={item.label}>
@@ -152,8 +181,6 @@ export default function GuestLayout({ children }) {
                                 ))}
                             </ul>
                         </div>
-
-                        {/* Kolom 3 — Tentang */}
                         <div>
                             <p className="text-xs font-bold uppercase tracking-wider mb-4"
                                 style={{ color: 'rgba(245,237,233,0.4)' }}>
@@ -164,8 +191,6 @@ export default function GuestLayout({ children }) {
                             </p>
                         </div>
                     </div>
-
-                    {/* Divider */}
                     <div className="pt-6" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
                         <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
                             <p className="text-xs" style={{ color: 'rgba(245,237,233,0.35)' }}>
@@ -174,7 +199,7 @@ export default function GuestLayout({ children }) {
                             <div className="flex items-center gap-4">
                                 {[
                                     { label: 'Pusat Bantuan',        href: '/pusat-bantuan' },
-                                    { label: 'Syarat & Ketentuan', href: '/syarat-ketentuan' },
+                                    { label: 'Syarat dan Ketentuan', href: '/syarat-ketentuan' },
                                     { label: 'Waspada Penipuan',     href: '/waspada-penipuan' },
                                 ].map(item => (
                                     <a key={item.label} href={item.href}
@@ -190,6 +215,13 @@ export default function GuestLayout({ children }) {
                     </div>
                 </div>
             </footer>
+
+            {/* ── Auth Modal ─────────────────────────────────── */}
+            <AuthModal
+                open={authModal.open}
+                mode={authModal.mode}
+                onClose={closeModal}
+            />
         </div>
     );
 }

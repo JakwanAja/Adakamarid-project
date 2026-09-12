@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
-use Inertia\Response;
 use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
@@ -20,21 +19,21 @@ class AuthController extends Controller
         private readonly UserRepository $userRepository,
     ) {}
 
-    // ── Login ─────────────────────────────────────────────────
+    // -- Login -------------------------------------------------
 
-    public function showLogin(): Response|RedirectResponse
+    /** GET /login � redirect ke beranda, modal akan terbuka via hash */
+    public function showLogin(): RedirectResponse
     {
         if (Auth::check()) {
             return redirect()->route('home');
         }
-        return Inertia::render('Guest/Auth/Login');
+        return redirect('/#login');
     }
 
     public function login(LoginRequest $request): RedirectResponse
     {
         $credentials = $request->only('email', 'password');
 
-        // Cek apakah akun terdaftar dan aktif
         $user = $this->userRepository->findByEmail($request->email);
 
         if ($user && !$user->is_active) {
@@ -51,7 +50,6 @@ class AuthController extends Controller
 
         $request->session()->regenerate();
 
-        // Admin diarahkan ke dashboard, guest ke beranda
         if (Auth::user()->isAdmin()) {
             return redirect()->intended(route('admin.dashboard'));
         }
@@ -59,14 +57,15 @@ class AuthController extends Controller
         return redirect()->intended(route('home'));
     }
 
-    // ── Register ──────────────────────────────────────────────
+    // -- Register ----------------------------------------------
 
-    public function showRegister(): Response|RedirectResponse
+    /** GET /register � redirect ke beranda, modal akan terbuka via hash */
+    public function showRegister(): RedirectResponse
     {
         if (Auth::check()) {
             return redirect()->route('home');
         }
-        return Inertia::render('Guest/Auth/Register');
+        return redirect('/#register');
     }
 
     public function register(RegisterRequest $request): RedirectResponse
@@ -85,7 +84,7 @@ class AuthController extends Controller
         return redirect()->route('home');
     }
 
-    // ── Logout ────────────────────────────────────────────────
+    // -- Logout ------------------------------------------------
 
     public function logout(Request $request): RedirectResponse
     {
@@ -96,7 +95,7 @@ class AuthController extends Controller
         return redirect()->route('home');
     }
 
-    // ── Google OAuth ──────────────────────────────────────────
+    // -- Google OAuth ------------------------------------------
 
     public function redirectToGoogle(): RedirectResponse
     {
@@ -108,25 +107,21 @@ class AuthController extends Controller
         try {
             $googleUser = Socialite::driver('google')->user();
         } catch (\Exception $e) {
-            return redirect()->route('guest.login')
-                ->withErrors(['email' => 'Autentikasi Google gagal. Silakan coba lagi.']);
+            // Redirect ke beranda dengan hash login agar modal terbuka
+            return redirect('/#login');
         }
 
-        // Cari berdasarkan google_id dulu
         $user = $this->userRepository->findByGoogleId($googleUser->getId());
 
         if (!$user) {
-            // Cari berdasarkan email (user sudah punya akun tapi belum link Google)
             $user = $this->userRepository->findByEmail($googleUser->getEmail());
 
             if ($user) {
-                // Link akun yang ada dengan Google
                 $this->userRepository->update($user, [
                     'google_id' => $googleUser->getId(),
                     'avatar'    => $googleUser->getAvatar(),
                 ]);
             } else {
-                // Buat akun baru via Google
                 $user = $this->userRepository->create([
                     'name'      => $googleUser->getName(),
                     'email'     => $googleUser->getEmail(),
@@ -139,10 +134,9 @@ class AuthController extends Controller
             }
         }
 
-        // Cek apakah akun aktif
         if (!$user->is_active) {
-            return redirect()->route('guest.login')
-                ->withErrors(['email' => 'Akun Anda telah dinonaktifkan.']);
+            // Akun nonaktif � redirect ke beranda dengan hash login
+            return redirect('/#login');
         }
 
         Auth::login($user);

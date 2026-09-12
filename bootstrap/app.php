@@ -20,8 +20,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'admin' => \App\Http\Middleware\EnsureUserIsAdmin::class,
         ]);
 
-        // Redirect unauthenticated requests ke guest.login
-        $middleware->redirectGuestsTo(fn () => route('guest.login'));
+        // Unauthenticated users diarahkan ke beranda — modal login terbuka via hash
+        $middleware->redirectGuestsTo(fn () => '/#login');
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
