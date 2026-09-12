@@ -68,7 +68,7 @@ export default function GuestLayout({ children }) {
                                 style={{ color: '#8C6B63' }}
                                 onMouseEnter={e => { e.currentTarget.style.color = '#2D1B18'; e.currentTarget.style.backgroundColor = '#F5EDE9'; }}
                                 onMouseLeave={e => { e.currentTarget.style.color = '#8C6B63'; e.currentTarget.style.backgroundColor = 'transparent'; }}>
-                                Syarat dan Ketentuan
+                                Syarat & Ketentuan
                             </Link>
 
                             {/* Divider */}
@@ -91,18 +91,11 @@ export default function GuestLayout({ children }) {
                             ) : (
                                 <div className="flex items-center gap-2">
                                     <Link href="/login"
-                                        className="px-3 py-2 text-sm font-medium transition-colors rounded-lg"
-                                        style={{ color: '#2D1B18' }}
-                                        onMouseEnter={e => { e.currentTarget.style.color = '#C0392B'; }}
-                                        onMouseLeave={e => { e.currentTarget.style.color = '#2D1B18'; }}>
-                                        Masuk
-                                    </Link>
-                                    <Link href="/register"
                                         className="ml-1 px-4 py-2 text-sm font-semibold rounded-lg transition-colors"
                                         style={{ border: '1.5px solid #C0392B', color: '#C0392B', backgroundColor: 'transparent' }}
                                         onMouseEnter={e => { e.currentTarget.style.backgroundColor = '#FEF2F0'; }}
                                         onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; }}>
-                                        Daftar
+                                        Masuk/Daftar
                                     </Link>
                                 </div>
                             )}
@@ -144,7 +137,7 @@ export default function GuestLayout({ children }) {
                                 {[
                                     { label: 'Cari Kos',             href: '/kos' },
                                     { label: 'Pusat Bantuan',        href: '/pusat-bantuan' },
-                                    { label: 'Syarat dan Ketentuan', href: '/syarat-ketentuan' },
+                                    { label: 'Syarat & Ketentuan', href: '/syarat-ketentuan' },
                                     { label: 'Waspada Penipuan',     href: '/waspada-penipuan' },
                                 ].map(item => (
                                     <li key={item.label}>
@@ -181,7 +174,7 @@ export default function GuestLayout({ children }) {
                             <div className="flex items-center gap-4">
                                 {[
                                     { label: 'Pusat Bantuan',        href: '/pusat-bantuan' },
-                                    { label: 'Syarat dan Ketentuan', href: '/syarat-ketentuan' },
+                                    { label: 'Syarat & Ketentuan', href: '/syarat-ketentuan' },
                                     { label: 'Waspada Penipuan',     href: '/waspada-penipuan' },
                                 ].map(item => (
                                     <a key={item.label} href={item.href}

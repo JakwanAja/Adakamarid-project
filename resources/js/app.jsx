@@ -1,4 +1,4 @@
-import '../css/app.css';
+ï»¿import '../css/app.css';
 import { createRoot } from 'react-dom/client';
 import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
@@ -7,10 +7,10 @@ import { route } from 'ziggy-js';
 // Expose route() globally so all components can use it
 window.route = route;
 
-const appName = 'Adakamar.id';
+const appName = 'AdaKamar.id';
 
 createInertiaApp({
-    title: (title) => `${title} — ${appName}`,
+    title: (title) => title ? `${title} - ${appName}` : appName,
     resolve: (name) =>
         resolvePageComponent(
             `./Pages/${name}.jsx`,
@@ -21,6 +21,6 @@ createInertiaApp({
         root.render(<App {...props} />);
     },
     progress: {
-        color: '#2563EB',
+        color: '#C0392B',
     },
 });
