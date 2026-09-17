@@ -1,9 +1,9 @@
 import GuestLayout from '@/Layouts/GuestLayout';
 import KosCard from '@/Components/Guest/KosCard';
 import { Head, Link, usePage, router } from '@inertiajs/react';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
-// ── Constants ─────────────────────────────────────────────────
+// â”€â”€ Constants â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const TYPE_LABELS = { putra: 'Putra', putri: 'Putri', campur: 'Campur' };
 const TYPE_COLORS = {
     putra:  { bg: '#EFF6FF', text: '#1D4ED8' },
@@ -17,7 +17,7 @@ const CATEGORY_LABELS = {
     sekitar: 'Fasilitas Sekitar',
 };
 
-// ── Helpers ───────────────────────────────────────────────────
+// â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function formatPrice(price) {
     return new Intl.NumberFormat('id-ID', {
         style: 'currency', currency: 'IDR',
@@ -32,7 +32,7 @@ function formatDate(dateStr) {
     });
 }
 
-// ── Star Display (read-only) ──────────────────────────────────
+// â”€â”€ Star Display (read-only) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function StarDisplay({ rating, size = 'sm' }) {
     const sz = size === 'sm' ? 'w-3.5 h-3.5' : 'w-4 h-4';
     return (
@@ -47,7 +47,7 @@ function StarDisplay({ rating, size = 'sm' }) {
     );
 }
 
-// ── Star Rating (interactive) ─────────────────────────────────
+// â”€â”€ Star Rating (interactive) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function StarRating({ value, onChange }) {
     const [hover, setHover] = useState(0);
     return (
@@ -77,7 +77,7 @@ function StarRating({ value, onChange }) {
     );
 }
 
-// ── Review Form ───────────────────────────────────────────────
+// â”€â”€ Review Form â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function ReviewForm({ kos, existingReview = null }) {
     const isEdit = !!existingReview;
     const fileInputRef = useRef(null);
@@ -106,7 +106,7 @@ function ReviewForm({ kos, existingReview = null }) {
         formData.append('rating', rating);
         formData.append('comment', comment ?? '');
 
-        // Method spoofing untuk PUT — tambahkan _method ke FormData
+        // Method spoofing untuk PUT â€” tambahkan _method ke FormData
         if (isEdit) {
             formData.append('_method', 'PUT');
         }
@@ -183,7 +183,7 @@ function ReviewForm({ kos, existingReview = null }) {
             <div>
                 <label className="block text-sm font-medium mb-1.5" style={{ color: '#2D1B18' }}>
                     Foto <span className="text-xs font-normal" style={{ color: '#8C6B63' }}>
-                        (opsional, maks 3 foto · JPEG/PNG · maks 2MB)
+                        (opsional, maks 3 foto Â· JPEG/PNG Â· maks 2MB)
                     </span>
                 </label>
 
@@ -253,7 +253,7 @@ function ReviewForm({ kos, existingReview = null }) {
     );
 }
 
-// ── Facility Badge ────────────────────────────────────────────
+// â”€â”€ Facility Badge â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function FacilityBadge({ name }) {
     return (
         <span className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full font-medium"
@@ -265,7 +265,7 @@ function FacilityBadge({ name }) {
     );
 }
 
-// ── Info Attribute (AC / WiFi / KM Dalam) ────────────────────
+// â”€â”€ Info Attribute (AC / WiFi / KM Dalam) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function InfoAttr({ label, active, icon }) {
     return (
         <div className="flex flex-col items-center gap-1.5 p-3 rounded-xl text-center"
@@ -283,7 +283,7 @@ function InfoAttr({ label, active, icon }) {
     );
 }
 
-// ── Mosaic Photo Gallery ──────────────────────────────────────
+// â”€â”€ Mosaic Photo Gallery â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function PhotoGallery({ photos }) {
     const sorted = photos ? [...photos].sort((a, b) => a.sort_order - b.sort_order) : [];
     const [activeIdx, setActiveIdx] = useState(0);
@@ -308,7 +308,7 @@ function PhotoGallery({ photos }) {
         <div className="grid gap-2 rounded-2xl overflow-hidden"
             style={{ gridTemplateColumns: '2fr 1fr', maxHeight: '420px' }}>
 
-            {/* Foto utama — kiri besar */}
+            {/* Foto utama â€” kiri besar */}
             <div className="relative overflow-hidden cursor-pointer" style={{ aspectRatio: '4/3' }}>
                 <img
                     src={`/storage/${sorted[activeIdx].path}`}
@@ -325,7 +325,7 @@ function PhotoGallery({ photos }) {
                 )}
             </div>
 
-            {/* Grid kecil kanan — 4 slot */}
+            {/* Grid kecil kanan â€” 4 slot */}
             <div className="grid gap-2" style={{ gridTemplateRows: 'repeat(4, 1fr)' }}>
                 {[0, 1, 2, 3].map(i => {
                     const photo = sidePhotos[i];
@@ -363,7 +363,7 @@ function PhotoGallery({ photos }) {
     );
 }
 
-// ── Main Page ─────────────────────────────────────────────────
+// â”€â”€ Main Page â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export default function KosShow({ kos, facilitiesByCategory, similarKos, userReview }) {
     const { auth } = usePage().props;
     const typeColor = TYPE_COLORS[kos.type] ?? { bg: '#F5F5F5', text: '#666' };
@@ -374,10 +374,23 @@ export default function KosShow({ kos, facilitiesByCategory, similarKos, userRev
     const waLink = waNumber ? `https://wa.me/${waNumber}?text=${waMessage}` : null;
 
     const hasFacilities = Object.values(facilitiesByCategory ?? {}).some(arr => arr.length > 0);
+    // Track riwayat kos yang pernah dilihat (disimpan di localStorage)
+    useEffect(() => {
+        if (!kos?.id) return;
+        try {
+            const raw = localStorage.getItem('kos_history');
+            const history = raw ? JSON.parse(raw) : [];
+            const filtered = history.filter(id => id !== kos.id);
+            filtered.unshift(kos.id);           // tambah di depan
+            const limited = filtered.slice(0, 20); // max 20 entri
+            localStorage.setItem('kos_history', JSON.stringify(limited));
+        } catch {}
+    }, [kos?.id]);
+
 
     return (
         <GuestLayout>
-            <Head title={`${kos.name} — AdaKamar.id`} />
+            <Head title={`${kos.name} â€” AdaKamar.id`} />
 
             <div style={{ backgroundColor: '#FBF7F5', minHeight: '100vh' }}>
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-7">
@@ -391,24 +404,24 @@ export default function KosShow({ kos, facilitiesByCategory, similarKos, userRev
                             onMouseLeave={e => e.currentTarget.style.color = '#8C6B63'}>
                             Beranda
                         </Link>
-                        <span>›</span>
+                        <span>â€º</span>
                         <Link href="/kos"
                             style={{ color: '#8C6B63' }}
                             onMouseEnter={e => e.currentTarget.style.color = '#C0392B'}
                             onMouseLeave={e => e.currentTarget.style.color = '#8C6B63'}>
                             Cari Kos
                         </Link>
-                        <span>›</span>
+                        <span>â€º</span>
                         <span className="truncate max-w-xs font-medium"
                             style={{ color: '#2D1B18' }}>
                             {kos.name}
                         </span>
                     </nav>
 
-                    {/* ── Layout 2 kolom: konten kiri + sidebar kanan ── */}
+                    {/* â”€â”€ Layout 2 kolom: konten kiri + sidebar kanan â”€â”€ */}
                     <div className="flex gap-6 items-start">
 
-                        {/* ── Konten Kiri ── */}
+                        {/* â”€â”€ Konten Kiri â”€â”€ */}
                         <div className="flex-1 min-w-0 space-y-5">
 
                             {/* Galeri Foto */}
@@ -480,9 +493,9 @@ export default function KosShow({ kos, facilitiesByCategory, similarKos, userRev
                                 <h2 className="text-base font-semibold mb-4"
                                     style={{ color: '#2D1B18' }}>Informasi Umum</h2>
                                 <div className="grid grid-cols-3 gap-3">
-                                    <InfoAttr label="AC"         active={kos.has_ac}               icon="❄️" />
-                                    <InfoAttr label="WiFi"       active={kos.has_wifi}             icon="📶" />
-                                    <InfoAttr label="KM Dalam"   active={kos.has_private_bathroom} icon="🚿" />
+                                    <InfoAttr label="AC"         active={kos.has_ac}               icon="â„ï¸" />
+                                    <InfoAttr label="WiFi"       active={kos.has_wifi}             icon="ðŸ“¶" />
+                                    <InfoAttr label="KM Dalam"   active={kos.has_private_bathroom} icon="ðŸš¿" />
                                 </div>
                             </div>
 
@@ -601,7 +614,7 @@ export default function KosShow({ kos, facilitiesByCategory, similarKos, userRev
                                 ) : (
                                     <div className="mb-6 p-4 rounded-xl" style={{ backgroundColor: '#FAFAF9', border: '1px solid #EAE0DC' }}>
                                         <p className="text-sm font-semibold mb-4" style={{ color: '#2D1B18' }}>
-                                            {userReview ? '✏️ Edit Ulasanmu' : '📝 Tulis Ulasan'}
+                                            {userReview ? 'âœï¸ Edit Ulasanmu' : 'ðŸ“ Tulis Ulasan'}
                                         </p>
                                         <ReviewForm kos={kos} existingReview={userReview} />
                                     </div>
@@ -668,7 +681,7 @@ export default function KosShow({ kos, facilitiesByCategory, similarKos, userRev
 
                         </div>{/* end konten kiri */}
 
-                        {/* ── Sidebar Kanan ── */}
+                        {/* â”€â”€ Sidebar Kanan â”€â”€ */}
                         <aside className="w-72 shrink-0 sticky top-24 space-y-4">
 
                             {/* Card Harga + Kontak */}
@@ -759,7 +772,7 @@ export default function KosShow({ kos, facilitiesByCategory, similarKos, userRev
 
                     </div>{/* end layout 2 kolom */}
 
-                    {/* ── Kos Serupa ── */}
+                    {/* â”€â”€ Kos Serupa â”€â”€ */}
                     {similarKos && similarKos.length > 0 && (
                         <section className="mt-10">
                             <div className="flex items-center justify-between mb-5">
@@ -772,7 +785,7 @@ export default function KosShow({ kos, facilitiesByCategory, similarKos, userRev
                                     style={{ color: '#C0392B' }}
                                     onMouseEnter={e => e.currentTarget.style.color = '#A93226'}
                                     onMouseLeave={e => e.currentTarget.style.color = '#C0392B'}>
-                                    Lihat Semua →
+                                    Lihat Semua â†’
                                 </Link>
                             </div>
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">

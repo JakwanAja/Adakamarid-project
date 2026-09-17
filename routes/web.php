@@ -12,6 +12,7 @@ use App\Http\Controllers\Guest\AuthController as GuestAuthController;
 use App\Http\Controllers\Guest\HomeController;
 use App\Http\Controllers\Guest\KosController as GuestKosController;
 use App\Http\Controllers\Guest\PageController as GuestPageController;
+use App\Http\Controllers\Guest\RecommendationController;
 use App\Http\Controllers\Guest\ReviewController as GuestReviewController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +28,12 @@ Route::get('/pusat-bantuan', [GuestPageController::class, 'show'])->defaults('sl
     ->name('pages.pusat-bantuan');
 Route::get('/waspada-penipuan', [GuestPageController::class, 'show'])->defaults('slug', 'waspada-penipuan')
     ->name('pages.waspada-penipuan');
+
+// ── Recommendation API (JSON) ─────────────────────────────────
+Route::prefix('api')->name('api.')->group(function () {
+    Route::get('/kos/nearby',   [RecommendationController::class, 'nearby'])->name('kos.nearby');
+    Route::post('/kos/history', [RecommendationController::class, 'history'])->name('kos.history');
+});
 
 // ── Guest Auth ────────────────────────────────────────────────
 Route::middleware('guest')->group(function () {
@@ -67,6 +74,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::delete('/kos/{kos}', [AdminKosController::class, 'destroy'])->name('kos.destroy');
     Route::patch('/kos/{kos}/toggle-active', [AdminKosController::class, 'toggleActive'])->name('kos.toggleActive');
     Route::patch('/kos/{kos}/toggle-plus', [AdminKosController::class, 'togglePlus'])->name('kos.togglePlus');
+    Route::patch('/kos/{kos}/toggle-promoted', [AdminKosController::class, 'togglePromoted'])->name('kos.togglePromoted');
     Route::post('/kos/{kos}/photos', [AdminKosController::class, 'storePhoto'])->name('kos.photos.store');
     Route::patch('/kos/{kos}/photos/{photo}/primary', [AdminKosController::class, 'setPrimaryPhoto'])->name('kos.photos.setPrimary');
     Route::delete('/kos/{kos}/photos/{photo}', [AdminKosController::class, 'destroyPhoto'])->name('kos.photos.destroy');

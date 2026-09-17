@@ -162,4 +162,11 @@ class KosController extends Controller
 
         return back()->with('success', 'Fasilitas kos berhasil diperbarui.');
     }
+
+    public function togglePromoted(Kos $kos)
+    {
+        $this->kosService->togglePromoted($kos);
+
+        return back()->with('success', 'Status Rekomendasi kos berhasil diubah.');
+    }
 }

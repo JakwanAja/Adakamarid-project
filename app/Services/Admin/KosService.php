@@ -41,7 +41,7 @@ class KosService
     }
 
     /**
-     * Perbarui data kos — regenerate slug jika nama berubah.
+     * Perbarui data kos â€” regenerate slug jika nama berubah.
      */
     public function update(Kos $kos, array $data, array $facilityIds = [], array $prices = []): Kos
     {
@@ -156,5 +156,14 @@ class KosService
     public function updatePrices(Kos $kos, array $prices): void
     {
         $this->kosPriceRepository->upsertForKos($kos, $prices);
+    }
+
+    /**
+     * Toggle status promosi kos (Rekomendasi AdaKamar).
+     */
+    public function togglePromoted(Kos $kos): Kos
+    {
+        $this->kosRepository->update($kos, ['is_promoted' => !$kos->is_promoted]);
+        return $kos->fresh();
     }
 }

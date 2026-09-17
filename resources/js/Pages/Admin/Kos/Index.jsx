@@ -32,14 +32,12 @@ function ToggleSwitch({ checked, onChange, disabled }) {
 
 // ── KosDetailModal ────────────────────────────────────────────
 function KosDetailModal({ kos, onClose }) {
-    // Escape key handler
     useEffect(() => {
         function handleKey(e) { if (e.key === 'Escape') onClose(); }
         document.addEventListener('keydown', handleKey);
         return () => document.removeEventListener('keydown', handleKey);
     }, [onClose]);
 
-    // Lock body scroll
     useEffect(() => {
         document.body.style.overflow = 'hidden';
         return () => { document.body.style.overflow = ''; };
@@ -89,7 +87,6 @@ function KosDetailModal({ kos, onClose }) {
             >
                 {/* Header */}
                 <div className="flex items-start gap-3 p-5 shrink-0" style={{ borderBottom: '1px solid #EAE0DC' }}>
-                    {/* Foto utama */}
                     <div className="w-14 h-14 rounded-xl overflow-hidden shrink-0"
                         style={{ backgroundColor: '#F5EDE9', border: '1px solid #EAE0DC' }}>
                         {kos.primary_photo ? (
@@ -113,6 +110,10 @@ function KosDetailModal({ kos, onClose }) {
                                 <span className="text-xs px-2 py-0.5 rounded-full font-semibold shrink-0"
                                     style={{ backgroundColor: '#FEF2F0', color: '#C0392B' }}>Plus</span>
                             )}
+                            {kos.is_promoted && (
+                                <span className="text-xs px-2 py-0.5 rounded-full font-semibold shrink-0"
+                                    style={{ backgroundColor: '#FFF7ED', color: '#C2410C' }}>Rekomendasi</span>
+                            )}
                         </div>
                         <div className="flex items-center gap-2 mt-1.5 flex-wrap">
                             <span className="text-xs px-2 py-0.5 rounded-full font-medium"
@@ -124,7 +125,6 @@ function KosDetailModal({ kos, onClose }) {
                         </div>
                     </div>
 
-                    {/* Close button */}
                     <button onClick={onClose}
                         className="p-1.5 rounded-lg transition-colors shrink-0"
                         style={{ color: '#8C6B63' }}
@@ -136,9 +136,8 @@ function KosDetailModal({ kos, onClose }) {
                     </button>
                 </div>
 
-                {/* Body — scrollable */}
+                {/* Body */}
                 <div className="flex-1 overflow-y-auto p-5">
-                    {/* Informasi umum */}
                     <div className="mb-4">
                         <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: '#8C6B63' }}>
                             Informasi Umum
@@ -150,7 +149,6 @@ function KosDetailModal({ kos, onClose }) {
                         <InfoRow label="WhatsApp" value={kos.contact_whatsapp ? `+62${kos.contact_whatsapp.replace(/^0/, '')}` : null} />
                     </div>
 
-                    {/* Fasilitas umum */}
                     <div className="mb-4">
                         <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: '#8C6B63' }}>
                             Fasilitas Umum
@@ -162,7 +160,6 @@ function KosDetailModal({ kos, onClose }) {
                         </div>
                     </div>
 
-                    {/* Deskripsi */}
                     {kos.description && (
                         <div className="mb-4">
                             <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: '#8C6B63' }}>
@@ -172,7 +169,6 @@ function KosDetailModal({ kos, onClose }) {
                         </div>
                     )}
 
-                    {/* Peraturan */}
                     {kos.rules && (
                         <div className="mb-4">
                             <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: '#8C6B63' }}>
@@ -182,7 +178,6 @@ function KosDetailModal({ kos, onClose }) {
                         </div>
                     )}
 
-                    {/* Statistik */}
                     <div className="grid grid-cols-3 gap-3 mb-4">
                         {[
                             { label: 'Rating', value: kos.rating_avg > 0 ? `${kos.rating_avg} ★` : '-' },
@@ -197,9 +192,8 @@ function KosDetailModal({ kos, onClose }) {
                         ))}
                     </div>
 
-                    {/* Catatan untuk data yang belum di-load */}
                     <div className="rounded-xl p-3 text-sm" style={{ backgroundColor: '#F5EDE9', color: '#8C6B63' }}>
-                        💡 Untuk melihat foto, harga sewa, dan daftar fasilitas lengkap, buka halaman Edit kos ini.
+                        Untuk melihat foto, harga sewa, dan daftar fasilitas lengkap, buka halaman Edit kos ini.
                     </div>
                 </div>
 
@@ -233,15 +227,15 @@ export default function KosIndex({ kosList }) {
     const [viewTarget, setViewTarget] = useState(null);
 
     function handleToggleActive(kos) {
-        router.patch(route('admin.kos.toggleActive', kos.slug), {}, {
-            preserveScroll: true,
-        });
+        router.patch(route('admin.kos.toggleActive', kos.slug), {}, { preserveScroll: true });
     }
 
     function handleTogglePlus(kos) {
-        router.patch(route('admin.kos.togglePlus', kos.slug), {}, {
-            preserveScroll: true,
-        });
+        router.patch(route('admin.kos.togglePlus', kos.slug), {}, { preserveScroll: true });
+    }
+
+    function handleTogglePromoted(kos) {
+        router.patch(route('admin.kos.togglePromoted', kos.slug), {}, { preserveScroll: true });
     }
 
     function handleConfirmDelete() {
@@ -257,6 +251,8 @@ export default function KosIndex({ kosList }) {
         });
     }
 
+    const promotedCount = kosList.filter(k => k.is_promoted).length;
+
     return (
         <AdminLayout title="Manajemen Kos">
             <Head title="Manajemen Kos" />
@@ -268,6 +264,12 @@ export default function KosIndex({ kosList }) {
                     <h2 className="text-xl font-semibold" style={{ color: '#2D1B18' }}>Manajemen Kos</h2>
                     <p className="text-sm mt-0.5" style={{ color: '#8C6B63' }}>
                         {kosList.length} kos terdaftar
+                        {promotedCount > 0 && (
+                            <span className="ml-2 text-xs px-2 py-0.5 rounded-full font-medium"
+                                style={{ backgroundColor: '#FFF7ED', color: '#C2410C' }}>
+                                {promotedCount} Rekomendasi aktif
+                            </span>
+                        )}
                     </p>
                 </div>
                 <Link
@@ -282,6 +284,20 @@ export default function KosIndex({ kosList }) {
                     </svg>
                     Tambah Kos
                 </Link>
+            </div>
+
+            {/* Info box rekomendasi */}
+            <div className="mb-5 rounded-xl p-4 flex items-start gap-3"
+                style={{ backgroundColor: '#FFF7ED', border: '1px solid #FED7AA' }}>
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="#C2410C" strokeWidth={1.8}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                </svg>
+                <div>
+                    <p className="text-sm font-medium" style={{ color: '#92400E' }}>Kolom "Rekomendasi" — Fitur Promosi</p>
+                    <p className="text-xs mt-0.5 leading-relaxed" style={{ color: '#B45309' }}>
+                        Aktifkan toggle Rekomendasi pada kos yang ingin ditampilkan di section "Rekomendasi AdaKamar" di landing page. Kos yang dipromosikan akan tampil lebih menonjol di bagian atas halaman utama.
+                    </p>
+                </div>
             </div>
 
             {/* Table */}
@@ -302,7 +318,7 @@ export default function KosIndex({ kosList }) {
                         <table className="w-full">
                             <thead>
                                 <tr style={{ borderBottom: '1px solid #EAE0DC', backgroundColor: '#FAFAF9' }}>
-                                    {['Nama Kos', 'Tipe', 'Kecamatan', 'Aktif', 'Plus', 'Dibuat', 'Aksi'].map(h => (
+                                    {['Nama Kos', 'Tipe', 'Kecamatan', 'Aktif', 'Plus', 'Rekomendasi', 'Dibuat', 'Aksi'].map(h => (
                                         <th key={h} className="px-4 py-3 text-left text-xs font-semibold"
                                             style={{ color: '#8C6B63' }}>
                                             {h}
@@ -317,7 +333,7 @@ export default function KosIndex({ kosList }) {
                                         onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}>
                                         {/* Nama */}
                                         <td className="px-4 py-3">
-                                            <div className="flex items-center gap-2">
+                                            <div className="flex items-center gap-2 flex-wrap">
                                                 <span className="text-sm font-medium" style={{ color: '#2D1B18' }}>
                                                     {kos.name}
                                                 </span>
@@ -325,6 +341,12 @@ export default function KosIndex({ kosList }) {
                                                     <span className="text-xs px-1.5 py-0.5 rounded-full font-semibold"
                                                         style={{ backgroundColor: '#FEF2F0', color: '#C0392B' }}>
                                                         Plus
+                                                    </span>
+                                                )}
+                                                {kos.is_promoted && (
+                                                    <span className="text-xs px-1.5 py-0.5 rounded-full font-semibold"
+                                                        style={{ backgroundColor: '#FFF7ED', color: '#C2410C' }}>
+                                                        ★
                                                     </span>
                                                 )}
                                             </div>
@@ -357,6 +379,13 @@ export default function KosIndex({ kosList }) {
                                                 onChange={() => handleTogglePlus(kos)}
                                             />
                                         </td>
+                                        {/* Toggle Rekomendasi */}
+                                        <td className="px-4 py-3">
+                                            <ToggleSwitch
+                                                checked={kos.is_promoted}
+                                                onChange={() => handleTogglePromoted(kos)}
+                                            />
+                                        </td>
                                         {/* Tanggal */}
                                         <td className="px-4 py-3 text-xs" style={{ color: '#8C6B63' }}>
                                             {formatDate(kos.created_at)}
@@ -364,7 +393,6 @@ export default function KosIndex({ kosList }) {
                                         {/* Aksi */}
                                         <td className="px-4 py-3">
                                             <div className="flex items-center gap-1">
-                                                {/* Tombol View */}
                                                 <button
                                                     onClick={() => setViewTarget(kos)}
                                                     className="p-1.5 rounded-lg transition-colors"
@@ -378,7 +406,6 @@ export default function KosIndex({ kosList }) {
                                                         <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                                     </svg>
                                                 </button>
-                                                {/* Tombol Edit */}
                                                 <Link
                                                     href={route('admin.kos.edit', kos.slug)}
                                                     className="p-1.5 rounded-lg transition-colors"
@@ -391,7 +418,6 @@ export default function KosIndex({ kosList }) {
                                                         <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                                     </svg>
                                                 </Link>
-                                                {/* Tombol Hapus */}
                                                 <button
                                                     onClick={() => setDeleteTarget(kos)}
                                                     className="p-1.5 rounded-lg transition-colors"
@@ -414,7 +440,6 @@ export default function KosIndex({ kosList }) {
                 )}
             </div>
 
-            {/* KosDetailModal */}
             {viewTarget && (
                 <KosDetailModal kos={viewTarget} onClose={() => setViewTarget(null)} />
             )}

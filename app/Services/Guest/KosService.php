@@ -19,6 +19,21 @@ class KosService
         return $this->kosRepository->getActiveForHomepage();
     }
 
+    public function getPromotedKos(int $limit = 8): Collection
+    {
+        return $this->kosRepository->getPromoted($limit);
+    }
+
+    public function getKosByDistrict(string $district, int $limit = 6): Collection
+    {
+        return $this->kosRepository->getByDistrict($district, $limit);
+    }
+
+    public function getKosByHistory(array $ids, int $limit = 6): Collection
+    {
+        return $this->kosRepository->getByHistory($ids, $limit);
+    }
+
     public function getFilteredListing(array $filters): LengthAwarePaginator
     {
         return $this->kosRepository->all($filters);

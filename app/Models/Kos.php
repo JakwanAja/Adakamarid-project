@@ -25,6 +25,7 @@ class Kos extends Model
         'contact_name',
         'contact_whatsapp',
         'is_plus',
+        'is_promoted',
         'is_active',
         'rating_avg',
         'review_count',
@@ -38,6 +39,7 @@ class Kos extends Model
             'has_wifi'             => 'boolean',
             'has_private_bathroom' => 'boolean',
             'is_plus'              => 'boolean',
+            'is_promoted'          => 'boolean',
             'is_active'            => 'boolean',
             'latitude'             => 'decimal:7',
             'longitude'            => 'decimal:7',
@@ -56,6 +58,11 @@ class Kos extends Model
     public function scopePlus($query)
     {
         return $query->where('is_plus', true);
+    }
+
+    public function scopePromoted($query)
+    {
+        return $query->where('is_promoted', true);
     }
 
     // ── Relations ────────────────────────────────────────────

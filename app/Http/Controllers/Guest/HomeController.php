@@ -17,8 +17,9 @@ class HomeController extends Controller
     public function index(): Response
     {
         return Inertia::render('Guest/Home', [
-            'featuredKos' => $this->kosService->getHomepageListing(),
-            'districts'   => AdminKosController::DISTRICTS,
+            'featuredKos'  => $this->kosService->getHomepageListing(),
+            'promotedKos'  => $this->kosService->getPromotedKos(8),
+            'districts'    => AdminKosController::DISTRICTS,
         ]);
     }
 }

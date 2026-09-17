@@ -67,7 +67,7 @@ class KosRepository
     }
 
     /**
-     * Ambil kos aktif untuk homepage — Plus dulu, lalu terbaru, max 8.
+     * Ambil kos aktif untuk homepage â€” Plus dulu, lalu terbaru, max 8.
      */
     public function getActiveForHomepage(): Collection
     {
@@ -76,6 +76,62 @@ class KosRepository
             ->orderBy('is_plus', 'desc')
             ->orderBy('created_at', 'desc')
             ->limit(8)
+            ->get();
+    }
+
+    /**
+     * Ambil kos yang sedang dipromosikan admin (is_promoted = true).
+     * Max 8, diurutkan: is_plus dulu, lalu rating tertinggi.
+     */
+    public function getPromoted(int $limit = 8): Collection
+    {
+        return Kos::with(['primaryPhoto', 'activePrices'])
+            ->where('is_active', true)
+            ->where('is_promoted', true)
+            ->orderBy('is_plus', 'desc')
+            ->orderBy('rating_avg', 'desc')
+            ->limit($limit)
+            ->get();
+    }
+
+    /**
+     * Ambil kos aktif diurutkan berdasarkan jarak dari koordinat guest (Haversine).
+     * Max $limit kos yang paling dekat.
+     */
+    public function getNearbyByCoords(float $lat, float $lng, int $limit = 6): Collection
+    {
+        // Formula Haversine dalam MySQL â€” jarak dalam kilometer
+        $haversine = "(6371 * ACOS(
+            COS(RADIANS(?)) * COS(RADIANS(latitude))
+            * COS(RADIANS(longitude) - RADIANS(?))
+            + SIN(RADIANS(?)) * SIN(RADIANS(latitude))
+        ))";
+
+        return Kos::with(['primaryPhoto', 'activePrices'])
+            ->where('is_active', true)
+            ->whereNotNull('latitude')
+            ->whereNotNull('longitude')
+            ->selectRaw("*, {$haversine} AS distance", [$lat, $lng, $lat])
+            ->orderBy('distance', 'asc')
+            ->limit($limit)
+            ->get();
+    }
+
+    /**
+     * Ambil kos berdasarkan riwayat (array kos IDs yang pernah dilihat).
+     * Diurutkan: rating tertinggi, maks $limit.
+     */
+    public function getByHistory(array $ids, int $limit = 6): Collection
+    {
+        if (empty($ids)) {
+            return collect();
+        }
+
+        return Kos::with(['primaryPhoto', 'activePrices'])
+            ->where('is_active', true)
+            ->whereIn('id', $ids)
+            ->orderBy('rating_avg', 'desc')
+            ->limit($limit)
             ->get();
     }
 
