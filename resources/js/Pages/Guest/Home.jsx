@@ -1,7 +1,7 @@
 import GuestLayout from '@/Layouts/GuestLayout';
 import KosCard from '@/Components/Guest/KosCard';
 import { Head, Link, router } from '@inertiajs/react';
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 
 // ── Shared UI helpers ─────────────────────────────────────────
 function ChevronDown() {
@@ -70,128 +70,8 @@ function KosGrid({ items }) {
     );
 }
 
-// ── NearbySection ─────────────────────────────────────────────
-function NearbySection() {
-    const [state, setState]        = useState('idle');
-    const [nearbyKos, setNearby]   = useState([]);
-    const [historyKos, setHistory] = useState([]);
-    const [detectedDistrict, setDetectedDistrict] = useState('');
-    const requested = useRef(false);
-
-    useEffect(() => {
-        const raw = localStorage.getItem('kos_history');
-        if (!raw) return;
-        try {
-            const ids = JSON.parse(raw);
-            if (!Array.isArray(ids) || ids.length === 0) return;
-            fetch('/api/kos/history', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
-                body: JSON.stringify({ ids }),
-            })
-                .then(r => r.json())
-                .then(data => setHistory(Array.isArray(data) ? data : []))
-                .catch(() => {});
-        } catch {}
-    }, []);
-
-    function requestLocation() {
-        if (requested.current) return;
-        requested.current = true;
-        if (!navigator.geolocation) { setState('denied'); return; }
-        setState('requesting');
-        navigator.geolocation.getCurrentPosition(
-            (pos) => {
-                setState('loading');
-                const { latitude, longitude } = pos.coords;
-                fetch(`/api/kos/nearby?lat=${latitude}&lng=${longitude}&limit=6`)
-                    .then(r => r.json())
-                    .then(data => {
-                        if (data?.district_detected) setDetectedDistrict(data.district_detected);
-                        const kos = Array.isArray(data?.kos) ? data.kos : [];
-                        if (kos.length === 0) setState(data?.no_match ? 'no_match' : 'empty');
-                        else { setNearby(kos); setState('done'); }
-                    })
-                    .catch(() => setState('empty'));
-            },
-            () => setState('denied'),
-            { timeout: 10000 }
-        );
-    }
-
-    const hasHistory = historyKos.length > 0;
-    const loadingLabel = state === 'requesting' ? 'Menunggu izin lokasi...' : 'Mendeteksi kecamatan dan mencari kos...';
-
-    return (
-        <>
-            <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"
-                style={{ borderTop: '1px solid #EAE0DC' }}>
-                <SectionHeader
-                    title="Kos di Sekitarmu"
-                    subtitle={state === 'done' ? `Kos di kecamatan ${detectedDistrict}` : 'Izinkan lokasi untuk melihat kos di kecamatanmu'}
-                />
-                {state === 'idle' && (
-                    <div className="rounded-2xl p-8 flex flex-col items-center text-center"
-                        style={{ backgroundColor: '#FFFFFF', border: '1px solid #EAE0DC' }}>
-                        <div className="w-14 h-14 rounded-full flex items-center justify-center mb-4" style={{ backgroundColor: '#F5EDE9' }}>
-                            <svg xmlns="http://www.w3.org/2000/svg" className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="#C0392B" strokeWidth={1.5}>
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                            </svg>
-                        </div>
-                        <p className="text-sm font-medium mb-1" style={{ color: '#2D1B18' }}>Temukan kos di kecamatanmu</p>
-                        <p className="text-xs mb-5 max-w-xs" style={{ color: '#8C6B63' }}>
-                            Aktifkan lokasi untuk melihat kos yang tersedia di kecamatan tempat kamu berada sekarang
-                        </p>
-                        <button onClick={requestLocation}
-                            className="flex items-center gap-2 px-5 py-2.5 text-sm font-semibold rounded-xl transition-colors"
-                            style={{ backgroundColor: '#C0392B', color: '#FFFFFF' }}
-                            onMouseEnter={e => e.currentTarget.style.backgroundColor = '#A93226'}
-                            onMouseLeave={e => e.currentTarget.style.backgroundColor = '#C0392B'}>
-                            <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                            </svg>
-                            Aktifkan Lokasi
-                        </button>
-                    </div>
-                )}
-                {['requesting', 'loading'].includes(state) && (
-                    <div className="rounded-2xl p-8 flex flex-col items-center text-center"
-                        style={{ backgroundColor: '#FFFFFF', border: '1px solid #EAE0DC' }}>
-                        <div className="w-10 h-10 rounded-full border-2 animate-spin mb-4"
-                            style={{ borderColor: '#EAE0DC', borderTopColor: '#C0392B' }} />
-                        <p className="text-sm" style={{ color: '#8C6B63' }}>{loadingLabel}</p>
-                    </div>
-                )}
-                {state === 'done' && <KosGrid items={nearbyKos} />}
-                {state === 'empty' && (
-                    <div className="rounded-2xl p-6 text-center" style={{ backgroundColor: '#FFFFFF', border: '1px solid #EAE0DC' }}>
-                        <p className="text-sm font-medium mb-1" style={{ color: '#2D1B18' }}>Belum ada kos di {detectedDistrict || 'area ini'}</p>
-                        <p className="text-xs" style={{ color: '#8C6B63' }}>Coba cari kos di kecamatan lain melalui menu Cari Kos</p>
-                    </div>
-                )}
-                {state === 'no_match' && (
-                    <div className="rounded-2xl p-6 text-center" style={{ backgroundColor: '#FFFFFF', border: '1px solid #EAE0DC' }}>
-                        <p className="text-sm font-medium mb-1" style={{ color: '#2D1B18' }}>Lokasimu berada di luar area Yogyakarta</p>
-                        <p className="text-xs" style={{ color: '#8C6B63' }}>AdaKamar.id melayani area Kota Yogyakarta, Sleman, dan Bantul</p>
-                    </div>
-                )}
-                {state === 'denied' && null}
-            </section>
-
-            {hasHistory && (
-                <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
-                    <SectionHeader title="Terakhir Kamu Lihat" subtitle="Kos yang pernah kamu buka sebelumnya" />
-                    <KosGrid items={historyKos} />
-                </section>
-            )}
-        </>
-    );
-}
-
 // ── Main Page ─────────────────────────────────────────────────
-export default function Home({ featuredKos, promotedKos, districts }) {
+export default function Home({ featuredKos, promotedKos, totalKos, districts }) {
     const [filterBar, setFilterBar] = useState({
         district: '', type: '', price_type: 'bulanan', price_min: '', price_max: '',
     });
@@ -217,12 +97,7 @@ export default function Home({ featuredKos, promotedKos, districts }) {
         <GuestLayout>
             <Head title="Temukan Kos di Yogyakarta" />
 
-            {/* ── Hero pendek + Filter card overlap ─────────
-                Struktur identik Mamikos:
-                - Hero ~220px, teks di tengah atas
-                - Filter card dengan negative margin -36px
-                  sehingga memotong batas hero dan konten
-            */}
+            {/* ── Hero pendek + Filter card overlap ──────── */}
             <div className="relative">
 
                 {/* Hero */}
@@ -246,7 +121,7 @@ export default function Home({ featuredKos, promotedKos, districts }) {
                     </div>
                 </section>
 
-                {/* Filter Card — float di atas batas hero */}
+                {/* Filter Card — overlap ke bawah hero */}
                 <div className="relative z-20 max-w-5xl mx-auto px-4 sm:px-6" style={{ marginTop: '-44px' }}>
                     <form onSubmit={handleFilterSubmit}>
                         <div className="bg-white rounded-2xl px-5 py-5"
@@ -331,7 +206,7 @@ export default function Home({ featuredKos, promotedKos, districts }) {
                                     placeholder="0"
                                 />
 
-                                <span className="shrink-0 text-sm font-medium select-none" style={{ color: '#8C6B63' }}>–</span>
+                                <span className="shrink-0 text-sm font-medium select-none" style={{ color: '#8C6B63' }}>-</span>
 
                                 {/* Harga maks */}
                                 <PriceInput
@@ -366,19 +241,24 @@ export default function Home({ featuredKos, promotedKos, districts }) {
             {/* ── Rekomendasi AdaKamar (Promoted) ─────────── */}
             {hasPromoted && (
                 <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
-                    <SectionHeader
-                        title="Rekomendasi AdaKamar"
-                        href="/kos"
-                        hrefLabel="Lihat Semua"
-                    />
-                    <div className="flex items-center gap-2 mb-4">
-                        <span className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full"
-                            style={{ backgroundColor: '#FFF7ED', color: '#C2410C', border: '1px solid #FED7AA' }}>
-                            <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                            </svg>
-                            Dipilih langsung oleh tim AdaKamar.id
-                        </span>
+                    <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center gap-3">
+                            <h2 className="text-lg font-bold" style={{ color: '#2D1B18' }}>Rekomendasi AdaKamar</h2>
+                            <span className="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full"
+                                style={{ backgroundColor: '#FFF7ED', color: '#C2410C', border: '1px solid #FED7AA' }}>
+                                <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                </svg>
+                                Dipilih langsung oleh tim AdaKamar.id
+                            </span>
+                        </div>
+                        <Link href="/kos"
+                            className="text-sm font-semibold transition-colors"
+                            style={{ color: '#C0392B' }}
+                            onMouseEnter={e => e.currentTarget.style.color = '#A93226'}
+                            onMouseLeave={e => e.currentTarget.style.color = '#C0392B'}>
+                            Lihat Semua &rarr;
+                        </Link>
                     </div>
                     <KosGrid items={promotedKos} />
                 </section>
@@ -389,7 +269,7 @@ export default function Home({ featuredKos, promotedKos, districts }) {
                 style={hasPromoted ? { borderTop: '1px solid #EAE0DC', paddingTop: '32px' } : {}}>
                 <SectionHeader
                     title="Kos Tersedia di Yogyakarta"
-                    subtitle={featuredKos?.length > 0 ? `${featuredKos.length} kos bisa kamu cek` : 'Listing pilihan, langsung dari pemilik'}
+                    subtitle={totalKos > 0 ? `${totalKos} kos tersedia di Yogyakarta` : 'Listing pilihan, langsung dari pemilik'}
                     href="/kos"
                     hrefLabel="Lihat Semua"
                 />
@@ -410,16 +290,13 @@ export default function Home({ featuredKos, promotedKos, districts }) {
                 )}
             </section>
 
-            {/* ── Kos di Sekitarmu + Riwayat ───────────────── */}
-            <NearbySection />
-
             {/* ── Artikel ──────────────────────────────────── */}
             <section style={{ backgroundColor: '#FFFFFF', borderTop: '1px solid #EAE0DC' }}>
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                    <h2 className="text-xl font-bold mb-5" style={{ color: '#2D1B18' }}>
+                    <h2 className="text-2xl font-bold mb-5" style={{ color: '#2D1B18' }}>
                         Temukan Kos Idamanmu di AdaKamar.id
                     </h2>
-                    <div className="space-y-4 text-sm leading-relaxed" style={{ color: '#5C4A45' }}>
+                    <div className="space-y-4 text-base leading-relaxed" style={{ color: '#5C4A45' }}>
                         <p>
                             Kabar baik untuk kamu yang sedang mencari kos di Yogyakarta. <strong style={{ color: '#2D1B18' }}>AdaKamar.id</strong> hadir sebagai platform iklan kos yang menghubungkan calon penyewa langsung dengan pemilik kos terpercaya di area Yogyakarta.
                         </p>
@@ -432,15 +309,6 @@ export default function Home({ featuredKos, promotedKos, districts }) {
                         <p>
                             Manfaatkan fitur pencarian dan filter AdaKamar.id untuk menyaring kos berdasarkan kecamatan, tipe kos (putra/putri/campur), tipe sewa (harian/bulanan/tahunan), dan rentang harga. Temukan kos idamanmu di Yogyakarta dengan mudah, langsung dari genggaman.
                         </p>
-                    </div>
-                    <div className="mt-7">
-                        <a href="/kos"
-                            className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold rounded-xl transition-colors"
-                            style={{ backgroundColor: '#C0392B', color: '#FFFFFF' }}
-                            onMouseEnter={e => e.currentTarget.style.backgroundColor = '#A93226'}
-                            onMouseLeave={e => e.currentTarget.style.backgroundColor = '#C0392B'}>
-                            Cari Kos Sekarang &rarr;
-                        </a>
                     </div>
                 </div>
             </section>

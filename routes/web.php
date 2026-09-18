@@ -12,7 +12,6 @@ use App\Http\Controllers\Guest\AuthController as GuestAuthController;
 use App\Http\Controllers\Guest\HomeController;
 use App\Http\Controllers\Guest\KosController as GuestKosController;
 use App\Http\Controllers\Guest\PageController as GuestPageController;
-use App\Http\Controllers\Guest\RecommendationController;
 use App\Http\Controllers\Guest\ReviewController as GuestReviewController;
 use Illuminate\Support\Facades\Route;
 
@@ -29,11 +28,6 @@ Route::get('/pusat-bantuan', [GuestPageController::class, 'show'])->defaults('sl
 Route::get('/waspada-penipuan', [GuestPageController::class, 'show'])->defaults('slug', 'waspada-penipuan')
     ->name('pages.waspada-penipuan');
 
-// ── Recommendation API (JSON) ─────────────────────────────────
-Route::prefix('api')->name('api.')->group(function () {
-    Route::get('/kos/nearby',   [RecommendationController::class, 'nearby'])->name('kos.nearby');
-    Route::post('/kos/history', [RecommendationController::class, 'history'])->name('kos.history');
-});
 
 // ── Guest Auth ────────────────────────────────────────────────
 Route::middleware('guest')->group(function () {

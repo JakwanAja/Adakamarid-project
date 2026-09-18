@@ -1,7 +1,7 @@
 import GuestLayout from '@/Layouts/GuestLayout';
 import KosCard from '@/Components/Guest/KosCard';
 import { Head, Link, usePage, router } from '@inertiajs/react';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 
 // â”€â”€ Constants â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const TYPE_LABELS = { putra: 'Putra', putri: 'Putri', campur: 'Campur' };
@@ -374,18 +374,6 @@ export default function KosShow({ kos, facilitiesByCategory, similarKos, userRev
     const waLink = waNumber ? `https://wa.me/${waNumber}?text=${waMessage}` : null;
 
     const hasFacilities = Object.values(facilitiesByCategory ?? {}).some(arr => arr.length > 0);
-    // Track riwayat kos yang pernah dilihat (disimpan di localStorage)
-    useEffect(() => {
-        if (!kos?.id) return;
-        try {
-            const raw = localStorage.getItem('kos_history');
-            const history = raw ? JSON.parse(raw) : [];
-            const filtered = history.filter(id => id !== kos.id);
-            filtered.unshift(kos.id);           // tambah di depan
-            const limited = filtered.slice(0, 20); // max 20 entri
-            localStorage.setItem('kos_history', JSON.stringify(limited));
-        } catch {}
-    }, [kos?.id]);
 
 
     return (
