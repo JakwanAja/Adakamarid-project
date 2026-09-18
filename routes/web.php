@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\StatisticsController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Guest\AuthController as GuestAuthController;
+use App\Http\Controllers\Guest\HistoryController;
 use App\Http\Controllers\Guest\HomeController;
 use App\Http\Controllers\Guest\KosController as GuestKosController;
 use App\Http\Controllers\Guest\PageController as GuestPageController;
@@ -28,6 +29,9 @@ Route::get('/pusat-bantuan', [GuestPageController::class, 'show'])->defaults('sl
 Route::get('/waspada-penipuan', [GuestPageController::class, 'show'])->defaults('slug', 'waspada-penipuan')
     ->name('pages.waspada-penipuan');
 
+
+// ── View History API (JSON) ──────────────────────────────────
+Route::post('/api/kos/history', [HistoryController::class, 'resolve'])->name('api.kos.history');
 
 // ── Guest Auth ────────────────────────────────────────────────
 Route::middleware('guest')->group(function () {

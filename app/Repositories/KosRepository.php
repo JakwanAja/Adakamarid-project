@@ -57,11 +57,12 @@ class KosRepository
     }
 
     /**
-     * Ambil semua kos untuk halaman admin (tanpa filter aktif).
+     * Ambil semua kos untuk halaman admin — termasuk statistik ringkas.
      */
     public function getAdminList(): Collection
     {
-        return Kos::with(['primaryPhoto'])
+        return Kos::with(['primaryPhoto', 'activePrices'])
+            ->withCount(['photos', 'reviews'])
             ->orderBy('created_at', 'desc')
             ->get();
     }
@@ -104,6 +105,22 @@ class KosRepository
             ->where('district', $kos->district)
             ->where('id', '!=', $kos->id)
             ->inRandomOrder()
+            ->limit($limit)
+            ->get();
+    }
+
+    /**
+     * Ambil kos aktif berdasarkan array IDs (untuk view history).
+     * Urutan dipertahankan sesuai array IDs yang dikirim.
+     */
+    public function getByIds(array $ids, int $limit = 8): Collection
+    {
+        if (empty($ids)) return collect();
+
+        return Kos::with(['primaryPhoto', 'activePrices'])
+            ->where('is_active', true)
+            ->whereIn('id', $ids)
+            ->orderByRaw('FIELD(id, ' . implode(',', array_map('intval', $ids)) . ')')
             ->limit($limit)
             ->get();
     }

@@ -1,7 +1,7 @@
 import GuestLayout from '@/Layouts/GuestLayout';
 import KosCard from '@/Components/Guest/KosCard';
 import { Head, Link, router } from '@inertiajs/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 // ── Shared UI helpers ─────────────────────────────────────────
 function ChevronDown() {
@@ -70,6 +70,73 @@ function KosGrid({ items }) {
     );
 }
 
+// ── HistorySection ────────────────────────────────────────────
+// Membaca localStorage kos_history, fetch detail ke backend,
+// lalu tampilkan sebagai grid KosCard.
+function HistorySection() {
+    const [historyKos, setHistoryKos] = useState([]);
+    const [loaded, setLoaded] = useState(false);
+
+    useEffect(() => {
+        try {
+            const raw = localStorage.getItem('kos_history');
+            if (!raw) { setLoaded(true); return; }
+            const ids = JSON.parse(raw);
+            if (!Array.isArray(ids) || ids.length === 0) { setLoaded(true); return; }
+
+            // Ambil XSRF token dari cookie untuk POST request
+            const xsrf = decodeURIComponent(
+                document.cookie.split('; ').find(r => r.startsWith('XSRF-TOKEN='))?.split('=')[1] ?? ''
+            );
+
+            fetch('/api/kos/history', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-XSRF-TOKEN': xsrf,
+                },
+                body: JSON.stringify({ ids }),
+            })
+                .then(r => r.ok ? r.json() : [])
+                .then(data => setHistoryKos(Array.isArray(data) ? data : []))
+                .catch(() => {})
+                .finally(() => setLoaded(true));
+        } catch {
+            setLoaded(true);
+        }
+    }, []);
+
+    if (!loaded || historyKos.length === 0) return null;
+
+    return (
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10"
+            style={{ borderTop: '1px solid #EAE0DC', paddingTop: '32px' }}>
+            <div className="flex items-center justify-between mb-5">
+                <div>
+                    <h2 className="text-lg font-bold" style={{ color: '#2D1B18' }}>Terakhir Kamu Lihat</h2>
+                    <p className="text-sm mt-0.5" style={{ color: '#8C6B63' }}>
+                        Lanjutkan pencarian kos yang sudah kamu buka
+                    </p>
+                </div>
+                <button
+                    onClick={() => {
+                        localStorage.removeItem('kos_history');
+                        setHistoryKos([]);
+                    }}
+                    className="text-xs transition-colors px-3 py-1.5 rounded-lg"
+                    style={{ color: '#8C6B63', border: '1px solid #EAE0DC' }}
+                    onMouseEnter={e => { e.currentTarget.style.color = '#C0392B'; e.currentTarget.style.borderColor = '#C0392B'; }}
+                    onMouseLeave={e => { e.currentTarget.style.color = '#8C6B63'; e.currentTarget.style.borderColor = '#EAE0DC'; }}
+                >
+                    Hapus Riwayat
+                </button>
+            </div>
+            <KosGrid items={historyKos} />
+        </section>
+    );
+}
+
 // ── Main Page ─────────────────────────────────────────────────
 export default function Home({ featuredKos, promotedKos, totalKos, districts }) {
     const [filterBar, setFilterBar] = useState({
@@ -99,8 +166,6 @@ export default function Home({ featuredKos, promotedKos, totalKos, districts }) 
 
             {/* ── Hero pendek + Filter card overlap ──────── */}
             <div className="relative">
-
-                {/* Hero */}
                 <section
                     className="relative flex flex-col items-center justify-center text-center px-4"
                     style={{
@@ -121,52 +186,33 @@ export default function Home({ featuredKos, promotedKos, totalKos, districts }) 
                     </div>
                 </section>
 
-                {/* Filter Card — overlap ke bawah hero */}
+                {/* Filter Card */}
                 <div className="relative z-20 max-w-5xl mx-auto px-4 sm:px-6" style={{ marginTop: '-44px' }}>
                     <form onSubmit={handleFilterSubmit}>
                         <div className="bg-white rounded-2xl px-5 py-5"
                             style={{ boxShadow: '0 8px 32px rgba(45,27,24,0.14)', border: '1px solid #EAE0DC' }}>
-
                             <div className="flex flex-wrap items-center gap-3">
 
-                                {/* Kecamatan */}
                                 <div className="relative flex-1" style={{ minWidth: '170px' }}>
-                                    <select
-                                        value={filterBar.district}
+                                    <select value={filterBar.district}
                                         onChange={e => setFilterBar(p => ({ ...p, district: e.target.value }))}
                                         className="w-full outline-none appearance-none bg-white text-sm"
-                                        style={{
-                                            padding: '11px 36px 11px 14px',
-                                            border: '1px solid #D1C8C4',
-                                            borderRadius: '8px',
-                                            color: filterBar.district ? '#2D1B18' : '#8C6B63',
-                                            cursor: 'pointer',
-                                        }}
+                                        style={{ padding: '11px 36px 11px 14px', border: '1px solid #D1C8C4', borderRadius: '8px', color: filterBar.district ? '#2D1B18' : '#8C6B63', cursor: 'pointer' }}
                                         onFocus={e => e.target.style.borderColor = '#C0392B'}
-                                        onBlur={e => e.target.style.borderColor = '#D1C8C4'}
-                                    >
+                                        onBlur={e => e.target.style.borderColor = '#D1C8C4'}>
                                         <option value="">Semua Kota</option>
                                         {districts?.map(d => <option key={d} value={d}>{d}</option>)}
                                     </select>
                                     <ChevronDown />
                                 </div>
 
-                                {/* Tipe Kos */}
                                 <div className="relative" style={{ minWidth: '130px' }}>
-                                    <select
-                                        value={filterBar.type}
+                                    <select value={filterBar.type}
                                         onChange={e => setFilterBar(p => ({ ...p, type: e.target.value }))}
                                         className="w-full outline-none appearance-none bg-white text-sm"
-                                        style={{
-                                            padding: '11px 36px 11px 14px',
-                                            border: '1px solid #D1C8C4',
-                                            borderRadius: '8px',
-                                            color: filterBar.type ? '#2D1B18' : '#8C6B63',
-                                            cursor: 'pointer',
-                                        }}
+                                        style={{ padding: '11px 36px 11px 14px', border: '1px solid #D1C8C4', borderRadius: '8px', color: filterBar.type ? '#2D1B18' : '#8C6B63', cursor: 'pointer' }}
                                         onFocus={e => e.target.style.borderColor = '#C0392B'}
-                                        onBlur={e => e.target.style.borderColor = '#D1C8C4'}
-                                    >
+                                        onBlur={e => e.target.style.borderColor = '#D1C8C4'}>
                                         <option value="">Semua</option>
                                         <option value="putra">Putra</option>
                                         <option value="putri">Putri</option>
@@ -175,22 +221,13 @@ export default function Home({ featuredKos, promotedKos, totalKos, districts }) 
                                     <ChevronDown />
                                 </div>
 
-                                {/* Tipe Sewa */}
                                 <div className="relative" style={{ minWidth: '130px' }}>
-                                    <select
-                                        value={filterBar.price_type}
+                                    <select value={filterBar.price_type}
                                         onChange={e => setFilterBar(p => ({ ...p, price_type: e.target.value }))}
                                         className="w-full outline-none appearance-none bg-white text-sm"
-                                        style={{
-                                            padding: '11px 36px 11px 14px',
-                                            border: '1px solid #D1C8C4',
-                                            borderRadius: '8px',
-                                            color: '#2D1B18',
-                                            cursor: 'pointer',
-                                        }}
+                                        style={{ padding: '11px 36px 11px 14px', border: '1px solid #D1C8C4', borderRadius: '8px', color: '#2D1B18', cursor: 'pointer' }}
                                         onFocus={e => e.target.style.borderColor = '#C0392B'}
-                                        onBlur={e => e.target.style.borderColor = '#D1C8C4'}
-                                    >
+                                        onBlur={e => e.target.style.borderColor = '#D1C8C4'}>
                                         <option value="">Semua Sewa</option>
                                         <option value="harian">Harian</option>
                                         <option value="bulanan">Bulanan</option>
@@ -199,34 +236,24 @@ export default function Home({ featuredKos, promotedKos, totalKos, districts }) 
                                     <ChevronDown />
                                 </div>
 
-                                {/* Harga min */}
-                                <PriceInput
-                                    value={filterBar.price_min}
+                                <PriceInput value={filterBar.price_min}
                                     onChange={v => setFilterBar(p => ({ ...p, price_min: v }))}
-                                    placeholder="0"
-                                />
+                                    placeholder="0" />
 
                                 <span className="shrink-0 text-sm font-medium select-none" style={{ color: '#8C6B63' }}>-</span>
 
-                                {/* Harga maks */}
-                                <PriceInput
-                                    value={filterBar.price_max}
+                                <PriceInput value={filterBar.price_max}
                                     onChange={v => setFilterBar(p => ({ ...p, price_max: v }))}
-                                    placeholder="15.000.000"
-                                />
+                                    placeholder="15.000.000" />
 
-                                {/* Tombol Set */}
-                                <button
-                                    type="submit"
+                                <button type="submit"
                                     className="shrink-0 text-sm font-bold rounded-lg transition-colors"
                                     style={{ padding: '11px 24px', backgroundColor: '#C0392B', color: '#FFFFFF' }}
                                     onMouseEnter={e => e.currentTarget.style.backgroundColor = '#A93226'}
-                                    onMouseLeave={e => e.currentTarget.style.backgroundColor = '#C0392B'}
-                                >
+                                    onMouseLeave={e => e.currentTarget.style.backgroundColor = '#C0392B'}>
                                     Set
                                 </button>
                             </div>
-
                             {priceError && (
                                 <p className="text-xs mt-2" style={{ color: '#C0392B' }}>{priceError}</p>
                             )}
@@ -235,7 +262,6 @@ export default function Home({ featuredKos, promotedKos, totalKos, districts }) 
                 </div>
             </div>
 
-            {/* Spacer antara filter card dan section listing */}
             <div style={{ height: '28px' }} />
 
             {/* ── Rekomendasi AdaKamar (Promoted) ─────────── */}
@@ -252,8 +278,7 @@ export default function Home({ featuredKos, promotedKos, totalKos, districts }) 
                                 Dipilih langsung oleh tim AdaKamar.id
                             </span>
                         </div>
-                        <Link href="/kos"
-                            className="text-sm font-semibold transition-colors"
+                        <Link href="/kos" className="text-sm font-semibold transition-colors"
                             style={{ color: '#C0392B' }}
                             onMouseEnter={e => e.currentTarget.style.color = '#A93226'}
                             onMouseLeave={e => e.currentTarget.style.color = '#C0392B'}>
@@ -289,6 +314,9 @@ export default function Home({ featuredKos, promotedKos, totalKos, districts }) 
                     </div>
                 )}
             </section>
+
+            {/* ── Terakhir Kamu Lihat ───────────────────────── */}
+            <HistorySection />
 
             {/* ── Artikel ──────────────────────────────────── */}
             <section style={{ backgroundColor: '#FFFFFF', borderTop: '1px solid #EAE0DC' }}>

@@ -25,6 +25,11 @@ class KosService
     }
 
 
+    public function getKosByHistory(array $ids, int $limit = 8): Collection
+    {
+        return $this->kosRepository->getByIds($ids, $limit);
+    }
+
     public function getFilteredListing(array $filters): LengthAwarePaginator
     {
         return $this->kosRepository->all($filters);

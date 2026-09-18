@@ -1,7 +1,7 @@
 import GuestLayout from '@/Layouts/GuestLayout';
 import KosCard from '@/Components/Guest/KosCard';
 import { Head, Link, usePage, router } from '@inertiajs/react';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 // ── Constants ─────────────────────────────────────────────────
 const TYPE_LABELS = { putra: 'Putra', putri: 'Putri', campur: 'Campur' };
@@ -330,6 +330,18 @@ export default function KosShow({ kos, facilitiesByCategory, similarKos, userRev
     const waLink    = waNumber ? `https://wa.me/${waNumber}?text=${waMessage}` : null;
 
     const hasFacilities = Object.values(facilitiesByCategory ?? {}).some(arr => arr.length > 0);
+
+    // Simpan ID kos ke localStorage saat halaman dibuka (view history)
+    useEffect(() => {
+        if (!kos?.id) return;
+        try {
+            const raw = localStorage.getItem('kos_history');
+            const prev = raw ? JSON.parse(raw) : [];
+            const deduped = Array.isArray(prev) ? prev.filter(id => id !== kos.id) : [];
+            deduped.unshift(kos.id);
+            localStorage.setItem('kos_history', JSON.stringify(deduped.slice(0, 20)));
+        } catch {}
+    }, [kos?.id]);
 
     return (
         <GuestLayout>

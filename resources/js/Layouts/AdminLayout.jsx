@@ -1,7 +1,6 @@
 import { Link, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 
-// SVG icons sebagai komponen kecil
 const icons = {
     dashboard: (
         <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
@@ -49,17 +48,82 @@ const icons = {
             <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
         </svg>
     ),
+    chevronRight: (
+        <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+        </svg>
+    ),
 };
 
-const navigation = [
-    { name: 'Dashboard', href: '/admin/dashboard', icon: icons.dashboard },
-    { name: 'Manajemen Kos', href: '/admin/kos', icon: icons.kos },
-    { name: 'Master Fasilitas', href: '/admin/facilities', icon: icons.facility },
-    { name: 'Ulasan', href: '/admin/reviews', icon: icons.review },
-    { name: 'Pengguna', href: '/admin/users', icon: icons.users },
-    { name: 'Statistik', href: '/admin/statistics', icon: icons.statistics },
-    { name: 'Pengaturan', href: '/admin/settings', icon: icons.settings },
+// Nav groups — memisahkan menu berdasarkan fungsi
+const navGroups = [
+    {
+        label: 'Utama',
+        items: [
+            { name: 'Dashboard',      href: '/admin/dashboard',   icon: icons.dashboard },
+        ],
+    },
+    {
+        label: 'Konten',
+        items: [
+            { name: 'Manajemen Kos',  href: '/admin/kos',         icon: icons.kos },
+            { name: 'Fasilitas',      href: '/admin/facilities',   icon: icons.facility },
+        ],
+    },
+    {
+        label: 'Komunitas',
+        items: [
+            { name: 'Ulasan',         href: '/admin/reviews',      icon: icons.review },
+            { name: 'Pengguna',       href: '/admin/users',        icon: icons.users },
+        ],
+    },
+    {
+        label: 'Sistem',
+        items: [
+            { name: 'Statistik',      href: '/admin/statistics',   icon: icons.statistics },
+            { name: 'Pengaturan',     href: '/admin/settings',     icon: icons.settings },
+        ],
+    },
 ];
+
+// Single nav item dengan left-accent style untuk item aktif
+function NavItem({ item, active }) {
+    return (
+        <Link
+            href={item.href}
+            className="group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150"
+            style={{
+                backgroundColor: active ? 'rgba(192,57,43,0.15)' : 'transparent',
+                color: active ? '#FFFFFF' : 'rgba(245,237,233,0.65)',
+            }}
+            onMouseEnter={e => {
+                if (!active) {
+                    e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.07)';
+                    e.currentTarget.style.color = '#F5EDE9';
+                }
+            }}
+            onMouseLeave={e => {
+                if (!active) {
+                    e.currentTarget.style.backgroundColor = 'transparent';
+                    e.currentTarget.style.color = 'rgba(245,237,233,0.65)';
+                }
+            }}
+        >
+            {/* Left accent bar untuk item aktif */}
+            {active && (
+                <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 rounded-full"
+                    style={{ backgroundColor: '#C0392B' }} />
+            )}
+            <span className="shrink-0" style={{ color: active ? '#F87171' : 'inherit' }}>
+                {item.icon}
+            </span>
+            <span className="font-medium flex-1">{item.name}</span>
+            {active && (
+                <span style={{ color: 'rgba(248,113,113,0.5)' }}>{icons.chevronRight}</span>
+            )}
+        </Link>
+    );
+}
 
 export default function AdminLayout({ children, title }) {
     const { auth } = usePage().props;
@@ -68,69 +132,73 @@ export default function AdminLayout({ children, title }) {
 
     const isActive = (href) => currentUrl.startsWith(href);
 
-    return (
-        <div className="min-h-screen" style={{ backgroundColor: '#FBF7F5' }}>
+    // Nama halaman aktif untuk topbar
+    const activePageName = navGroups.flatMap(g => g.items).find(i => isActive(i.href))?.name ?? title;
 
-            {/* ── Sidebar ─────────────────────────────── */}
+    return (
+        <div className="min-h-screen" style={{ backgroundColor: '#F5F0EE' }}>
+
+            {/* ── Sidebar ───────────────────────────────── */}
             <aside
-                style={{ backgroundColor: '#2D1B18' }}
-                className={`fixed inset-y-0 left-0 z-50 w-64 flex flex-col transform transition-transform duration-200 ease-in-out
+                className={`fixed inset-y-0 left-0 z-50 w-60 flex flex-col transform transition-transform duration-200 ease-in-out
                     ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}
+                style={{ backgroundColor: '#1E110F' }}
             >
-                {/* Logo */}
-                <div className="flex items-center h-16 px-5 shrink-0" style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
-                    <img
-                        src="/image/logo.png"
-                        alt="AdaKamar.id"
-                        className="h-10 w-auto object-contain object-left"
-                        style={{ filter: 'brightness(0) invert(1)' }}
-                    />
+                {/* Logo area */}
+                <div className="flex items-center h-14 px-4 shrink-0"
+                    style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+                    <img src="/image/logo.png" alt="AdaKamar.id"
+                        className="h-8 w-auto object-contain object-left"
+                        style={{ filter: 'brightness(0) invert(1)' }} />
+                    <span className="ml-2 text-xs font-medium px-1.5 py-0.5 rounded"
+                        style={{ backgroundColor: 'rgba(192,57,43,0.3)', color: '#F87171' }}>
+                        Admin
+                    </span>
                 </div>
 
-                {/* Nav */}
-                <nav className="flex-1 overflow-y-auto py-4 px-3 space-y-0.5">
-                    {navigation.map((item) => {
-                        const active = isActive(item.href);
-                        return (
-                            <Link
-                                key={item.href}
-                                href={item.href}
-                                className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors"
-                                style={{
-                                    backgroundColor: active ? '#C0392B' : 'transparent',
-                                    color: active ? '#FFFFFF' : 'rgba(245,237,233,0.7)',
-                                }}
-                                onMouseEnter={e => { if (!active) { e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.08)'; e.currentTarget.style.color = '#F5EDE9'; }}}
-                                onMouseLeave={e => { if (!active) { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = 'rgba(245,237,233,0.7)'; }}}
-                            >
-                                <span className="shrink-0">{item.icon}</span>
-                                <span className="font-medium">{item.name}</span>
-                            </Link>
-                        );
-                    })}
+                {/* Nav dengan grouping */}
+                <nav className="flex-1 overflow-y-auto py-3 px-2.5 space-y-5">
+                    {navGroups.map(group => (
+                        <div key={group.label}>
+                            <p className="px-3 mb-1 text-xs font-semibold uppercase tracking-widest"
+                                style={{ color: 'rgba(245,237,233,0.25)', letterSpacing: '0.08em' }}>
+                                {group.label}
+                            </p>
+                            <div className="space-y-0.5">
+                                {group.items.map(item => (
+                                    <NavItem key={item.href} item={item} active={isActive(item.href)} />
+                                ))}
+                            </div>
+                        </div>
+                    ))}
                 </nav>
 
-                {/* Bottom user info */}
-                <div className="shrink-0 p-4" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-                    <div className="flex items-center gap-3 mb-3">
-                        {/* Avatar initials */}
-                        <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0"
+                {/* User info + logout */}
+                <div className="shrink-0 p-3" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+                    {/* User card */}
+                    <div className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg mb-1"
+                        style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}>
+                        <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold shrink-0"
                             style={{ backgroundColor: '#C0392B', color: '#fff' }}>
                             {auth?.user?.name?.charAt(0)?.toUpperCase() ?? 'A'}
                         </div>
-                        <div className="min-w-0">
-                            <p className="text-xs font-semibold truncate" style={{ color: '#F5EDE9' }}>{auth?.user?.name ?? 'Admin'}</p>
-                            <p className="text-xs truncate" style={{ color: 'rgba(245,237,233,0.45)' }}>{auth?.user?.email}</p>
+                        <div className="min-w-0 flex-1">
+                            <p className="text-xs font-semibold truncate leading-tight"
+                                style={{ color: '#F5EDE9' }}>
+                                {auth?.user?.name ?? 'Admin'}
+                            </p>
+                            <p className="text-xs truncate leading-tight"
+                                style={{ color: 'rgba(245,237,233,0.38)' }}>
+                                {auth?.user?.email}
+                            </p>
                         </div>
                     </div>
                     <Link
-                        href="/logout"
-                        method="post"
-                        as="button"
+                        href="/logout" method="post" as="button"
                         className="flex items-center gap-2 w-full px-3 py-2 rounded-lg text-xs transition-colors"
-                        style={{ color: 'rgba(245,237,233,0.55)' }}
-                        onMouseEnter={e => { e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.06)'; e.currentTarget.style.color = '#F5EDE9'; }}
-                        onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = 'rgba(245,237,233,0.55)'; }}
+                        style={{ color: 'rgba(245,237,233,0.45)' }}
+                        onMouseEnter={e => { e.currentTarget.style.backgroundColor = 'rgba(192,57,43,0.15)'; e.currentTarget.style.color = '#F87171'; }}
+                        onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = 'rgba(245,237,233,0.45)'; }}
                     >
                         {icons.logout}
                         <span>Keluar</span>
@@ -140,31 +208,48 @@ export default function AdminLayout({ children, title }) {
 
             {/* Mobile overlay */}
             {sidebarOpen && (
-                <div
-                    className="fixed inset-0 z-40 bg-black/40 lg:hidden"
-                    onClick={() => setSidebarOpen(false)}
-                />
+                <div className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+                    onClick={() => setSidebarOpen(false)} />
             )}
 
-            {/* ── Main Content ─────────────────────────── */}
-            <div className="lg:pl-64 flex flex-col min-h-screen">
-                {/* Top bar */}
-                <header className="sticky top-0 z-30 flex items-center h-16 px-4 lg:px-6 bg-white"
-                    style={{ borderBottom: '1px solid #EAE0DC' }}>
-                    <button
-                        onClick={() => setSidebarOpen(true)}
-                        className="p-2 mr-3 rounded-lg lg:hidden transition-colors"
-                        style={{ color: '#8C6B63' }}
-                        onMouseEnter={e => { e.currentTarget.style.backgroundColor = '#F5EDE9'; }}
-                        onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; }}
-                    >
-                        {icons.menu}
-                    </button>
-                    <h1 className="text-sm font-semibold" style={{ color: '#2D1B18' }}>{title}</h1>
+            {/* ── Main Content ──────────────────────────── */}
+            <div className="lg:pl-60 flex flex-col min-h-screen">
+
+                {/* Topbar */}
+                <header className="sticky top-0 z-30 flex items-center justify-between h-14 px-4 lg:px-6"
+                    style={{
+                        backgroundColor: '#FFFFFF',
+                        borderBottom: '1px solid #EAE0DC',
+                        boxShadow: '0 1px 3px rgba(45,27,24,0.05)',
+                    }}>
+                    <div className="flex items-center gap-3">
+                        <button onClick={() => setSidebarOpen(true)}
+                            className="p-1.5 rounded-lg lg:hidden transition-colors"
+                            style={{ color: '#8C6B63' }}
+                            onMouseEnter={e => e.currentTarget.style.backgroundColor = '#F5EDE9'}
+                            onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}>
+                            {icons.menu}
+                        </button>
+                        <h1 className="text-sm font-semibold" style={{ color: '#2D1B18' }}>
+                            {activePageName}
+                        </h1>
+                    </div>
+
+                    {/* Link ke public site */}
+                    <a href="/" target="_blank" rel="noopener noreferrer"
+                        className="hidden sm:flex items-center gap-1.5 text-xs transition-colors px-3 py-1.5 rounded-lg"
+                        style={{ color: '#8C6B63', border: '1px solid #EAE0DC' }}
+                        onMouseEnter={e => { e.currentTarget.style.color = '#C0392B'; e.currentTarget.style.borderColor = '#C0392B'; }}
+                        onMouseLeave={e => { e.currentTarget.style.color = '#8C6B63'; e.currentTarget.style.borderColor = '#EAE0DC'; }}>
+                        <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                        Lihat Website
+                    </a>
                 </header>
 
                 {/* Page content */}
-                <main className="flex-1 p-5 lg:p-7">
+                <main className="flex-1 p-5 lg:p-6">
                     {children}
                 </main>
             </div>
