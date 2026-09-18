@@ -67,7 +67,7 @@ class KosRepository
     }
 
     /**
-     * Ambil kos aktif untuk homepage â€” Plus dulu, lalu terbaru, max 8.
+     * Ambil kos aktif untuk homepage — Plus dulu, lalu terbaru, max 8.
      */
     public function getActiveForHomepage(): Collection
     {
@@ -89,13 +89,6 @@ class KosRepository
             ->where('is_active', true)
             ->where('is_promoted', true)
             ->orderBy('is_plus', 'desc')
-            ->orderBy('rating_avg', 'desc')
-            ->limit($limit)
-            ->get();
-    }
-        return Kos::with(['primaryPhoto', 'activePrices'])
-            ->where('is_active', true)
-            ->whereIn('id', $ids)
             ->orderBy('rating_avg', 'desc')
             ->limit($limit)
             ->get();

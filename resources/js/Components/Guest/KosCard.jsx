@@ -16,9 +16,10 @@ function formatPrice(price) {
 }
 
 export default function KosCard({ kos }) {
-    const primaryPhoto = kos.primary_photo;
-    const lowestPrice  = kos.active_prices?.[0];
-    const typeColor    = TYPE_COLORS[kos.type] ?? { bg: '#F5F5F5', text: '#666' };
+    const primaryPhoto  = kos.primary_photo;
+    const activePrices  = kos.active_prices ?? [];
+    const lowestPrice   = activePrices[0] ?? null;
+    const typeColor     = TYPE_COLORS[kos.type] ?? { bg: '#F5F5F5', text: '#666' };
 
     return (
         <Link href={`/kos/${kos.slug}`}
@@ -41,7 +42,6 @@ export default function KosCard({ kos }) {
                     className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                     loading="lazy"
                 />
-
                 {/* Badge Plus */}
                 {kos.is_plus && (
                     <div className="absolute top-2.5 left-2.5">
@@ -51,7 +51,6 @@ export default function KosCard({ kos }) {
                         </span>
                     </div>
                 )}
-
                 {/* Rating overlay */}
                 {kos.rating_avg > 0 && (
                     <div className="absolute top-2.5 right-2.5">
@@ -80,21 +79,22 @@ export default function KosCard({ kos }) {
                     <span className="text-xs truncate" style={{ color: '#8C6B63' }}>{kos.district}</span>
                 </div>
 
-                {/* Badges */}
+                {/* Badges: tipe kos + SEMUA label harga */}
                 <div className="flex items-center gap-1.5 mb-3 flex-wrap">
                     <span className="text-xs px-2 py-0.5 rounded-full font-medium"
                         style={{ backgroundColor: typeColor.bg, color: typeColor.text }}>
                         {TYPE_LABELS[kos.type] ?? kos.type}
                     </span>
-                    {lowestPrice && (
-                        <span className="text-xs px-2 py-0.5 rounded-full font-medium capitalize"
+                    {activePrices.map(p => (
+                        <span key={p.id ?? p.type}
+                            className="text-xs px-2 py-0.5 rounded-full font-medium capitalize"
                             style={{ backgroundColor: '#F5EDE9', color: '#8C6B63' }}>
-                            {lowestPrice.type}
+                            {p.type}
                         </span>
-                    )}
+                    ))}
                 </div>
 
-                {/* Harga */}
+                {/* Harga terendah */}
                 {lowestPrice ? (
                     <p className="text-sm font-bold" style={{ color: '#C0392B' }}>
                         {formatPrice(lowestPrice.price)}

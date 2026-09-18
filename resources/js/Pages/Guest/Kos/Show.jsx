@@ -3,7 +3,7 @@ import KosCard from '@/Components/Guest/KosCard';
 import { Head, Link, usePage, router } from '@inertiajs/react';
 import { useState, useRef } from 'react';
 
-// â”€â”€ Constants â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Constants ─────────────────────────────────────────────────
 const TYPE_LABELS = { putra: 'Putra', putri: 'Putri', campur: 'Campur' };
 const TYPE_COLORS = {
     putra:  { bg: '#EFF6FF', text: '#1D4ED8' },
@@ -17,7 +17,7 @@ const CATEGORY_LABELS = {
     sekitar: 'Fasilitas Sekitar',
 };
 
-// â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Helpers ───────────────────────────────────────────────────
 function formatPrice(price) {
     return new Intl.NumberFormat('id-ID', {
         style: 'currency', currency: 'IDR',
@@ -32,7 +32,7 @@ function formatDate(dateStr) {
     });
 }
 
-// â”€â”€ Star Display (read-only) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Star Display (read-only) ──────────────────────────────────
 function StarDisplay({ rating, size = 'sm' }) {
     const sz = size === 'sm' ? 'w-3.5 h-3.5' : 'w-4 h-4';
     return (
@@ -47,20 +47,17 @@ function StarDisplay({ rating, size = 'sm' }) {
     );
 }
 
-// â”€â”€ Star Rating (interactive) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Star Rating (interactive) ─────────────────────────────────
 function StarRating({ value, onChange }) {
     const [hover, setHover] = useState(0);
     return (
         <div className="flex items-center gap-1">
             {[1, 2, 3, 4, 5].map(i => (
-                <button
-                    key={i}
-                    type="button"
+                <button key={i} type="button"
                     onClick={() => onChange(i)}
                     onMouseEnter={() => setHover(i)}
                     onMouseLeave={() => setHover(0)}
-                    className="transition-transform hover:scale-110"
-                >
+                    className="transition-transform hover:scale-110">
                     <svg xmlns="http://www.w3.org/2000/svg" className="w-7 h-7"
                         viewBox="0 0 20 20"
                         fill={(hover || value) >= i ? '#C0392B' : '#EAE0DC'}>
@@ -77,23 +74,22 @@ function StarRating({ value, onChange }) {
     );
 }
 
-// â”€â”€ Review Form â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Review Form ───────────────────────────────────────────────
 function ReviewForm({ kos, existingReview = null }) {
     const isEdit = !!existingReview;
     const fileInputRef = useRef(null);
 
-    const [rating, setRating] = useState(existingReview?.rating ?? 0);
-    const [comment, setComment] = useState(existingReview?.comment ?? '');
-    const [photos, setPhotos] = useState([]);
+    const [rating, setRating]       = useState(existingReview?.rating ?? 0);
+    const [comment, setComment]     = useState(existingReview?.comment ?? '');
+    const [photos, setPhotos]       = useState([]);
     const [previewUrls, setPreviewUrls] = useState([]);
-    const [processing, setProcessing] = useState(false);
-    const [errors, setErrors] = useState({});
+    const [processing, setProcessing]  = useState(false);
+    const [errors, setErrors]          = useState({});
 
     function handlePhotoChange(e) {
         const files = Array.from(e.target.files);
         setPhotos(files);
-        const urls = files.map(f => URL.createObjectURL(f));
-        setPreviewUrls(urls);
+        setPreviewUrls(files.map(f => URL.createObjectURL(f)));
     }
 
     function handleSubmit(e) {
@@ -105,15 +101,8 @@ function ReviewForm({ kos, existingReview = null }) {
         const formData = new FormData();
         formData.append('rating', rating);
         formData.append('comment', comment ?? '');
-
-        // Method spoofing untuk PUT â€” tambahkan _method ke FormData
-        if (isEdit) {
-            formData.append('_method', 'PUT');
-        }
-
-        photos.forEach((photo, i) => {
-            formData.append(`photos[${i}]`, photo);
-        });
+        if (isEdit) formData.append('_method', 'PUT');
+        photos.forEach((photo, i) => formData.append(`photos[${i}]`, photo));
 
         const url = isEdit
             ? route('reviews.update', { kos: kos.slug, review: existingReview.id })
@@ -122,10 +111,7 @@ function ReviewForm({ kos, existingReview = null }) {
         router.post(url, formData, {
             forceFormData: true,
             onSuccess: () => {
-                if (!isEdit) {
-                    setRating(0);
-                    setComment('');
-                }
+                if (!isEdit) { setRating(0); setComment(''); }
                 setPhotos([]);
                 setPreviewUrls([]);
                 if (fileInputRef.current) fileInputRef.current.value = '';
@@ -137,16 +123,13 @@ function ReviewForm({ kos, existingReview = null }) {
 
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
-
             {/* Rating */}
             <div>
                 <label className="block text-sm font-medium mb-2" style={{ color: '#2D1B18' }}>
                     Rating <span style={{ color: '#C0392B' }}>*</span>
                 </label>
                 <StarRating value={rating} onChange={setRating} />
-                {errors.rating && (
-                    <p className="mt-1 text-xs" style={{ color: '#C0392B' }}>{errors.rating}</p>
-                )}
+                {errors.rating && <p className="mt-1 text-xs" style={{ color: '#C0392B' }}>{errors.rating}</p>}
             </div>
 
             {/* Komentar */}
@@ -157,87 +140,60 @@ function ReviewForm({ kos, existingReview = null }) {
                 <textarea
                     value={comment}
                     onChange={e => setComment(e.target.value)}
-                    rows={3}
-                    maxLength={1000}
+                    rows={3} maxLength={1000}
                     placeholder="Ceritakan pengalamanmu di kos ini..."
                     className="w-full px-3.5 py-2.5 text-sm rounded-xl outline-none resize-none transition-all"
-                    style={{
-                        border: `1px solid ${errors.comment ? '#C0392B' : '#EAE0DC'}`,
-                        backgroundColor: '#FFFFFF',
-                        color: '#2D1B18',
-                    }}
+                    style={{ border: `1px solid ${errors.comment ? '#C0392B' : '#EAE0DC'}`, backgroundColor: '#FFFFFF', color: '#2D1B18' }}
                     onFocus={e => { e.target.style.borderColor = '#C0392B'; e.target.style.boxShadow = '0 0 0 3px rgba(192,57,43,0.1)'; }}
                     onBlur={e => { e.target.style.borderColor = errors.comment ? '#C0392B' : '#EAE0DC'; e.target.style.boxShadow = 'none'; }}
                 />
                 <div className="flex justify-between mt-1">
-                    {errors.comment ? (
-                        <p className="text-xs" style={{ color: '#C0392B' }}>{errors.comment}</p>
-                    ) : <span />}
-                    <span className="text-xs" style={{ color: '#8C6B63' }}>
-                        {(comment ?? '').length}/1000
-                    </span>
+                    {errors.comment
+                        ? <p className="text-xs" style={{ color: '#C0392B' }}>{errors.comment}</p>
+                        : <span />}
+                    <span className="text-xs" style={{ color: '#8C6B63' }}>{(comment ?? '').length}/1000</span>
                 </div>
             </div>
 
             {/* Foto */}
             <div>
                 <label className="block text-sm font-medium mb-1.5" style={{ color: '#2D1B18' }}>
-                    Foto <span className="text-xs font-normal" style={{ color: '#8C6B63' }}>
-                        (opsional, maks 3 foto Â· JPEG/PNG Â· maks 2MB)
-                    </span>
+                    Foto <span className="text-xs font-normal" style={{ color: '#8C6B63' }}>(opsional, maks 3 foto · JPEG/PNG · maks 2MB)</span>
                 </label>
 
-                {/* Preview foto yang sudah ada (mode edit) */}
                 {isEdit && existingReview.photos?.length > 0 && previewUrls.length === 0 && (
                     <div className="flex gap-2 mb-2 flex-wrap">
                         {existingReview.photos.map(p => (
-                            <img key={p.id}
-                                src={`/storage/${p.path}`}
-                                alt="Foto ulasan"
+                            <img key={p.id} src={`/storage/${p.path}`} alt="Foto ulasan"
                                 className="w-16 h-16 object-cover rounded-lg"
                                 style={{ border: '1px solid #EAE0DC' }}
-                                onError={e => { e.currentTarget.src = '/image/placeholder_empty.png'; }}
-                            />
+                                onError={e => { e.currentTarget.src = '/image/placeholder_empty.png'; }} />
                         ))}
-                        <p className="text-xs self-center" style={{ color: '#8C6B63' }}>
-                            Upload foto baru untuk mengganti
-                        </p>
+                        <p className="text-xs self-center" style={{ color: '#8C6B63' }}>Upload foto baru untuk mengganti</p>
                     </div>
                 )}
 
-                {/* Preview foto baru */}
                 {previewUrls.length > 0 && (
                     <div className="flex gap-2 mb-2 flex-wrap">
                         {previewUrls.map((url, i) => (
                             <img key={i} src={url} alt={`Preview ${i + 1}`}
                                 className="w-16 h-16 object-cover rounded-lg"
-                                style={{ border: '1px solid #C0392B' }}
-                            />
+                                style={{ border: '1px solid #C0392B' }} />
                         ))}
                     </div>
                 )}
 
-                <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept="image/jpeg,image/png"
-                    multiple
-                    onChange={handlePhotoChange}
-                    className="w-full text-sm"
-                    style={{ color: '#2D1B18' }}
-                />
-                {errors['photos.0'] && (
-                    <p className="mt-1 text-xs" style={{ color: '#C0392B' }}>{errors['photos.0']}</p>
-                )}
+                <input ref={fileInputRef} type="file" accept="image/jpeg,image/png"
+                    multiple onChange={handlePhotoChange}
+                    className="w-full text-sm" style={{ color: '#2D1B18' }} />
+                {errors['photos.0'] && <p className="mt-1 text-xs" style={{ color: '#C0392B' }}>{errors['photos.0']}</p>}
                 {errors.photos && typeof errors.photos === 'string' && (
                     <p className="mt-1 text-xs" style={{ color: '#C0392B' }}>{errors.photos}</p>
                 )}
             </div>
 
             {/* Submit */}
-            <button
-                type="submit"
-                disabled={processing || rating === 0}
+            <button type="submit" disabled={processing || rating === 0}
                 className="w-full py-2.5 text-sm font-semibold rounded-xl transition-colors"
                 style={{
                     backgroundColor: (processing || rating === 0) ? '#EAE0DC' : '#C0392B',
@@ -245,27 +201,26 @@ function ReviewForm({ kos, existingReview = null }) {
                     cursor: (processing || rating === 0) ? 'not-allowed' : 'pointer',
                 }}
                 onMouseEnter={e => { if (!processing && rating > 0) e.currentTarget.style.backgroundColor = '#A93226'; }}
-                onMouseLeave={e => { if (!processing && rating > 0) e.currentTarget.style.backgroundColor = '#C0392B'; }}
-            >
+                onMouseLeave={e => { if (!processing && rating > 0) e.currentTarget.style.backgroundColor = '#C0392B'; }}>
                 {processing ? 'Mengirim...' : isEdit ? 'Perbarui Ulasan' : 'Kirim Ulasan'}
             </button>
         </form>
     );
 }
 
-// â”€â”€ Facility Badge â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Facility Badge ────────────────────────────────────────────
 function FacilityBadge({ name }) {
     return (
         <span className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full font-medium"
             style={{ backgroundColor: '#F5EDE9', color: '#2D1B18', border: '1px solid #EAE0DC' }}>
-            <span className="w-1.5 h-1.5 rounded-full shrink-0"
-                style={{ backgroundColor: '#C0392B' }} />
+            <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: '#C0392B' }} />
             {name}
         </span>
     );
 }
 
-// â”€â”€ Info Attribute (AC / WiFi / KM Dalam) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Info Attribute (AC / WiFi / KM Dalam) ─────────────────────
+// Menggunakan SVG icon agar tidak bergantung pada emoji yang rawan encoding rusak
 function InfoAttr({ label, active, icon }) {
     return (
         <div className="flex flex-col items-center gap-1.5 p-3 rounded-xl text-center"
@@ -274,16 +229,34 @@ function InfoAttr({ label, active, icon }) {
                 border: `1px solid ${active ? '#F5C6C0' : '#EAE0DC'}`,
                 opacity: active ? 1 : 0.45,
             }}>
-            <span className="text-xl">{icon}</span>
-            <span className="text-xs font-medium"
-                style={{ color: active ? '#C0392B' : '#8C6B63' }}>
+            <span className="text-xl leading-none">{icon}</span>
+            <span className="text-xs font-medium" style={{ color: active ? '#C0392B' : '#8C6B63' }}>
                 {label}
             </span>
         </div>
     );
 }
 
-// â”€â”€ Mosaic Photo Gallery â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// SVG icons untuk InfoAttr — aman dari encoding issue
+const AcIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.6}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2h-2" />
+    </svg>
+);
+
+const WifiIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.6}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.14 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" />
+    </svg>
+);
+
+const ShowerIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.6}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M4 12h16M4 12a8 8 0 018-8m-8 8v6a2 2 0 002 2h12a2 2 0 002-2v-6" />
+    </svg>
+);
+
+// ── Mosaic Photo Gallery ──────────────────────────────────────
 function PhotoGallery({ photos }) {
     const sorted = photos ? [...photos].sort((a, b) => a.sort_order - b.sort_order) : [];
     const [activeIdx, setActiveIdx] = useState(0);
@@ -301,22 +274,16 @@ function PhotoGallery({ photos }) {
         );
     }
 
-    // Foto-foto selain yang aktif (untuk kolom kanan, max 4 slot)
     const sidePhotos = sorted.filter((_, i) => i !== activeIdx).slice(0, 4);
 
     return (
         <div className="grid gap-2 rounded-2xl overflow-hidden"
             style={{ gridTemplateColumns: '2fr 1fr', maxHeight: '420px' }}>
-
-            {/* Foto utama â€” kiri besar */}
+            {/* Foto utama */}
             <div className="relative overflow-hidden cursor-pointer" style={{ aspectRatio: '4/3' }}>
-                <img
-                    src={`/storage/${sorted[activeIdx].path}`}
-                    alt="Foto utama"
+                <img src={`/storage/${sorted[activeIdx].path}`} alt="Foto utama"
                     className="w-full h-full object-cover"
-                    onError={e => { e.currentTarget.src = '/image/placeholder_empty.png'; }}
-                />
-                {/* Counter foto */}
+                    onError={e => { e.currentTarget.src = '/image/placeholder_empty.png'; }} />
                 {sorted.length > 1 && (
                     <div className="absolute bottom-3 right-3 text-xs px-2.5 py-1 rounded-full font-semibold"
                         style={{ backgroundColor: 'rgba(45,27,24,0.65)', color: '#FFFFFF' }}>
@@ -324,35 +291,25 @@ function PhotoGallery({ photos }) {
                     </div>
                 )}
             </div>
-
-            {/* Grid kecil kanan â€” 4 slot */}
+            {/* Grid kecil kanan */}
             <div className="grid gap-2" style={{ gridTemplateRows: 'repeat(4, 1fr)' }}>
                 {[0, 1, 2, 3].map(i => {
                     const photo = sidePhotos[i];
-                    if (!photo) {
-                        return (
-                            <div key={i} className="rounded-lg"
-                                style={{ backgroundColor: '#F5EDE9', border: '1px solid #EAE0DC' }} />
-                        );
-                    }
+                    if (!photo) return (
+                        <div key={i} className="rounded-lg"
+                            style={{ backgroundColor: '#F5EDE9', border: '1px solid #EAE0DC' }} />
+                    );
                     const realIdx = sorted.findIndex(p => p.id === photo.id);
                     return (
-                        <div key={photo.id}
-                            onClick={() => setActiveIdx(realIdx)}
+                        <div key={photo.id} onClick={() => setActiveIdx(realIdx)}
                             className="overflow-hidden rounded-lg cursor-pointer transition-opacity hover:opacity-80 relative">
-                            <img
-                                src={`/storage/${photo.path}`}
-                                alt={`Foto ${i + 2}`}
+                            <img src={`/storage/${photo.path}`} alt={`Foto ${i + 2}`}
                                 className="w-full h-full object-cover"
-                                onError={e => { e.currentTarget.src = '/image/placeholder_empty.png'; }}
-                            />
-                            {/* Overlay "Lihat semua" di slot ke-4 jika ada lebih banyak foto */}
+                                onError={e => { e.currentTarget.src = '/image/placeholder_empty.png'; }} />
                             {i === 3 && sorted.length > 5 && (
                                 <div className="absolute inset-0 flex items-center justify-center rounded-lg"
                                     style={{ backgroundColor: 'rgba(45,27,24,0.55)' }}>
-                                    <span className="text-xs font-bold text-white">
-                                        +{sorted.length - 5} foto
-                                    </span>
+                                    <span className="text-xs font-bold text-white">+{sorted.length - 5} foto</span>
                                 </div>
                             )}
                         </div>
@@ -363,64 +320,55 @@ function PhotoGallery({ photos }) {
     );
 }
 
-// â”€â”€ Main Page â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Main Page ─────────────────────────────────────────────────
 export default function KosShow({ kos, facilitiesByCategory, similarKos, userReview }) {
     const { auth } = usePage().props;
     const typeColor = TYPE_COLORS[kos.type] ?? { bg: '#F5F5F5', text: '#666' };
 
-    // WhatsApp link
-    const waNumber = kos.contact_whatsapp?.replace(/^0+/, '62') ?? '';
+    const waNumber  = kos.contact_whatsapp?.replace(/^0+/, '62') ?? '';
     const waMessage = encodeURIComponent(`Halo, saya tertarik dengan ${kos.name} yang saya temukan di AdaKamar.id`);
-    const waLink = waNumber ? `https://wa.me/${waNumber}?text=${waMessage}` : null;
+    const waLink    = waNumber ? `https://wa.me/${waNumber}?text=${waMessage}` : null;
 
     const hasFacilities = Object.values(facilitiesByCategory ?? {}).some(arr => arr.length > 0);
 
-
     return (
         <GuestLayout>
-            <Head title={`${kos.name} â€” AdaKamar.id`} />
+            <Head title={`${kos.name} - AdaKamar.id`} />
 
             <div style={{ backgroundColor: '#FBF7F5', minHeight: '100vh' }}>
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-7">
 
                     {/* Breadcrumb */}
-                    <nav className="flex items-center gap-2 text-xs mb-5 flex-wrap"
-                        style={{ color: '#8C6B63' }}>
-                        <Link href="/"
-                            style={{ color: '#8C6B63' }}
+                    <nav className="flex items-center gap-2 text-xs mb-5 flex-wrap" style={{ color: '#8C6B63' }}>
+                        <Link href="/" style={{ color: '#8C6B63' }}
                             onMouseEnter={e => e.currentTarget.style.color = '#C0392B'}
                             onMouseLeave={e => e.currentTarget.style.color = '#8C6B63'}>
                             Beranda
                         </Link>
-                        <span>â€º</span>
-                        <Link href="/kos"
-                            style={{ color: '#8C6B63' }}
+                        <span>&rsaquo;</span>
+                        <Link href="/kos" style={{ color: '#8C6B63' }}
                             onMouseEnter={e => e.currentTarget.style.color = '#C0392B'}
                             onMouseLeave={e => e.currentTarget.style.color = '#8C6B63'}>
                             Cari Kos
                         </Link>
-                        <span>â€º</span>
-                        <span className="truncate max-w-xs font-medium"
-                            style={{ color: '#2D1B18' }}>
+                        <span>&rsaquo;</span>
+                        <span className="truncate max-w-xs font-medium" style={{ color: '#2D1B18' }}>
                             {kos.name}
                         </span>
                     </nav>
 
-                    {/* â”€â”€ Layout 2 kolom: konten kiri + sidebar kanan â”€â”€ */}
+                    {/* Layout 2 kolom */}
                     <div className="flex gap-6 items-start">
 
-                        {/* â”€â”€ Konten Kiri â”€â”€ */}
+                        {/* Konten Kiri */}
                         <div className="flex-1 min-w-0 space-y-5">
 
-                            {/* Galeri Foto */}
                             <PhotoGallery photos={kos.photos} />
 
                             {/* Judul + Meta */}
-                            <div className="bg-white rounded-2xl p-5"
-                                style={{ border: '1px solid #EAE0DC' }}>
+                            <div className="bg-white rounded-2xl p-5" style={{ border: '1px solid #EAE0DC' }}>
                                 <div className="flex items-start gap-3 flex-wrap mb-3">
-                                    <h1 className="text-2xl font-bold flex-1 min-w-0"
-                                        style={{ color: '#2D1B18' }}>
+                                    <h1 className="text-2xl font-bold flex-1 min-w-0" style={{ color: '#2D1B18' }}>
                                         {kos.name}
                                     </h1>
                                     {kos.is_plus && (
@@ -430,7 +378,6 @@ export default function KosShow({ kos, facilitiesByCategory, similarKos, userRev
                                         </span>
                                     )}
                                 </div>
-
                                 <div className="flex flex-wrap items-center gap-3">
                                     <span className="text-xs px-2.5 py-1 rounded-full font-semibold"
                                         style={{ backgroundColor: typeColor.bg, color: typeColor.text }}>
@@ -449,12 +396,10 @@ export default function KosShow({ kos, facilitiesByCategory, similarKos, userRev
                                     {kos.rating_avg > 0 && (
                                         <div className="flex items-center gap-1.5">
                                             <StarDisplay rating={kos.rating_avg} />
-                                            <span className="text-sm font-semibold"
-                                                style={{ color: '#2D1B18' }}>
+                                            <span className="text-sm font-semibold" style={{ color: '#2D1B18' }}>
                                                 {Number(kos.rating_avg).toFixed(1)}
                                             </span>
-                                            <span className="text-xs"
-                                                style={{ color: '#8C6B63' }}>
+                                            <span className="text-xs" style={{ color: '#8C6B63' }}>
                                                 ({kos.review_count} ulasan)
                                             </span>
                                         </div>
@@ -464,35 +409,64 @@ export default function KosShow({ kos, facilitiesByCategory, similarKos, userRev
 
                             {/* Deskripsi */}
                             {kos.description && (
-                                <div className="bg-white rounded-2xl p-5"
-                                    style={{ border: '1px solid #EAE0DC' }}>
-                                    <h2 className="text-base font-semibold mb-3"
-                                        style={{ color: '#2D1B18' }}>Deskripsi</h2>
-                                    <p className="text-sm leading-relaxed whitespace-pre-line"
-                                        style={{ color: '#5C4A45' }}>
+                                <div className="bg-white rounded-2xl p-5" style={{ border: '1px solid #EAE0DC' }}>
+                                    <h2 className="text-base font-semibold mb-3" style={{ color: '#2D1B18' }}>Deskripsi</h2>
+                                    <p className="text-sm leading-relaxed whitespace-pre-line" style={{ color: '#5C4A45' }}>
                                         {kos.description}
                                     </p>
                                 </div>
                             )}
 
-                            {/* Info Umum */}
-                            <div className="bg-white rounded-2xl p-5"
-                                style={{ border: '1px solid #EAE0DC' }}>
-                                <h2 className="text-base font-semibold mb-4"
-                                    style={{ color: '#2D1B18' }}>Informasi Umum</h2>
+                            {/* Informasi Umum — menggunakan SVG icon, bukan emoji */}
+                            <div className="bg-white rounded-2xl p-5" style={{ border: '1px solid #EAE0DC' }}>
+                                <h2 className="text-base font-semibold mb-4" style={{ color: '#2D1B18' }}>Informasi Umum</h2>
                                 <div className="grid grid-cols-3 gap-3">
-                                    <InfoAttr label="AC"         active={kos.has_ac}               icon="â„ï¸" />
-                                    <InfoAttr label="WiFi"       active={kos.has_wifi}             icon="ðŸ“¶" />
-                                    <InfoAttr label="KM Dalam"   active={kos.has_private_bathroom} icon="ðŸš¿" />
+                                    {/* AC */}
+                                    <div className="flex flex-col items-center gap-1.5 p-3 rounded-xl text-center"
+                                        style={{
+                                            backgroundColor: kos.has_ac ? '#FEF2F0' : '#FAFAF9',
+                                            border: `1px solid ${kos.has_ac ? '#F5C6C0' : '#EAE0DC'}`,
+                                            opacity: kos.has_ac ? 1 : 0.45,
+                                        }}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24"
+                                            stroke={kos.has_ac ? '#C0392B' : '#8C6B63'} strokeWidth={1.6}>
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2h-2" />
+                                        </svg>
+                                        <span className="text-xs font-medium" style={{ color: kos.has_ac ? '#C0392B' : '#8C6B63' }}>AC</span>
+                                    </div>
+                                    {/* WiFi */}
+                                    <div className="flex flex-col items-center gap-1.5 p-3 rounded-xl text-center"
+                                        style={{
+                                            backgroundColor: kos.has_wifi ? '#FEF2F0' : '#FAFAF9',
+                                            border: `1px solid ${kos.has_wifi ? '#F5C6C0' : '#EAE0DC'}`,
+                                            opacity: kos.has_wifi ? 1 : 0.45,
+                                        }}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24"
+                                            stroke={kos.has_wifi ? '#C0392B' : '#8C6B63'} strokeWidth={1.6}>
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.14 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" />
+                                        </svg>
+                                        <span className="text-xs font-medium" style={{ color: kos.has_wifi ? '#C0392B' : '#8C6B63' }}>WiFi</span>
+                                    </div>
+                                    {/* KM Dalam */}
+                                    <div className="flex flex-col items-center gap-1.5 p-3 rounded-xl text-center"
+                                        style={{
+                                            backgroundColor: kos.has_private_bathroom ? '#FEF2F0' : '#FAFAF9',
+                                            border: `1px solid ${kos.has_private_bathroom ? '#F5C6C0' : '#EAE0DC'}`,
+                                            opacity: kos.has_private_bathroom ? 1 : 0.45,
+                                        }}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24"
+                                            stroke={kos.has_private_bathroom ? '#C0392B' : '#8C6B63'} strokeWidth={1.6}>
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M4 12h16M4 12a8 8 0 018-8m-8 8v6a2 2 0 002 2h12a2 2 0 002-2v-6" />
+                                        </svg>
+                                        <span className="text-xs font-medium" style={{ color: kos.has_private_bathroom ? '#C0392B' : '#8C6B63' }}>KM Dalam</span>
+                                    </div>
                                 </div>
                             </div>
 
                             {/* Fasilitas */}
                             {hasFacilities && (
-                                <div className="bg-white rounded-2xl p-5"
-                                    style={{ border: '1px solid #EAE0DC' }}>
-                                    <h2 className="text-base font-semibold mb-4"
-                                        style={{ color: '#2D1B18' }}>Fasilitas</h2>
+                                <div className="bg-white rounded-2xl p-5" style={{ border: '1px solid #EAE0DC' }}>
+                                    <h2 className="text-base font-semibold mb-4" style={{ color: '#2D1B18' }}>Fasilitas</h2>
                                     <div className="space-y-5">
                                         {['kamar', 'bersama', 'sekitar'].map(cat => {
                                             const items = facilitiesByCategory[cat] ?? [];
@@ -504,9 +478,7 @@ export default function KosShow({ kos, facilitiesByCategory, similarKos, userRev
                                                         {CATEGORY_LABELS[cat]}
                                                     </p>
                                                     <div className="flex flex-wrap gap-2">
-                                                        {items.map(f => (
-                                                            <FacilityBadge key={f.id} name={f.name} />
-                                                        ))}
+                                                        {items.map(f => <FacilityBadge key={f.id} name={f.name} />)}
                                                     </div>
                                                 </div>
                                             );
@@ -516,10 +488,8 @@ export default function KosShow({ kos, facilitiesByCategory, similarKos, userRev
                             )}
 
                             {/* Lokasi */}
-                            <div className="bg-white rounded-2xl p-5"
-                                style={{ border: '1px solid #EAE0DC' }}>
-                                <h2 className="text-base font-semibold mb-3"
-                                    style={{ color: '#2D1B18' }}>Lokasi</h2>
+                            <div className="bg-white rounded-2xl p-5" style={{ border: '1px solid #EAE0DC' }}>
+                                <h2 className="text-base font-semibold mb-3" style={{ color: '#2D1B18' }}>Lokasi</h2>
                                 <p className="text-sm mb-4" style={{ color: '#5C4A45' }}>
                                     {kos.address}, {kos.district}, Yogyakarta
                                 </p>
@@ -527,19 +497,17 @@ export default function KosShow({ kos, facilitiesByCategory, similarKos, userRev
                                     <div className="rounded-xl overflow-hidden"
                                         style={{ height: '260px', border: '1px solid #EAE0DC' }}>
                                         <iframe
-                                            title="Lokasi Kos"
-                                            width="100%" height="100%"
-                                            frameBorder="0"
-                                            style={{ border: 0 }}
+                                            title="Lokasi Kos" width="100%" height="100%"
+                                            frameBorder="0" style={{ border: 0 }}
                                             src={`https://www.google.com/maps?q=${kos.latitude},${kos.longitude}&z=16&output=embed`}
-                                            allowFullScreen
-                                            loading="lazy"
+                                            allowFullScreen loading="lazy"
                                         />
                                     </div>
                                 ) : (
                                     <div className="rounded-xl flex items-center justify-center gap-2"
                                         style={{ height: '100px', backgroundColor: '#F5EDE9', border: '1px solid #EAE0DC' }}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="#8C6B63" strokeWidth={1.8}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none"
+                                            viewBox="0 0 24 24" stroke="#8C6B63" strokeWidth={1.8}>
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                                         </svg>
                                         <span className="text-sm" style={{ color: '#8C6B63' }}>Peta tidak tersedia</span>
@@ -549,12 +517,9 @@ export default function KosShow({ kos, facilitiesByCategory, similarKos, userRev
 
                             {/* Peraturan */}
                             {kos.rules && (
-                                <div className="bg-white rounded-2xl p-5"
-                                    style={{ border: '1px solid #EAE0DC' }}>
-                                    <h2 className="text-base font-semibold mb-3"
-                                        style={{ color: '#2D1B18' }}>Peraturan Kos</h2>
-                                    <p className="text-sm leading-relaxed whitespace-pre-line"
-                                        style={{ color: '#5C4A45' }}>
+                                <div className="bg-white rounded-2xl p-5" style={{ border: '1px solid #EAE0DC' }}>
+                                    <h2 className="text-base font-semibold mb-3" style={{ color: '#2D1B18' }}>Peraturan Kos</h2>
+                                    <p className="text-sm leading-relaxed whitespace-pre-line" style={{ color: '#5C4A45' }}>
                                         {kos.rules}
                                     </p>
                                 </div>
@@ -581,7 +546,6 @@ export default function KosShow({ kos, facilitiesByCategory, similarKos, userRev
                                     )}
                                 </div>
 
-                                {/* Form ulasan atau CTA login */}
                                 {!auth?.user ? (
                                     <div className="rounded-xl p-4 mb-5 flex items-center gap-3"
                                         style={{ backgroundColor: '#F5EDE9', border: '1px solid #EAE0DC' }}>
@@ -595,20 +559,18 @@ export default function KosShow({ kos, facilitiesByCategory, similarKos, userRev
                                                 onMouseEnter={e => e.currentTarget.style.color = '#A93226'}
                                                 onMouseLeave={e => e.currentTarget.style.color = '#C0392B'}>
                                                 Login
-                                            </a>
-                                            {' '}untuk memberikan ulasan
+                                            </a>{' '}untuk memberikan ulasan
                                         </p>
                                     </div>
                                 ) : (
                                     <div className="mb-6 p-4 rounded-xl" style={{ backgroundColor: '#FAFAF9', border: '1px solid #EAE0DC' }}>
                                         <p className="text-sm font-semibold mb-4" style={{ color: '#2D1B18' }}>
-                                            {userReview ? 'âœï¸ Edit Ulasanmu' : 'ðŸ“ Tulis Ulasan'}
+                                            {userReview ? 'Edit Ulasanmu' : 'Tulis Ulasan'}
                                         </p>
                                         <ReviewForm kos={kos} existingReview={userReview} />
                                     </div>
                                 )}
 
-                                {/* Daftar ulasan */}
                                 {kos.reviews && kos.reviews.length > 0 ? (
                                     <div className="space-y-5">
                                         {kos.reviews.map((review, idx) => (
@@ -624,7 +586,6 @@ export default function KosShow({ kos, facilitiesByCategory, similarKos, userRev
                                                         <div className="flex items-center justify-between gap-2 flex-wrap">
                                                             <p className="text-sm font-semibold" style={{ color: '#2D1B18' }}>
                                                                 {review.user?.name ?? 'Pengguna'}
-                                                                {/* Badge "Ulasanmu" jika ini ulasan user yang login */}
                                                                 {auth?.user && review.user_id === auth.user.id && (
                                                                     <span className="ml-2 text-xs px-1.5 py-0.5 rounded-full"
                                                                         style={{ backgroundColor: '#FEF2F0', color: '#C0392B' }}>
@@ -647,13 +608,11 @@ export default function KosShow({ kos, facilitiesByCategory, similarKos, userRev
                                                 {review.photos && review.photos.length > 0 && (
                                                     <div className="flex gap-2 mt-3 ml-12 flex-wrap">
                                                         {review.photos.map(photo => (
-                                                            <img key={photo.id}
-                                                                src={`/storage/${photo.path}`}
+                                                            <img key={photo.id} src={`/storage/${photo.path}`}
                                                                 alt="Foto ulasan"
                                                                 className="w-16 h-16 rounded-lg object-cover"
                                                                 style={{ border: '1px solid #EAE0DC' }}
-                                                                onError={e => { e.currentTarget.src = '/image/placeholder_empty.png'; }}
-                                                            />
+                                                                onError={e => { e.currentTarget.src = '/image/placeholder_empty.png'; }} />
                                                         ))}
                                                     </div>
                                                 )}
@@ -669,19 +628,12 @@ export default function KosShow({ kos, facilitiesByCategory, similarKos, userRev
 
                         </div>{/* end konten kiri */}
 
-                        {/* â”€â”€ Sidebar Kanan â”€â”€ */}
+                        {/* Sidebar Kanan — tanpa views counter */}
                         <aside className="w-72 shrink-0 sticky top-24 space-y-4">
-
-                            {/* Card Harga + Kontak */}
                             <div className="bg-white rounded-2xl p-5"
-                                style={{
-                                    border: '1px solid #EAE0DC',
-                                    boxShadow: '0 4px 20px rgba(45,27,24,0.09)',
-                                }}>
+                                style={{ border: '1px solid #EAE0DC', boxShadow: '0 4px 20px rgba(45,27,24,0.09)' }}>
 
-                                {/* Harga */}
-                                <p className="text-xs font-semibold uppercase tracking-wider mb-3"
-                                    style={{ color: '#8C6B63' }}>
+                                <p className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: '#8C6B63' }}>
                                     Harga Sewa
                                 </p>
 
@@ -695,11 +647,9 @@ export default function KosShow({ kos, facilitiesByCategory, similarKos, userRev
                                                     style={{ backgroundColor: '#F5EDE9', color: '#8C6B63' }}>
                                                     {price.type}
                                                 </span>
-                                                <span className="text-base font-bold"
-                                                    style={{ color: '#C0392B' }}>
+                                                <span className="text-base font-bold" style={{ color: '#C0392B' }}>
                                                     {formatPrice(price.price)}
-                                                    <span className="text-xs font-normal ml-1"
-                                                        style={{ color: '#8C6B63' }}>
+                                                    <span className="text-xs font-normal ml-1" style={{ color: '#8C6B63' }}>
                                                         /{PRICE_LABELS[price.type] ?? price.type}
                                                     </span>
                                                 </span>
@@ -712,26 +662,20 @@ export default function KosShow({ kos, facilitiesByCategory, similarKos, userRev
                                     </p>
                                 )}
 
-                                {/* Kontak */}
-                                <p className="text-xs font-semibold uppercase tracking-wider mb-2"
-                                    style={{ color: '#8C6B63' }}>
+                                <p className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: '#8C6B63' }}>
                                     Kontak Pemilik
                                 </p>
                                 <p className="text-sm font-semibold mb-4" style={{ color: '#2D1B18' }}>
                                     {kos.contact_name}
                                 </p>
 
-                                {/* Tombol WhatsApp */}
                                 {waLink ? (
-                                    <a href={waLink}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
+                                    <a href={waLink} target="_blank" rel="noopener noreferrer"
                                         className="flex items-center justify-center gap-2 w-full py-3 text-sm font-bold rounded-xl transition-colors"
                                         style={{ backgroundColor: '#25D366', color: '#FFFFFF' }}
                                         onMouseEnter={e => e.currentTarget.style.backgroundColor = '#1DA851'}
                                         onMouseLeave={e => e.currentTarget.style.backgroundColor = '#25D366'}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5"
-                                            viewBox="0 0 24 24" fill="currentColor">
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
                                             <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
                                         </svg>
                                         Hubungi via WhatsApp
@@ -742,44 +686,27 @@ export default function KosShow({ kos, facilitiesByCategory, similarKos, userRev
                                     </p>
                                 )}
                             </div>
-
-                            {/* Views counter */}
-                            <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white"
-                                style={{ border: '1px solid #EAE0DC' }}>
-                                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4"
-                                    fill="none" viewBox="0 0 24 24" stroke="#8C6B63" strokeWidth={1.8}>
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                </svg>
-                                <span className="text-xs" style={{ color: '#8C6B63' }}>
-                                    Dilihat {kos.views_count ?? 0} kali
-                                </span>
-                            </div>
-
                         </aside>
 
                     </div>{/* end layout 2 kolom */}
 
-                    {/* â”€â”€ Kos Serupa â”€â”€ */}
+                    {/* Kos Serupa */}
                     {similarKos && similarKos.length > 0 && (
                         <section className="mt-10">
                             <div className="flex items-center justify-between mb-5">
                                 <h2 className="text-lg font-bold" style={{ color: '#2D1B18' }}>
                                     Kos Serupa di {kos.district}
                                 </h2>
-                                <Link
-                                    href={`/kos?district=${encodeURIComponent(kos.district)}`}
+                                <Link href={`/kos?district=${encodeURIComponent(kos.district)}`}
                                     className="text-sm font-semibold transition-colors"
                                     style={{ color: '#C0392B' }}
                                     onMouseEnter={e => e.currentTarget.style.color = '#A93226'}
                                     onMouseLeave={e => e.currentTarget.style.color = '#C0392B'}>
-                                    Lihat Semua â†’
+                                    Lihat Semua &rarr;
                                 </Link>
                             </div>
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                {similarKos.map(k => (
-                                    <KosCard key={k.id} kos={k} />
-                                ))}
+                                {similarKos.map(k => <KosCard key={k.id} kos={k} />)}
                             </div>
                         </section>
                     )}
