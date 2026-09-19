@@ -200,7 +200,7 @@ export default function Home({ featuredKos, promotedKos, totalKos, districts }) 
                                         style={{ padding: '11px 36px 11px 14px', border: '1px solid #D1C8C4', borderRadius: '8px', color: filterBar.district ? '#2D1B18' : '#8C6B63', cursor: 'pointer' }}
                                         onFocus={e => e.target.style.borderColor = '#C0392B'}
                                         onBlur={e => e.target.style.borderColor = '#D1C8C4'}>
-                                        <option value="">Semua Kota</option>
+                                        <option value="">Semua Kecamatan</option>
                                         {districts?.map(d => <option key={d} value={d}>{d}</option>)}
                                     </select>
                                     <ChevronDown />
@@ -213,7 +213,7 @@ export default function Home({ featuredKos, promotedKos, totalKos, districts }) 
                                         style={{ padding: '11px 36px 11px 14px', border: '1px solid #D1C8C4', borderRadius: '8px', color: filterBar.type ? '#2D1B18' : '#8C6B63', cursor: 'pointer' }}
                                         onFocus={e => e.target.style.borderColor = '#C0392B'}
                                         onBlur={e => e.target.style.borderColor = '#D1C8C4'}>
-                                        <option value="">Semua</option>
+                                        <option value="">Semua Tipe</option>
                                         <option value="putra">Putra</option>
                                         <option value="putri">Putri</option>
                                         <option value="campur">Campur</option>
