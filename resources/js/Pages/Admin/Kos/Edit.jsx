@@ -44,24 +44,24 @@ export default function KosEdit({ kos, photos, prices, facilities, allFacilities
             <FlashMessage />
 
             {/* Breadcrumb */}
-            <div className="flex items-center gap-2 text-sm mb-6" style={{ color: '#8C6B63' }}>
-                <Link href={route('admin.kos.index')} style={{ color: '#C0392B' }}
+            <div className="flex items-center gap-2 text-sm mb-6" style={{ color: '#64748B' }}>
+                <Link href={route('admin.kos.index')} style={{ color: '#2563EB' }}
                     className="hover:underline">Manajemen Kos</Link>
                 <span>›</span>
-                <span className="truncate max-w-xs" style={{ color: '#2D1B18' }}>{kos.name}</span>
+                <span className="truncate max-w-xs" style={{ color: '#1E293B' }}>{kos.name}</span>
             </div>
 
             {/* Tab navigation */}
             <div className="flex gap-1 mb-6 p-1 rounded-xl w-fit"
-                style={{ backgroundColor: '#F5EDE9' }}>
+                style={{ backgroundColor: '#F0F7FF' }}>
                 {TABS.map(tab => (
                     <button
                         key={tab.key}
                         onClick={() => setActiveTab(tab.key)}
                         className="px-4 py-2 text-sm font-medium rounded-lg transition-colors"
                         style={{
-                            backgroundColor: activeTab === tab.key ? '#C0392B' : 'transparent',
-                            color: activeTab === tab.key ? '#FFFFFF' : '#8C6B63',
+                            backgroundColor: activeTab === tab.key ? '#2563EB' : 'transparent',
+                            color: activeTab === tab.key ? '#FFFFFF' : '#64748B',
                         }}
                     >
                         {tab.label}
@@ -74,31 +74,31 @@ export default function KosEdit({ kos, photos, prices, facilities, allFacilities
 
                 {/* ── Info Dasar ── */}
                 {activeTab === 'info' && (
-                    <div className="bg-white rounded-xl p-6" style={{ border: '1px solid #EAE0DC' }}>
+                    <div className="bg-white rounded-xl p-6" style={{ border: '1px solid #E2E8F0' }}>
                         <form onSubmit={handleSubmit}>
                             <KosForm data={data} setData={setData} errors={errors} />
                             <div className="flex items-center gap-3 mt-8 pt-6"
-                                style={{ borderTop: '1px solid #EAE0DC' }}>
+                                style={{ borderTop: '1px solid #E2E8F0' }}>
                                 <button
                                     type="submit"
                                     disabled={processing}
                                     className="px-6 py-2.5 text-sm font-semibold rounded-lg transition-colors"
                                     style={{
-                                        backgroundColor: processing ? '#E8857A' : '#C0392B',
+                                        backgroundColor: processing ? '#E8857A' : '#2563EB',
                                         color: '#FFFFFF',
                                         cursor: processing ? 'not-allowed' : 'pointer',
                                     }}
-                                    onMouseEnter={e => { if (!processing) e.currentTarget.style.backgroundColor = '#A93226'; }}
-                                    onMouseLeave={e => { if (!processing) e.currentTarget.style.backgroundColor = '#C0392B'; }}
+                                    onMouseEnter={e => { if (!processing) e.currentTarget.style.backgroundColor = '#1D4ED8'; }}
+                                    onMouseLeave={e => { if (!processing) e.currentTarget.style.backgroundColor = '#2563EB'; }}
                                 >
                                     {processing ? 'Menyimpan...' : 'Simpan Perubahan'}
                                 </button>
                                 <Link
                                     href={route('admin.kos.index')}
                                     className="px-6 py-2.5 text-sm font-medium rounded-lg transition-colors"
-                                    style={{ backgroundColor: '#F5EDE9', color: '#2D1B18' }}
-                                    onMouseEnter={e => e.currentTarget.style.backgroundColor = '#EAE0DC'}
-                                    onMouseLeave={e => e.currentTarget.style.backgroundColor = '#F5EDE9'}
+                                    style={{ backgroundColor: '#F0F7FF', color: '#1E293B' }}
+                                    onMouseEnter={e => e.currentTarget.style.backgroundColor = '#E2E8F0'}
+                                    onMouseLeave={e => e.currentTarget.style.backgroundColor = '#F0F7FF'}
                                 >
                                     Kembali
                                 </Link>
@@ -109,8 +109,8 @@ export default function KosEdit({ kos, photos, prices, facilities, allFacilities
 
                 {/* ── Foto ── */}
                 {activeTab === 'photos' && (
-                    <div className="bg-white rounded-xl p-6" style={{ border: '1px solid #EAE0DC' }}>
-                        <h3 className="text-base font-semibold mb-5" style={{ color: '#2D1B18' }}>
+                    <div className="bg-white rounded-xl p-6" style={{ border: '1px solid #E2E8F0' }}>
+                        <h3 className="text-base font-semibold mb-5" style={{ color: '#1E293B' }}>
                             Kelola Foto Kos
                         </h3>
                         <PhotoManager kos={kos} photos={photos} />
@@ -119,11 +119,11 @@ export default function KosEdit({ kos, photos, prices, facilities, allFacilities
 
                 {/* ── Harga Sewa ── */}
                 {activeTab === 'prices' && (
-                    <div className="bg-white rounded-xl p-6" style={{ border: '1px solid #EAE0DC' }}>
-                        <h3 className="text-base font-semibold mb-1" style={{ color: '#2D1B18' }}>
+                    <div className="bg-white rounded-xl p-6" style={{ border: '1px solid #E2E8F0' }}>
+                        <h3 className="text-base font-semibold mb-1" style={{ color: '#1E293B' }}>
                             Harga Sewa
                         </h3>
-                        <p className="text-sm mb-5" style={{ color: '#8C6B63' }}>
+                        <p className="text-sm mb-5" style={{ color: '#64748B' }}>
                             Aktifkan tipe sewa yang tersedia dan isi harganya.
                         </p>
                         <PriceManager kos={kos} prices={prices} />
@@ -132,11 +132,11 @@ export default function KosEdit({ kos, photos, prices, facilities, allFacilities
 
                 {/* ── Fasilitas ── */}
                 {activeTab === 'facilities' && (
-                    <div className="bg-white rounded-xl p-6" style={{ border: '1px solid #EAE0DC' }}>
-                        <h3 className="text-base font-semibold mb-1" style={{ color: '#2D1B18' }}>
+                    <div className="bg-white rounded-xl p-6" style={{ border: '1px solid #E2E8F0' }}>
+                        <h3 className="text-base font-semibold mb-1" style={{ color: '#1E293B' }}>
                             Fasilitas Kos
                         </h3>
-                        <p className="text-sm mb-5" style={{ color: '#8C6B63' }}>
+                        <p className="text-sm mb-5" style={{ color: '#64748B' }}>
                             Centang fasilitas yang tersedia di kos ini.
                         </p>
                         <FacilitySelector

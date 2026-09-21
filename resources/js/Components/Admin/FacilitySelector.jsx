@@ -8,8 +8,8 @@ const CATEGORY_LABELS = {
 };
 
 const CATEGORY_COLORS = {
-    kamar:   { bg: '#FEF2F0', text: '#C0392B' },
-    bersama: { bg: '#FFF7ED', text: '#B45309' },
+    kamar:   { bg: '#EFF6FF', text: '#2563EB' },
+    bersama: { bg: '#EFF6FF', text: '#3B82F6' },
     sekitar: { bg: '#F0FDF4', text: '#16A34A' },
 };
 
@@ -40,7 +40,7 @@ export default function FacilitySelector({ kos, allFacilities, selectedIds }) {
 
     if (!hasAny) {
         return (
-            <p className="text-sm italic text-center py-8" style={{ color: '#8C6B63' }}>
+            <p className="text-sm italic text-center py-8" style={{ color: '#64748B' }}>
                 Belum ada fasilitas terdaftar. Tambahkan terlebih dahulu di Master Fasilitas.
             </p>
         );
@@ -53,9 +53,9 @@ export default function FacilitySelector({ kos, allFacilities, selectedIds }) {
                 if (items.length === 0) return null;
                 const colors = CATEGORY_COLORS[category];
                 return (
-                    <div key={category} className="rounded-xl overflow-hidden" style={{ border: '1px solid #EAE0DC' }}>
+                    <div key={category} className="rounded-xl overflow-hidden" style={{ border: '1px solid #E2E8F0' }}>
                         <div className="px-4 py-2.5 flex items-center gap-2"
-                            style={{ backgroundColor: colors.bg, borderBottom: '1px solid #EAE0DC' }}>
+                            style={{ backgroundColor: colors.bg, borderBottom: '1px solid #E2E8F0' }}>
                             <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: colors.text }} />
                             <span className="text-sm font-semibold" style={{ color: colors.text }}>
                                 {CATEGORY_LABELS[category]}
@@ -72,9 +72,9 @@ export default function FacilitySelector({ kos, allFacilities, selectedIds }) {
                                         checked={checked.has(Number(facility.id))}
                                         onChange={() => toggle(Number(facility.id))}
                                         className="w-4 h-4 rounded shrink-0"
-                                        style={{ accentColor: '#C0392B' }}
+                                        style={{ accentColor: '#2563EB' }}
                                     />
-                                    <span className="text-sm" style={{ color: '#2D1B18' }}>{facility.name}</span>
+                                    <span className="text-sm" style={{ color: '#1E293B' }}>{facility.name}</span>
                                 </label>
                             ))}
                         </div>
@@ -83,7 +83,7 @@ export default function FacilitySelector({ kos, allFacilities, selectedIds }) {
             })}
 
             <div className="flex items-center justify-between pt-2">
-                <p className="text-xs" style={{ color: '#8C6B63' }}>
+                <p className="text-xs" style={{ color: '#64748B' }}>
                     {checked.size} fasilitas dipilih
                 </p>
                 <button
@@ -91,12 +91,12 @@ export default function FacilitySelector({ kos, allFacilities, selectedIds }) {
                     disabled={saving}
                     className="px-6 py-2.5 text-sm font-semibold rounded-lg transition-colors"
                     style={{
-                        backgroundColor: saving ? '#E8857A' : '#C0392B',
+                        backgroundColor: saving ? '#E8857A' : '#2563EB',
                         color: '#FFFFFF',
                         cursor: saving ? 'not-allowed' : 'pointer',
                     }}
-                    onMouseEnter={e => { if (!saving) e.currentTarget.style.backgroundColor = '#A93226'; }}
-                    onMouseLeave={e => { if (!saving) e.currentTarget.style.backgroundColor = '#C0392B'; }}
+                    onMouseEnter={e => { if (!saving) e.currentTarget.style.backgroundColor = '#1D4ED8'; }}
+                    onMouseLeave={e => { if (!saving) e.currentTarget.style.backgroundColor = '#2563EB'; }}
                 >
                     {saving ? 'Menyimpan...' : 'Simpan Fasilitas'}
                 </button>

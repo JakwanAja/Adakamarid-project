@@ -25,15 +25,15 @@ export default function AdminDashboard({ stats, recent_kos, recent_reviews }) {
             label: 'Kos Aktif',
             value: stats?.active_kos ?? 0,
             icon: <KosIcon />,
-            iconBg: '#FEF2F0',
-            iconColor: '#C0392B',
+            iconBg: '#EFF6FF',
+            iconColor: '#2563EB',
         },
         {
             label: 'Kos Plus',
             value: stats?.plus_kos ?? 0,
             icon: <StarIcon />,
             iconBg: '#FEFBE8',
-            iconColor: '#B45309',
+            iconColor: '#3B82F6',
         },
         {
             label: 'Total Ulasan',
@@ -50,8 +50,8 @@ export default function AdminDashboard({ stats, recent_kos, recent_reviews }) {
 
             {/* Greeting */}
             <div className="mb-6">
-                <h2 className="text-xl font-semibold" style={{ color: '#2D1B18' }}>Selamat datang kembali 👋</h2>
-                <p className="text-sm mt-0.5" style={{ color: '#8C6B63' }}>Berikut ringkasan aktivitas platform hari ini.</p>
+                <h2 className="text-xl font-semibold" style={{ color: '#1E293B' }}>Selamat datang kembali 👋</h2>
+                <p className="text-sm mt-0.5" style={{ color: '#64748B' }}>Berikut ringkasan aktivitas platform hari ini.</p>
             </div>
 
             {/* Stat Cards */}
@@ -60,7 +60,7 @@ export default function AdminDashboard({ stats, recent_kos, recent_reviews }) {
                     <div
                         key={card.label}
                         className="bg-white rounded-xl p-5 flex items-center gap-4"
-                        style={{ border: '1px solid #EAE0DC' }}
+                        style={{ border: '1px solid #E2E8F0' }}
                     >
                         <div
                             className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
@@ -69,8 +69,8 @@ export default function AdminDashboard({ stats, recent_kos, recent_reviews }) {
                             {card.icon}
                         </div>
                         <div>
-                            <p className="text-2xl font-bold leading-tight" style={{ color: '#2D1B18' }}>{card.value}</p>
-                            <p className="text-xs mt-0.5" style={{ color: '#8C6B63' }}>{card.label}</p>
+                            <p className="text-2xl font-bold leading-tight" style={{ color: '#1E293B' }}>{card.value}</p>
+                            <p className="text-xs mt-0.5" style={{ color: '#64748B' }}>{card.label}</p>
                         </div>
                     </div>
                 ))}
@@ -80,15 +80,15 @@ export default function AdminDashboard({ stats, recent_kos, recent_reviews }) {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
 
                 {/* Recent Kos */}
-                <div className="bg-white rounded-xl p-5" style={{ border: '1px solid #EAE0DC' }}>
+                <div className="bg-white rounded-xl p-5" style={{ border: '1px solid #E2E8F0' }}>
                     <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-sm font-semibold" style={{ color: '#2D1B18' }}>Kos Terbaru</h3>
+                        <h3 className="text-sm font-semibold" style={{ color: '#1E293B' }}>Kos Terbaru</h3>
                         <Link
                             href="/admin/kos"
                             className="text-xs font-medium transition-colors"
-                            style={{ color: '#C0392B' }}
-                            onMouseEnter={e => e.currentTarget.style.color = '#A93226'}
-                            onMouseLeave={e => e.currentTarget.style.color = '#C0392B'}
+                            style={{ color: '#2563EB' }}
+                            onMouseEnter={e => e.currentTarget.style.color = '#1D4ED8'}
+                            onMouseLeave={e => e.currentTarget.style.color = '#2563EB'}
                         >
                             Lihat semua →
                         </Link>
@@ -101,15 +101,15 @@ export default function AdminDashboard({ stats, recent_kos, recent_reviews }) {
                                     <div className="flex items-center gap-3 min-w-0">
                                         <span
                                             className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-semibold shrink-0"
-                                            style={{ backgroundColor: '#F5EDE9', color: '#8C6B63' }}
+                                            style={{ backgroundColor: '#F0F7FF', color: '#64748B' }}
                                         >
                                             {i + 1}
                                         </span>
-                                        <span className="text-sm font-medium truncate" style={{ color: '#2D1B18' }}>{kos.name}</span>
+                                        <span className="text-sm font-medium truncate" style={{ color: '#1E293B' }}>{kos.name}</span>
                                     </div>
                                     <span
                                         className="text-xs ml-3 shrink-0 px-2 py-0.5 rounded-full"
-                                        style={{ backgroundColor: '#F5EDE9', color: '#8C6B63' }}
+                                        style={{ backgroundColor: '#F0F7FF', color: '#64748B' }}
                                     >
                                         {kos.district}
                                     </span>
@@ -117,20 +117,20 @@ export default function AdminDashboard({ stats, recent_kos, recent_reviews }) {
                             ))}
                         </ul>
                     ) : (
-                        <p className="text-sm text-center py-8 italic" style={{ color: '#8C6B63' }}>Belum ada data kos</p>
+                        <p className="text-sm text-center py-8 italic" style={{ color: '#64748B' }}>Belum ada data kos</p>
                     )}
                 </div>
 
                 {/* Recent Reviews */}
-                <div className="bg-white rounded-xl p-5" style={{ border: '1px solid #EAE0DC' }}>
+                <div className="bg-white rounded-xl p-5" style={{ border: '1px solid #E2E8F0' }}>
                     <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-sm font-semibold" style={{ color: '#2D1B18' }}>Ulasan Terbaru</h3>
+                        <h3 className="text-sm font-semibold" style={{ color: '#1E293B' }}>Ulasan Terbaru</h3>
                         <Link
                             href="/admin/reviews"
                             className="text-xs font-medium transition-colors"
-                            style={{ color: '#C0392B' }}
-                            onMouseEnter={e => e.currentTarget.style.color = '#A93226'}
-                            onMouseLeave={e => e.currentTarget.style.color = '#C0392B'}
+                            style={{ color: '#2563EB' }}
+                            onMouseEnter={e => e.currentTarget.style.color = '#1D4ED8'}
+                            onMouseLeave={e => e.currentTarget.style.color = '#2563EB'}
                         >
                             Lihat semua →
                         </Link>
@@ -141,10 +141,10 @@ export default function AdminDashboard({ stats, recent_kos, recent_reviews }) {
                             {recent_reviews.map((review) => (
                                 <li key={review.id} className="flex items-start justify-between gap-3">
                                     <div className="min-w-0">
-                                        <p className="text-sm font-medium truncate" style={{ color: '#2D1B18' }}>{review.user?.name}</p>
-                                        <p className="text-xs truncate mt-0.5" style={{ color: '#8C6B63' }}>{review.kos?.name}</p>
+                                        <p className="text-sm font-medium truncate" style={{ color: '#1E293B' }}>{review.user?.name}</p>
+                                        <p className="text-xs truncate mt-0.5" style={{ color: '#64748B' }}>{review.kos?.name}</p>
                                     </div>
-                                    <div className="flex items-center gap-0.5 shrink-0" style={{ color: '#C0392B' }}>
+                                    <div className="flex items-center gap-0.5 shrink-0" style={{ color: '#2563EB' }}>
                                         {Array.from({ length: review.rating ?? 0 }).map((_, i) => (
                                             <svg key={i} xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
                                                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
@@ -155,7 +155,7 @@ export default function AdminDashboard({ stats, recent_kos, recent_reviews }) {
                             ))}
                         </ul>
                     ) : (
-                        <p className="text-sm text-center py-8 italic" style={{ color: '#8C6B63' }}>Belum ada ulasan</p>
+                        <p className="text-sm text-center py-8 italic" style={{ color: '#64748B' }}>Belum ada ulasan</p>
                     )}
                 </div>
             </div>

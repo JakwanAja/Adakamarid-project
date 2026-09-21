@@ -13,7 +13,7 @@ function ToggleSwitch({ checked, onChange }) {
             type="button"
             onClick={onChange}
             className="relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full transition-colors duration-200"
-            style={{ backgroundColor: checked ? '#C0392B' : '#D1D5DB' }}
+            style={{ backgroundColor: checked ? '#2563EB' : '#D1D5DB' }}
         >
             <span
                 className="pointer-events-none inline-block h-4 w-4 rounded-full bg-white shadow transform transition-transform duration-200 mt-0.5"
@@ -60,8 +60,8 @@ export default function PriceManager({ kos, prices }) {
                     <div key={key}
                         className="flex items-center gap-4 p-4 rounded-xl transition-colors"
                         style={{
-                            border: `1px solid ${active ? '#EAE0DC' : '#EAE0DC'}`,
-                            backgroundColor: active ? '#FFFFFF' : '#FAFAF9',
+                            border: `1px solid ${active ? '#E2E8F0' : '#E2E8F0'}`,
+                            backgroundColor: active ? '#FFFFFF' : '#F8FAFC',
                         }}
                     >
                         <ToggleSwitch
@@ -72,12 +72,12 @@ export default function PriceManager({ kos, prices }) {
                             }))}
                         />
 
-                        <span className="text-sm font-semibold w-20 shrink-0" style={{ color: '#2D1B18' }}>
+                        <span className="text-sm font-semibold w-20 shrink-0" style={{ color: '#1E293B' }}>
                             {label}
                         </span>
 
                         <div className="flex items-center gap-2 flex-1">
-                            <span className="text-sm shrink-0" style={{ color: '#8C6B63' }}>Rp</span>
+                            <span className="text-sm shrink-0" style={{ color: '#64748B' }}>Rp</span>
                             <input
                                 type="number"
                                 min="1"
@@ -91,13 +91,13 @@ export default function PriceManager({ kos, prices }) {
                                 placeholder={placeholder}
                                 className="flex-1 px-3 py-2 text-sm rounded-lg outline-none transition-all"
                                 style={{
-                                    border: '1px solid #EAE0DC',
-                                    backgroundColor: active ? '#FFFFFF' : '#F5EDE9',
-                                    color: '#2D1B18',
+                                    border: '1px solid #E2E8F0',
+                                    backgroundColor: active ? '#FFFFFF' : '#F0F7FF',
+                                    color: '#1E293B',
                                     opacity: active ? 1 : 0.5,
                                 }}
-                                onFocus={e => { if (active) { e.target.style.borderColor = '#C0392B'; e.target.style.boxShadow = '0 0 0 3px rgba(192,57,43,0.1)'; }}}
-                                onBlur={e => { e.target.style.borderColor = '#EAE0DC'; e.target.style.boxShadow = 'none'; }}
+                                onFocus={e => { if (active) { e.target.style.borderColor = '#2563EB'; e.target.style.boxShadow = '0 0 0 3px rgba(192,57,43,0.1)'; }}}
+                                onBlur={e => { e.target.style.borderColor = '#E2E8F0'; e.target.style.boxShadow = 'none'; }}
                             />
                         </div>
 
@@ -116,9 +116,9 @@ export default function PriceManager({ kos, prices }) {
                 onClick={handleSave}
                 disabled={saving}
                 className="w-full py-2.5 text-sm font-semibold rounded-lg transition-colors mt-2"
-                style={{ backgroundColor: saving ? '#E8857A' : '#C0392B', color: '#FFFFFF', cursor: saving ? 'not-allowed' : 'pointer' }}
-                onMouseEnter={e => { if (!saving) e.currentTarget.style.backgroundColor = '#A93226'; }}
-                onMouseLeave={e => { if (!saving) e.currentTarget.style.backgroundColor = '#C0392B'; }}
+                style={{ backgroundColor: saving ? '#E8857A' : '#2563EB', color: '#FFFFFF', cursor: saving ? 'not-allowed' : 'pointer' }}
+                onMouseEnter={e => { if (!saving) e.currentTarget.style.backgroundColor = '#1D4ED8'; }}
+                onMouseLeave={e => { if (!saving) e.currentTarget.style.backgroundColor = '#2563EB'; }}
             >
                 {saving ? 'Menyimpan...' : 'Simpan Harga Sewa'}
             </button>

@@ -9,7 +9,7 @@ function StarMini({ rating }) {
         <div className="flex items-center gap-0.5">
             {[1,2,3,4,5].map(i => (
                 <svg key={i} className="w-3 h-3" viewBox="0 0 20 20"
-                    fill={i <= rating ? '#C0392B' : '#EAE0DC'}
+                    fill={i <= rating ? '#2563EB' : '#E2E8F0'}
                     xmlns="http://www.w3.org/2000/svg">
                     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
                 </svg>
@@ -44,34 +44,34 @@ export default function AdminReviewsIndex({ reviews }) {
 
             <div className="flex items-center justify-between mb-6">
                 <div>
-                    <h2 className="text-xl font-semibold" style={{ color: '#2D1B18' }}>Manajemen Ulasan</h2>
-                    <p className="text-sm mt-0.5" style={{ color: '#8C6B63' }}>
+                    <h2 className="text-xl font-semibold" style={{ color: '#1E293B' }}>Manajemen Ulasan</h2>
+                    <p className="text-sm mt-0.5" style={{ color: '#64748B' }}>
                         {reviews?.total ?? 0} ulasan terdaftar
                     </p>
                 </div>
             </div>
 
-            <div className="bg-white rounded-xl overflow-hidden" style={{ border: '1px solid #EAE0DC' }}>
+            <div className="bg-white rounded-xl overflow-hidden" style={{ border: '1px solid #E2E8F0' }}>
                 {list.length === 0 ? (
                     <div className="text-center py-16">
                         <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-3"
-                            style={{ backgroundColor: '#F5EDE9' }}>
+                            style={{ backgroundColor: '#F0F7FF' }}>
                             <svg xmlns="http://www.w3.org/2000/svg" className="w-7 h-7" fill="none"
-                                viewBox="0 0 24 24" stroke="#8C6B63" strokeWidth={1.5}>
+                                viewBox="0 0 24 24" stroke="#64748B" strokeWidth={1.5}>
                                 <path strokeLinecap="round" strokeLinejoin="round"
                                     d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
                             </svg>
                         </div>
-                        <p className="text-sm font-medium" style={{ color: '#2D1B18' }}>Belum ada ulasan</p>
+                        <p className="text-sm font-medium" style={{ color: '#1E293B' }}>Belum ada ulasan</p>
                     </div>
                 ) : (
                     <div className="overflow-x-auto">
                         <table className="w-full">
                             <thead>
-                                <tr style={{ borderBottom: '1px solid #EAE0DC', backgroundColor: '#FAFAF9' }}>
+                                <tr style={{ borderBottom: '1px solid #E2E8F0', backgroundColor: '#F8FAFC' }}>
                                     {['Reviewer', 'Kos', 'Rating', 'Komentar', 'Tanggal', 'Aksi'].map(h => (
                                         <th key={h} className="px-4 py-3 text-left text-xs font-semibold"
-                                            style={{ color: '#8C6B63' }}>
+                                            style={{ color: '#64748B' }}>
                                             {h}
                                         </th>
                                     ))}
@@ -79,11 +79,11 @@ export default function AdminReviewsIndex({ reviews }) {
                             </thead>
                             <tbody>
                                 {list.map(review => (
-                                    <tr key={review.id} style={{ borderBottom: '1px solid #EAE0DC' }}
-                                        onMouseEnter={e => e.currentTarget.style.backgroundColor = '#FAFAF9'}
+                                    <tr key={review.id} style={{ borderBottom: '1px solid #E2E8F0' }}
+                                        onMouseEnter={e => e.currentTarget.style.backgroundColor = '#F8FAFC'}
                                         onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}>
                                         <td className="px-4 py-3">
-                                            <p className="text-sm font-medium" style={{ color: '#2D1B18' }}>
+                                            <p className="text-sm font-medium" style={{ color: '#1E293B' }}>
                                                 {review.user?.name ?? '-'}
                                             </p>
                                         </td>
@@ -91,12 +91,12 @@ export default function AdminReviewsIndex({ reviews }) {
                                             {review.kos ? (
                                                 <Link href={`/kos/${review.kos.slug}`}
                                                     className="text-sm hover:underline"
-                                                    style={{ color: '#C0392B' }}
+                                                    style={{ color: '#2563EB' }}
                                                     target="_blank">
                                                     {review.kos.name}
                                                 </Link>
                                             ) : (
-                                                <span className="text-sm" style={{ color: '#8C6B63' }}>-</span>
+                                                <span className="text-sm" style={{ color: '#64748B' }}>-</span>
                                             )}
                                         </td>
                                         <td className="px-4 py-3">
@@ -104,33 +104,33 @@ export default function AdminReviewsIndex({ reviews }) {
                                         </td>
                                         <td className="px-4 py-3 max-w-xs">
                                             {review.comment ? (
-                                                <p className="text-sm truncate" style={{ color: '#5C4A45' }}>
+                                                <p className="text-sm truncate" style={{ color: '#475569' }}>
                                                     {review.comment.length > 80
                                                         ? review.comment.substring(0, 80) + '...'
                                                         : review.comment}
                                                 </p>
                                             ) : (
-                                                <span className="text-sm italic" style={{ color: '#8C6B63' }}>
+                                                <span className="text-sm italic" style={{ color: '#64748B' }}>
                                                     Tanpa komentar
                                                 </span>
                                             )}
                                             {review.photos?.length > 0 && (
-                                                <span className="text-xs block mt-0.5" style={{ color: '#8C6B63' }}>
+                                                <span className="text-xs block mt-0.5" style={{ color: '#64748B' }}>
                                                     📷 {review.photos.length} foto
                                                 </span>
                                             )}
                                         </td>
-                                        <td className="px-4 py-3 text-xs" style={{ color: '#8C6B63' }}>
+                                        <td className="px-4 py-3 text-xs" style={{ color: '#64748B' }}>
                                             {formatDate(review.created_at)}
                                         </td>
                                         <td className="px-4 py-3">
                                             <button
                                                 onClick={() => setDeleteTarget(review)}
                                                 className="p-1.5 rounded-lg transition-colors"
-                                                style={{ color: '#8C6B63' }}
+                                                style={{ color: '#64748B' }}
                                                 title="Hapus"
-                                                onMouseEnter={e => { e.currentTarget.style.backgroundColor = '#FEF2F0'; e.currentTarget.style.color = '#C0392B'; }}
-                                                onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = '#8C6B63'; }}
+                                                onMouseEnter={e => { e.currentTarget.style.backgroundColor = '#EFF6FF'; e.currentTarget.style.color = '#2563EB'; }}
+                                                onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = '#64748B'; }}
                                             >
                                                 <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4"
                                                     fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
@@ -155,16 +155,16 @@ export default function AdminReviewsIndex({ reviews }) {
                             <Link key={i} href={link.url}
                                 className="px-3 py-2 text-sm rounded-lg font-medium transition-colors"
                                 style={{
-                                    backgroundColor: link.active ? '#C0392B' : '#FFFFFF',
-                                    color: link.active ? '#FFFFFF' : '#2D1B18',
-                                    border: `1px solid ${link.active ? '#C0392B' : '#EAE0DC'}`,
+                                    backgroundColor: link.active ? '#2563EB' : '#FFFFFF',
+                                    color: link.active ? '#FFFFFF' : '#1E293B',
+                                    border: `1px solid ${link.active ? '#2563EB' : '#E2E8F0'}`,
                                 }}
                                 dangerouslySetInnerHTML={{ __html: link.label }}
                                 preserveScroll
                             />
                         ) : (
                             <span key={i} className="px-3 py-2 text-sm rounded-lg"
-                                style={{ color: '#8C6B63' }}
+                                style={{ color: '#64748B' }}
                                 dangerouslySetInnerHTML={{ __html: link.label }}
                             />
                         )

@@ -93,28 +93,28 @@ function NavItem({ item, active }) {
             href={item.href}
             className="group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150"
             style={{
-                backgroundColor: active ? 'rgba(192,57,43,0.15)' : 'transparent',
-                color: active ? '#FFFFFF' : 'rgba(245,237,233,0.65)',
+                backgroundColor: active ? 'rgba(37,99,235,0.15)' : 'transparent',
+                color: active ? '#FFFFFF' : 'rgba(248,250,252,0.65)',
             }}
             onMouseEnter={e => {
                 if (!active) {
                     e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.07)';
-                    e.currentTarget.style.color = '#F5EDE9';
+                    e.currentTarget.style.color = '#F0F7FF';
                 }
             }}
             onMouseLeave={e => {
                 if (!active) {
                     e.currentTarget.style.backgroundColor = 'transparent';
-                    e.currentTarget.style.color = 'rgba(245,237,233,0.65)';
+                    e.currentTarget.style.color = 'rgba(248,250,252,0.65)';
                 }
             }}
         >
             {/* Left accent bar untuk item aktif */}
             {active && (
                 <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 rounded-full"
-                    style={{ backgroundColor: '#C0392B' }} />
+                    style={{ backgroundColor: '#2563EB' }} />
             )}
-            <span className="shrink-0" style={{ color: active ? '#F87171' : 'inherit' }}>
+            <span className="shrink-0" style={{ color: active ? '#93C5FD' : 'inherit' }}>
                 {item.icon}
             </span>
             <span className="font-medium flex-1">{item.name}</span>
@@ -142,7 +142,7 @@ export default function AdminLayout({ children, title }) {
             <aside
                 className={`fixed inset-y-0 left-0 z-50 w-60 flex flex-col transform transition-transform duration-200 ease-in-out
                     ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}
-                style={{ backgroundColor: '#1E110F' }}
+                style={{ backgroundColor: '#0F172A' }}
             >
                 {/* Logo area */}
                 <div className="flex items-center h-14 px-4 shrink-0"
@@ -151,7 +151,7 @@ export default function AdminLayout({ children, title }) {
                         className="h-8 w-auto object-contain object-left"
                         style={{ filter: 'brightness(0) invert(1)' }} />
                     <span className="ml-2 text-xs font-medium px-1.5 py-0.5 rounded"
-                        style={{ backgroundColor: 'rgba(192,57,43,0.3)', color: '#F87171' }}>
+                        style={{ backgroundColor: 'rgba(37,99,235,0.25)', color: '#93C5FD' }}>
                         Admin
                     </span>
                 </div>
@@ -161,7 +161,7 @@ export default function AdminLayout({ children, title }) {
                     {navGroups.map(group => (
                         <div key={group.label}>
                             <p className="px-3 mb-1 text-xs font-semibold uppercase tracking-widest"
-                                style={{ color: 'rgba(245,237,233,0.25)', letterSpacing: '0.08em' }}>
+                                style={{ color: 'rgba(248,250,252,0.25)', letterSpacing: '0.08em' }}>
                                 {group.label}
                             </p>
                             <div className="space-y-0.5">
@@ -179,16 +179,16 @@ export default function AdminLayout({ children, title }) {
                     <div className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg mb-1"
                         style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}>
                         <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold shrink-0"
-                            style={{ backgroundColor: '#C0392B', color: '#fff' }}>
+                            style={{ backgroundColor: '#2563EB', color: '#fff' }}>
                             {auth?.user?.name?.charAt(0)?.toUpperCase() ?? 'A'}
                         </div>
                         <div className="min-w-0 flex-1">
                             <p className="text-xs font-semibold truncate leading-tight"
-                                style={{ color: '#F5EDE9' }}>
+                                style={{ color: '#F0F7FF' }}>
                                 {auth?.user?.name ?? 'Admin'}
                             </p>
                             <p className="text-xs truncate leading-tight"
-                                style={{ color: 'rgba(245,237,233,0.38)' }}>
+                                style={{ color: 'rgba(248,250,252,0.38)' }}>
                                 {auth?.user?.email}
                             </p>
                         </div>
@@ -196,9 +196,9 @@ export default function AdminLayout({ children, title }) {
                     <Link
                         href="/logout" method="post" as="button"
                         className="flex items-center gap-2 w-full px-3 py-2 rounded-lg text-xs transition-colors"
-                        style={{ color: 'rgba(245,237,233,0.45)' }}
-                        onMouseEnter={e => { e.currentTarget.style.backgroundColor = 'rgba(192,57,43,0.15)'; e.currentTarget.style.color = '#F87171'; }}
-                        onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = 'rgba(245,237,233,0.45)'; }}
+                        style={{ color: 'rgba(248,250,252,0.45)' }}
+                        onMouseEnter={e => { e.currentTarget.style.backgroundColor = 'rgba(37,99,235,0.15)'; e.currentTarget.style.color = '#93C5FD'; }}
+                        onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = 'rgba(248,250,252,0.45)'; }}
                     >
                         {icons.logout}
                         <span>Keluar</span>
@@ -219,18 +219,18 @@ export default function AdminLayout({ children, title }) {
                 <header className="sticky top-0 z-30 flex items-center justify-between h-14 px-4 lg:px-6"
                     style={{
                         backgroundColor: '#FFFFFF',
-                        borderBottom: '1px solid #EAE0DC',
+                        borderBottom: '1px solid #E2E8F0',
                         boxShadow: '0 1px 3px rgba(45,27,24,0.05)',
                     }}>
                     <div className="flex items-center gap-3">
                         <button onClick={() => setSidebarOpen(true)}
                             className="p-1.5 rounded-lg lg:hidden transition-colors"
-                            style={{ color: '#8C6B63' }}
-                            onMouseEnter={e => e.currentTarget.style.backgroundColor = '#F5EDE9'}
+                            style={{ color: '#64748B' }}
+                            onMouseEnter={e => e.currentTarget.style.backgroundColor = '#F0F7FF'}
                             onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}>
                             {icons.menu}
                         </button>
-                        <h1 className="text-sm font-semibold" style={{ color: '#2D1B18' }}>
+                        <h1 className="text-sm font-semibold" style={{ color: '#1E293B' }}>
                             {activePageName}
                         </h1>
                     </div>
@@ -238,9 +238,9 @@ export default function AdminLayout({ children, title }) {
                     {/* Link ke public site */}
                     <a href="/" target="_blank" rel="noopener noreferrer"
                         className="hidden sm:flex items-center gap-1.5 text-xs transition-colors px-3 py-1.5 rounded-lg"
-                        style={{ color: '#8C6B63', border: '1px solid #EAE0DC' }}
-                        onMouseEnter={e => { e.currentTarget.style.color = '#C0392B'; e.currentTarget.style.borderColor = '#C0392B'; }}
-                        onMouseLeave={e => { e.currentTarget.style.color = '#8C6B63'; e.currentTarget.style.borderColor = '#EAE0DC'; }}>
+                        style={{ color: '#64748B', border: '1px solid #E2E8F0' }}
+                        onMouseEnter={e => { e.currentTarget.style.color = '#2563EB'; e.currentTarget.style.borderColor = '#2563EB'; }}
+                        onMouseLeave={e => { e.currentTarget.style.color = '#64748B'; e.currentTarget.style.borderColor = '#E2E8F0'; }}>
                         <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                         </svg>

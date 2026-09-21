@@ -11,8 +11,8 @@ const CATEGORY_LABELS = {
 };
 
 const CATEGORY_COLORS = {
-    kamar:   { bg: '#FEF2F0', text: '#C0392B', dot: '#C0392B' },
-    bersama: { bg: '#FFF7ED', text: '#B45309', dot: '#B45309' },
+    kamar:   { bg: '#EFF6FF', text: '#2563EB', dot: '#2563EB' },
+    bersama: { bg: '#EFF6FF', text: '#3B82F6', dot: '#3B82F6' },
     sekitar: { bg: '#F0FDF4', text: '#16A34A', dot: '#16A34A' },
 };
 
@@ -32,7 +32,7 @@ function AddFacilityForm({ category }) {
 
     return (
         <form onSubmit={handleSubmit} className="flex items-center gap-2 px-4 py-3"
-            style={{ borderTop: '1px solid #EAE0DC', backgroundColor: '#FAFAF9' }}>
+            style={{ borderTop: '1px solid #E2E8F0', backgroundColor: '#F8FAFC' }}>
             <input
                 type="text"
                 value={data.name}
@@ -40,24 +40,24 @@ function AddFacilityForm({ category }) {
                 placeholder={`Tambah ${CATEGORY_LABELS[category].toLowerCase()}...`}
                 className="flex-1 px-3 py-2 text-sm rounded-lg outline-none transition-all"
                 style={{
-                    border: `1px solid ${errors.name ? '#C0392B' : '#EAE0DC'}`,
+                    border: `1px solid ${errors.name ? '#C0392B' : '#E2E8F0'}`,
                     backgroundColor: '#FFFFFF',
-                    color: '#2D1B18',
+                    color: '#1E293B',
                 }}
-                onFocus={e => { e.target.style.borderColor = '#C0392B'; e.target.style.boxShadow = '0 0 0 3px rgba(192,57,43,0.1)'; }}
-                onBlur={e => { e.target.style.borderColor = errors.name ? '#C0392B' : '#EAE0DC'; e.target.style.boxShadow = 'none'; }}
+                onFocus={e => { e.target.style.borderColor = '#2563EB'; e.target.style.boxShadow = '0 0 0 3px rgba(192,57,43,0.1)'; }}
+                onBlur={e => { e.target.style.borderColor = errors.name ? '#C0392B' : '#E2E8F0'; e.target.style.boxShadow = 'none'; }}
             />
             <button
                 type="submit"
                 disabled={processing || !data.name.trim()}
                 className="px-4 py-2 text-sm font-medium rounded-lg transition-colors shrink-0"
                 style={{
-                    backgroundColor: (processing || !data.name.trim()) ? '#EAE0DC' : '#C0392B',
-                    color: (processing || !data.name.trim()) ? '#8C6B63' : '#FFFFFF',
+                    backgroundColor: (processing || !data.name.trim()) ? '#E2E8F0' : '#2563EB',
+                    color: (processing || !data.name.trim()) ? '#64748B' : '#FFFFFF',
                     cursor: (processing || !data.name.trim()) ? 'not-allowed' : 'pointer',
                 }}
-                onMouseEnter={e => { if (!processing && data.name.trim()) e.currentTarget.style.backgroundColor = '#A93226'; }}
-                onMouseLeave={e => { if (!processing && data.name.trim()) e.currentTarget.style.backgroundColor = '#C0392B'; }}
+                onMouseEnter={e => { if (!processing && data.name.trim()) e.currentTarget.style.backgroundColor = '#1D4ED8'; }}
+                onMouseLeave={e => { if (!processing && data.name.trim()) e.currentTarget.style.backgroundColor = '#2563EB'; }}
             >
                 + Tambah
             </button>
@@ -99,9 +99,9 @@ function FacilityRow({ facility, onDeleteClick }) {
                         autoFocus
                         className="w-full px-3 py-1.5 text-sm rounded-lg outline-none"
                         style={{
-                            border: `1px solid ${errors.name ? '#C0392B' : '#C0392B'}`,
+                            border: `1px solid ${errors.name ? '#C0392B' : '#2563EB'}`,
                             boxShadow: '0 0 0 3px rgba(192,57,43,0.1)',
-                            color: '#2D1B18',
+                            color: '#1E293B',
                         }}
                     />
                     {errors.name && <p className="text-xs mt-1" style={{ color: '#C0392B' }}>{errors.name}</p>}
@@ -112,16 +112,16 @@ function FacilityRow({ facility, onDeleteClick }) {
                             onClick={handleSave}
                             disabled={processing}
                             className="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors"
-                            style={{ backgroundColor: '#C0392B', color: '#FFFFFF' }}
-                            onMouseEnter={e => e.currentTarget.style.backgroundColor = '#A93226'}
-                            onMouseLeave={e => e.currentTarget.style.backgroundColor = '#C0392B'}
+                            style={{ backgroundColor: '#2563EB', color: '#FFFFFF' }}
+                            onMouseEnter={e => e.currentTarget.style.backgroundColor = '#1D4ED8'}
+                            onMouseLeave={e => e.currentTarget.style.backgroundColor = '#2563EB'}
                         >
                             Simpan
                         </button>
                         <button
                             onClick={() => setEditing(false)}
                             className="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors"
-                            style={{ backgroundColor: '#F5EDE9', color: '#8C6B63' }}
+                            style={{ backgroundColor: '#F0F7FF', color: '#64748B' }}
                         >
                             Batal
                         </button>
@@ -132,8 +132,8 @@ function FacilityRow({ facility, onDeleteClick }) {
     }
 
     return (
-        <tr className="group" style={{ borderTop: '1px solid #EAE0DC' }}>
-            <td className="px-4 py-3 text-sm" style={{ color: '#2D1B18' }}>
+        <tr className="group" style={{ borderTop: '1px solid #E2E8F0' }}>
+            <td className="px-4 py-3 text-sm" style={{ color: '#1E293B' }}>
                 {facility.name}
             </td>
             <td className="px-4 py-3 w-20">
@@ -145,10 +145,10 @@ function FacilityRow({ facility, onDeleteClick }) {
                     <button
                         onClick={() => setEditing(true)}
                         className="p-1.5 rounded-lg transition-colors"
-                        style={{ color: '#8C6B63' }}
+                        style={{ color: '#64748B' }}
                         title="Edit"
-                        onMouseEnter={e => { e.currentTarget.style.backgroundColor = '#F5EDE9'; e.currentTarget.style.color = '#2D1B18'; }}
-                        onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = '#8C6B63'; }}
+                        onMouseEnter={e => { e.currentTarget.style.backgroundColor = '#F0F7FF'; e.currentTarget.style.color = '#1E293B'; }}
+                        onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = '#64748B'; }}
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -158,10 +158,10 @@ function FacilityRow({ facility, onDeleteClick }) {
                     <button
                         onClick={onDeleteClick}
                         className="p-1.5 rounded-lg transition-colors"
-                        style={{ color: '#8C6B63' }}
+                        style={{ color: '#64748B' }}
                         title="Hapus"
-                        onMouseEnter={e => { e.currentTarget.style.backgroundColor = '#FEF2F0'; e.currentTarget.style.color = '#C0392B'; }}
-                        onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = '#8C6B63'; }}
+                        onMouseEnter={e => { e.currentTarget.style.backgroundColor = '#EFF6FF'; e.currentTarget.style.color = '#2563EB'; }}
+                        onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = '#64748B'; }}
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -184,9 +184,9 @@ function CategorySection({ category, facilities }) {
     }
 
     return (
-        <div className="bg-white rounded-xl overflow-hidden" style={{ border: '1px solid #EAE0DC' }}>
+        <div className="bg-white rounded-xl overflow-hidden" style={{ border: '1px solid #E2E8F0' }}>
             {/* Section header */}
-            <div className="flex items-center gap-3 px-4 py-3" style={{ backgroundColor: colors.bg, borderBottom: '1px solid #EAE0DC' }}>
+            <div className="flex items-center gap-3 px-4 py-3" style={{ backgroundColor: colors.bg, borderBottom: '1px solid #E2E8F0' }}>
                 <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: colors.dot }} />
                 <h3 className="text-sm font-semibold" style={{ color: colors.text }}>
                     {CATEGORY_LABELS[category]}
@@ -202,7 +202,7 @@ function CategorySection({ category, facilities }) {
                 <tbody>
                     {facilities.length === 0 ? (
                         <tr>
-                            <td colSpan={3} className="px-4 py-8 text-center text-sm italic" style={{ color: '#8C6B63' }}>
+                            <td colSpan={3} className="px-4 py-8 text-center text-sm italic" style={{ color: '#64748B' }}>
                                 Belum ada fasilitas dalam kategori ini
                             </td>
                         </tr>
@@ -241,8 +241,8 @@ export default function FacilitiesIndex({ facilities }) {
             {/* Page header */}
             <div className="flex items-center justify-between mb-6">
                 <div>
-                    <h2 className="text-xl font-semibold" style={{ color: '#2D1B18' }}>Master Fasilitas</h2>
-                    <p className="text-sm mt-0.5" style={{ color: '#8C6B63' }}>
+                    <h2 className="text-xl font-semibold" style={{ color: '#1E293B' }}>Master Fasilitas</h2>
+                    <p className="text-sm mt-0.5" style={{ color: '#64748B' }}>
                         Kelola daftar fasilitas yang tersedia untuk setiap kos
                     </p>
                 </div>

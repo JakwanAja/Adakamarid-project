@@ -12,8 +12,8 @@ const PRICE_OPTIONS = [
 
 function FilterSection({ title, children }) {
     return (
-        <div className="pb-5 mb-5" style={{ borderBottom: '1px solid #EAE0DC' }}>
-            <p className="text-xs font-bold uppercase tracking-wider mb-3" style={{ color: '#8C6B63' }}>{title}</p>
+        <div className="pb-5 mb-5" style={{ borderBottom: '1px solid #E2E8F0' }}>
+            <p className="text-xs font-bold uppercase tracking-wider mb-3" style={{ color: '#64748B' }}>{title}</p>
             {children}
         </div>
     );
@@ -23,8 +23,8 @@ function RadioOption({ name, value, checked, onChange, label }) {
     return (
         <label className="flex items-center gap-2.5 cursor-pointer py-1 group">
             <input type="radio" name={name} value={value} checked={checked} onChange={onChange}
-                className="w-4 h-4" style={{ accentColor: '#C0392B' }} />
-            <span className="text-sm" style={{ color: checked ? '#2D1B18' : '#8C6B63', fontWeight: checked ? 600 : 400 }}>
+                className="w-4 h-4" style={{ accentColor: '#2563EB' }} />
+            <span className="text-sm" style={{ color: checked ? '#1E293B' : '#64748B', fontWeight: checked ? 600 : 400 }}>
                 {label}
             </span>
         </label>
@@ -39,15 +39,15 @@ export default function FilterPanel({ filters, onFilterChange, onReset, district
     const hasActiveFilter = Object.values(filters).some(v => v !== '');
 
     return (
-        <div className="bg-white rounded-2xl p-5" style={{ border: '1px solid #EAE0DC' }}>
+        <div className="bg-white rounded-2xl p-5" style={{ border: '1px solid #E2E8F0' }}>
             <div className="flex items-center justify-between mb-5">
-                <h3 className="text-sm font-bold" style={{ color: '#2D1B18' }}>Filter</h3>
+                <h3 className="text-sm font-bold" style={{ color: '#1E293B' }}>Filter</h3>
                 {hasActiveFilter && (
                     <button onClick={onReset}
                         className="text-xs font-medium transition-colors"
-                        style={{ color: '#C0392B' }}
-                        onMouseEnter={e => e.currentTarget.style.color = '#A93226'}
-                        onMouseLeave={e => e.currentTarget.style.color = '#C0392B'}>
+                        style={{ color: '#2563EB' }}
+                        onMouseEnter={e => e.currentTarget.style.color = '#1D4ED8'}
+                        onMouseLeave={e => e.currentTarget.style.color = '#2563EB'}>
                         Reset
                     </button>
                 )}
@@ -59,7 +59,7 @@ export default function FilterPanel({ filters, onFilterChange, onReset, district
                     value={filters.district ?? ''}
                     onChange={e => handleChange('district', e.target.value)}
                     className="w-full px-3 py-2.5 text-sm rounded-xl outline-none"
-                    style={{ border: '1px solid #EAE0DC', color: '#2D1B18', backgroundColor: '#FFFFFF' }}
+                    style={{ border: '1px solid #E2E8F0', color: '#1E293B', backgroundColor: '#FFFFFF' }}
                 >
                     <option value="">Semua Kecamatan</option>
                     {districts?.map(d => <option key={d} value={d}>{d}</option>)}
@@ -90,23 +90,23 @@ export default function FilterPanel({ filters, onFilterChange, onReset, district
 
             {/* Rentang Harga */}
             <div>
-                <p className="text-xs font-bold uppercase tracking-wider mb-3" style={{ color: '#8C6B63' }}>Rentang Harga</p>
+                <p className="text-xs font-bold uppercase tracking-wider mb-3" style={{ color: '#64748B' }}>Rentang Harga</p>
                 <div className="space-y-2">
                     <input type="number" min="0" placeholder="Harga minimum"
                         value={filters.price_min ?? ''}
                         onChange={e => handleChange('price_min', e.target.value)}
                         className="w-full px-3 py-2.5 text-sm rounded-xl outline-none"
-                        style={{ border: '1px solid #EAE0DC', color: '#2D1B18', backgroundColor: '#FFFFFF' }}
-                        onFocus={e => { e.target.style.borderColor = '#C0392B'; e.target.style.boxShadow = '0 0 0 3px rgba(192,57,43,0.1)'; }}
-                        onBlur={e => { e.target.style.borderColor = '#EAE0DC'; e.target.style.boxShadow = 'none'; }}
+                        style={{ border: '1px solid #E2E8F0', color: '#1E293B', backgroundColor: '#FFFFFF' }}
+                        onFocus={e => { e.target.style.borderColor = '#2563EB'; e.target.style.boxShadow = '0 0 0 3px rgba(192,57,43,0.1)'; }}
+                        onBlur={e => { e.target.style.borderColor = '#E2E8F0'; e.target.style.boxShadow = 'none'; }}
                     />
                     <input type="number" min="0" placeholder="Harga maksimum"
                         value={filters.price_max ?? ''}
                         onChange={e => handleChange('price_max', e.target.value)}
                         className="w-full px-3 py-2.5 text-sm rounded-xl outline-none"
-                        style={{ border: '1px solid #EAE0DC', color: '#2D1B18', backgroundColor: '#FFFFFF' }}
-                        onFocus={e => { e.target.style.borderColor = '#C0392B'; e.target.style.boxShadow = '0 0 0 3px rgba(192,57,43,0.1)'; }}
-                        onBlur={e => { e.target.style.borderColor = '#EAE0DC'; e.target.style.boxShadow = 'none'; }}
+                        style={{ border: '1px solid #E2E8F0', color: '#1E293B', backgroundColor: '#FFFFFF' }}
+                        onFocus={e => { e.target.style.borderColor = '#2563EB'; e.target.style.boxShadow = '0 0 0 3px rgba(192,57,43,0.1)'; }}
+                        onBlur={e => { e.target.style.borderColor = '#E2E8F0'; e.target.style.boxShadow = 'none'; }}
                     />
                 </div>
             </div>

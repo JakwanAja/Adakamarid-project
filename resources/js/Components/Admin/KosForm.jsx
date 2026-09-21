@@ -10,19 +10,19 @@ const DISTRICTS = [
 function FormField({ label, error, children, required }) {
     return (
         <div>
-            <label className="block text-sm font-medium mb-1.5" style={{ color: '#2D1B18' }}>
-                {label} {required && <span style={{ color: '#C0392B' }}>*</span>}
+            <label className="block text-sm font-medium mb-1.5" style={{ color: '#1E293B' }}>
+                {label} {required && <span style={{ color: '#2563EB' }}>*</span>}
             </label>
             {children}
-            {error && <p className="mt-1 text-xs" style={{ color: '#C0392B' }}>{error}</p>}
+            {error && <p className="mt-1 text-xs" style={{ color: '#2563EB' }}>{error}</p>}
         </div>
     );
 }
 
 const inputStyle = (hasError) => ({
-    border: `1px solid ${hasError ? '#C0392B' : '#EAE0DC'}`,
+    border: `1px solid ${hasError ? '#2563EB' : '#E2E8F0'}`,
     backgroundColor: hasError ? '#FEF2F2' : '#FFFFFF',
-    color: '#2D1B18',
+    color: '#1E293B',
 });
 
 const inputClass = "w-full px-3.5 py-2.5 text-sm rounded-lg outline-none transition-all";
@@ -162,7 +162,7 @@ export default function KosForm({ data, setData, errors }) {
 
             {/* Fasilitas Umum */}
             <div>
-                <label className="block text-sm font-medium mb-3" style={{ color: '#2D1B18' }}>
+                <label className="block text-sm font-medium mb-3" style={{ color: '#1E293B' }}>
                     Fasilitas Umum
                 </label>
                 <div className="flex flex-wrap gap-4">
@@ -177,9 +177,9 @@ export default function KosForm({ data, setData, errors }) {
                                 checked={!!data[key]}
                                 onChange={e => setData(key, e.target.checked)}
                                 className="w-4 h-4 rounded"
-                                style={{ accentColor: '#C0392B' }}
+                                style={{ accentColor: '#2563EB' }}
                             />
-                            <span className="text-sm" style={{ color: '#2D1B18' }}>{label}</span>
+                            <span className="text-sm" style={{ color: '#1E293B' }}>{label}</span>
                         </label>
                     ))}
                 </div>

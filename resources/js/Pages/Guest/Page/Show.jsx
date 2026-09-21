@@ -5,7 +5,7 @@ const pageContentStyles = `
     .page-content h1 {
         font-size: 1.75rem;
         font-weight: 700;
-        color: #2D1B18;
+        color: #1E293B;
         margin-top: 2rem;
         margin-bottom: 0.75rem;
         line-height: 1.3;
@@ -13,17 +13,17 @@ const pageContentStyles = `
     .page-content h2 {
         font-size: 1.25rem;
         font-weight: 700;
-        color: #2D1B18;
+        color: #1E293B;
         margin-top: 2rem;
         margin-bottom: 0.75rem;
         padding-bottom: 0.5rem;
-        border-bottom: 2px solid #EAE0DC;
+        border-bottom: 2px solid #E2E8F0;
         line-height: 1.35;
     }
     .page-content h3 {
         font-size: 1.05rem;
         font-weight: 600;
-        color: #2D1B18;
+        color: #1E293B;
         margin-top: 1.5rem;
         margin-bottom: 0.5rem;
     }
@@ -51,25 +51,25 @@ const pageContentStyles = `
     }
     .page-content strong, .page-content b {
         font-weight: 700;
-        color: #2D1B18;
+        color: #1E293B;
     }
     .page-content a {
-        color: #C0392B;
+        color: #2563EB;
         text-decoration: underline;
     }
     .page-content a:hover {
-        color: #A93226;
+        color: #1D4ED8;
     }
     .page-content blockquote {
-        border-left: 3px solid #C0392B;
+        border-left: 3px solid #2563EB;
         padding-left: 1rem;
         margin: 1.5rem 0;
-        color: #8C6B63;
+        color: #64748B;
         font-style: italic;
     }
     .page-content hr {
         border: none;
-        border-top: 1px solid #EAE0DC;
+        border-top: 1px solid #E2E8F0;
         margin: 2rem 0;
     }
     .page-content table {
@@ -80,13 +80,13 @@ const pageContentStyles = `
     }
     .page-content th, .page-content td {
         padding: 0.5rem 0.75rem;
-        border: 1px solid #EAE0DC;
+        border: 1px solid #E2E8F0;
         text-align: left;
     }
     .page-content th {
-        background-color: #F5EDE9;
+        background-color: #F0F7FF;
         font-weight: 600;
-        color: #2D1B18;
+        color: #1E293B;
     }
 `;
 
@@ -98,14 +98,14 @@ export default function PageShow({ page }) {
             {/* Inject CSS prose styles */}
             <style dangerouslySetInnerHTML={{ __html: pageContentStyles }} />
 
-            <div style={{ backgroundColor: '#FBF7F5', minHeight: '60vh' }}>
+            <div style={{ backgroundColor: '#F8FAFC', minHeight: '60vh' }}>
                 {/* Hero section */}
-                <div style={{ backgroundColor: '#2D1B18' }}>
+                <div style={{ backgroundColor: '#1E293B' }}>
                     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                         <h1 className="text-2xl font-bold" style={{ color: '#FFFFFF' }}>
                             {page.title}
                         </h1>
-                        <p className="text-sm mt-2" style={{ color: 'rgba(245,237,233,0.55)' }}>
+                        <p className="text-sm mt-2" style={{ color: 'rgba(248,250,252,0.60)' }}>
                             AdaKamar.id
                         </p>
                     </div>
@@ -116,16 +116,16 @@ export default function PageShow({ page }) {
                     {page.content ? (
                         <div
                             className="page-content bg-white rounded-2xl p-8"
-                            style={{ border: '1px solid #EAE0DC' }}
+                            style={{ border: '1px solid #E2E8F0' }}
                             dangerouslySetInnerHTML={{ __html: page.content }}
                         />
                     ) : (
                         <div className="bg-white rounded-2xl p-12 text-center"
-                            style={{ border: '1px solid #EAE0DC' }}>
-                            <p className="text-base font-medium mb-2" style={{ color: '#2D1B18' }}>
+                            style={{ border: '1px solid #E2E8F0' }}>
+                            <p className="text-base font-medium mb-2" style={{ color: '#1E293B' }}>
                                 Konten belum tersedia
                             </p>
-                            <p className="text-sm" style={{ color: '#8C6B63' }}>
+                            <p className="text-sm" style={{ color: '#64748B' }}>
                                 Halaman ini sedang dalam proses persiapan.
                             </p>
                         </div>

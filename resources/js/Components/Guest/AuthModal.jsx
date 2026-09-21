@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 function FormInput({ label, type = 'text', value, onChange, error, placeholder, autoFocus, autoComplete }) {
     return (
         <div>
-            <label className="block text-sm font-medium mb-1.5" style={{ color: '#2D1B18' }}>
+            <label className="block text-sm font-medium mb-1.5" style={{ color: '#1E293B' }}>
                 {label}
             </label>
             <input
@@ -17,24 +17,24 @@ function FormInput({ label, type = 'text', value, onChange, error, placeholder, 
                 autoComplete={autoComplete}
                 className="w-full px-3.5 py-2.5 text-sm rounded-lg outline-none transition-all"
                 style={{
-                    border: `1px solid ${error ? '#C0392B' : '#EAE0DC'}`,
+                    border: `1px solid ${error ? '#2563EB' : '#E2E8F0'}`,
                     backgroundColor: error ? '#FEF2F2' : '#FFFFFF',
-                    color: '#2D1B18',
+                    color: '#1E293B',
                 }}
                 onFocus={e => {
                     if (!error) {
-                        e.target.style.borderColor = '#C0392B';
+                        e.target.style.borderColor = '#2563EB';
                         e.target.style.boxShadow = '0 0 0 3px rgba(192,57,43,0.1)';
                     }
                 }}
                 onBlur={e => {
                     if (!error) {
-                        e.target.style.borderColor = '#EAE0DC';
+                        e.target.style.borderColor = '#E2E8F0';
                         e.target.style.boxShadow = 'none';
                     }
                 }}
             />
-            {error && <p className="mt-1 text-xs" style={{ color: '#C0392B' }}>{error}</p>}
+            {error && <p className="mt-1 text-xs" style={{ color: '#2563EB' }}>{error}</p>}
         </div>
     );
 }
@@ -44,8 +44,8 @@ function GoogleButton({ label }) {
     return (
         <a href={route('guest.auth.google')}
             className="flex items-center justify-center gap-3 w-full py-2.5 text-sm font-medium rounded-lg transition-colors"
-            style={{ border: '1px solid #EAE0DC', color: '#2D1B18', backgroundColor: '#FFFFFF' }}
-            onMouseEnter={e => e.currentTarget.style.backgroundColor = '#F5EDE9'}
+            style={{ border: '1px solid #E2E8F0', color: '#1E293B', backgroundColor: '#FFFFFF' }}
+            onMouseEnter={e => e.currentTarget.style.backgroundColor = '#F0F7FF'}
             onMouseLeave={e => e.currentTarget.style.backgroundColor = '#FFFFFF'}>
             <svg className="w-4 h-4" viewBox="0 0 24 24">
                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -73,8 +73,8 @@ function LoginForm({ onSwitchToRegister }) {
 
     return (
         <div>
-            <h2 className="text-lg font-semibold mb-1" style={{ color: '#2D1B18' }}>Masuk</h2>
-            <p className="text-sm mb-5" style={{ color: '#8C6B63' }}>
+            <h2 className="text-lg font-semibold mb-1" style={{ color: '#1E293B' }}>Masuk</h2>
+            <p className="text-sm mb-5" style={{ color: '#64748B' }}>
                 Masuk untuk memberikan ulasan kos
             </p>
 
@@ -102,32 +102,32 @@ function LoginForm({ onSwitchToRegister }) {
                 <button type="submit" disabled={processing}
                     className="w-full py-2.5 text-sm font-semibold rounded-lg transition-colors"
                     style={{
-                        backgroundColor: processing ? '#E8857A' : '#C0392B',
+                        backgroundColor: processing ? '#E8857A' : '#2563EB',
                         color: '#FFFFFF',
                         cursor: processing ? 'not-allowed' : 'pointer',
                     }}
-                    onMouseEnter={e => { if (!processing) e.currentTarget.style.backgroundColor = '#A93226'; }}
-                    onMouseLeave={e => { if (!processing) e.currentTarget.style.backgroundColor = '#C0392B'; }}>
+                    onMouseEnter={e => { if (!processing) e.currentTarget.style.backgroundColor = '#1D4ED8'; }}
+                    onMouseLeave={e => { if (!processing) e.currentTarget.style.backgroundColor = '#2563EB'; }}>
                     {processing ? 'Memproses...' : 'Masuk'}
                 </button>
             </form>
 
             {/* Divider */}
             <div className="flex items-center gap-3 my-4">
-                <div className="flex-1 h-px" style={{ backgroundColor: '#EAE0DC' }} />
-                <span className="text-xs" style={{ color: '#8C6B63' }}>atau</span>
-                <div className="flex-1 h-px" style={{ backgroundColor: '#EAE0DC' }} />
+                <div className="flex-1 h-px" style={{ backgroundColor: '#E2E8F0' }} />
+                <span className="text-xs" style={{ color: '#64748B' }}>atau</span>
+                <div className="flex-1 h-px" style={{ backgroundColor: '#E2E8F0' }} />
             </div>
 
             <GoogleButton label="Lanjutkan dengan Google" />
 
-            <p className="mt-5 text-center text-sm" style={{ color: '#8C6B63' }}>
+            <p className="mt-5 text-center text-sm" style={{ color: '#64748B' }}>
                 Belum punya akun?{' '}
                 <button type="button" onClick={onSwitchToRegister}
                     className="font-semibold transition-colors"
-                    style={{ color: '#C0392B' }}
-                    onMouseEnter={e => e.currentTarget.style.color = '#A93226'}
-                    onMouseLeave={e => e.currentTarget.style.color = '#C0392B'}>
+                    style={{ color: '#2563EB' }}
+                    onMouseEnter={e => e.currentTarget.style.color = '#1D4ED8'}
+                    onMouseLeave={e => e.currentTarget.style.color = '#2563EB'}>
                     Daftar sekarang
                 </button>
             </p>
@@ -150,8 +150,8 @@ function RegisterForm({ onSwitchToLogin }) {
 
     return (
         <div>
-            <h2 className="text-lg font-semibold mb-1" style={{ color: '#2D1B18' }}>Daftar Akun</h2>
-            <p className="text-sm mb-5" style={{ color: '#8C6B63' }}>
+            <h2 className="text-lg font-semibold mb-1" style={{ color: '#1E293B' }}>Daftar Akun</h2>
+            <p className="text-sm mb-5" style={{ color: '#64748B' }}>
                 Buat akun untuk memberikan ulasan kos
             </p>
 
@@ -196,32 +196,32 @@ function RegisterForm({ onSwitchToLogin }) {
                 <button type="submit" disabled={processing}
                     className="w-full py-2.5 text-sm font-semibold rounded-lg transition-colors mt-1"
                     style={{
-                        backgroundColor: processing ? '#E8857A' : '#C0392B',
+                        backgroundColor: processing ? '#E8857A' : '#2563EB',
                         color: '#FFFFFF',
                         cursor: processing ? 'not-allowed' : 'pointer',
                     }}
-                    onMouseEnter={e => { if (!processing) e.currentTarget.style.backgroundColor = '#A93226'; }}
-                    onMouseLeave={e => { if (!processing) e.currentTarget.style.backgroundColor = '#C0392B'; }}>
+                    onMouseEnter={e => { if (!processing) e.currentTarget.style.backgroundColor = '#1D4ED8'; }}
+                    onMouseLeave={e => { if (!processing) e.currentTarget.style.backgroundColor = '#2563EB'; }}>
                     {processing ? 'Memproses...' : 'Buat Akun'}
                 </button>
             </form>
 
             {/* Divider */}
             <div className="flex items-center gap-3 my-4">
-                <div className="flex-1 h-px" style={{ backgroundColor: '#EAE0DC' }} />
-                <span className="text-xs" style={{ color: '#8C6B63' }}>atau</span>
-                <div className="flex-1 h-px" style={{ backgroundColor: '#EAE0DC' }} />
+                <div className="flex-1 h-px" style={{ backgroundColor: '#E2E8F0' }} />
+                <span className="text-xs" style={{ color: '#64748B' }}>atau</span>
+                <div className="flex-1 h-px" style={{ backgroundColor: '#E2E8F0' }} />
             </div>
 
             <GoogleButton label="Daftar dengan Google" />
 
-            <p className="mt-5 text-center text-sm" style={{ color: '#8C6B63' }}>
+            <p className="mt-5 text-center text-sm" style={{ color: '#64748B' }}>
                 Sudah punya akun?{' '}
                 <button type="button" onClick={onSwitchToLogin}
                     className="font-semibold transition-colors"
-                    style={{ color: '#C0392B' }}
-                    onMouseEnter={e => e.currentTarget.style.color = '#A93226'}
-                    onMouseLeave={e => e.currentTarget.style.color = '#C0392B'}>
+                    style={{ color: '#2563EB' }}
+                    onMouseEnter={e => e.currentTarget.style.color = '#1D4ED8'}
+                    onMouseLeave={e => e.currentTarget.style.color = '#2563EB'}>
                     Masuk di sini
                 </button>
             </p>
@@ -261,12 +261,12 @@ export default function AuthModal({ open, mode = 'login', onClose }) {
         >
             <div
                 className="bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl w-full sm:max-w-sm max-h-[92vh] sm:max-h-[90vh] overflow-y-auto"
-                style={{ border: '1px solid #EAE0DC' }}
+                style={{ border: '1px solid #E2E8F0' }}
                 onClick={e => e.stopPropagation()}
             >
                 {/* Handle bar — hanya tampil di mobile */}
                 <div className="sm:hidden flex justify-center pt-3 pb-0">
-                    <div className="w-10 h-1 rounded-full" style={{ backgroundColor: '#EAE0DC' }} />
+                    <div className="w-10 h-1 rounded-full" style={{ backgroundColor: '#E2E8F0' }} />
                 </div>
                 {/* Header modal */}
                 <div className="flex items-center justify-between px-5 pt-4 pb-0">
@@ -275,9 +275,9 @@ export default function AuthModal({ open, mode = 'login', onClose }) {
                     <button
                         onClick={onClose}
                         className="p-1.5 rounded-lg transition-colors"
-                        style={{ color: '#8C6B63' }}
-                        onMouseEnter={e => { e.currentTarget.style.backgroundColor = '#F5EDE9'; e.currentTarget.style.color = '#2D1B18'; }}
-                        onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = '#8C6B63'; }}>
+                        style={{ color: '#64748B' }}
+                        onMouseEnter={e => { e.currentTarget.style.backgroundColor = '#F0F7FF'; e.currentTarget.style.color = '#1E293B'; }}
+                        onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = '#64748B'; }}>
                         <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none"
                             viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />

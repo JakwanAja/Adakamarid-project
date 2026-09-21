@@ -73,14 +73,14 @@ export default function KosIndex({ kos, filters: initialFilters, districts, erro
         <GuestLayout>
             <Head title="Cari Kos di Yogyakarta" />
 
-            <div style={{ backgroundColor: '#FBF7F5', minHeight: '100vh' }}>
+            <div style={{ backgroundColor: '#F8FAFC', minHeight: '100vh' }}>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
 
                     {/* Header */}
                     <div className="flex items-center justify-between mb-5">
                         <div>
-                            <h1 className="text-xl font-bold" style={{ color: '#2D1B18' }}>Kos di Yogyakarta</h1>
-                            <p className="text-sm mt-0.5" style={{ color: '#8C6B63' }}>
+                            <h1 className="text-xl font-bold" style={{ color: '#1E293B' }}>Kos di Yogyakarta</h1>
+                            <p className="text-sm mt-0.5" style={{ color: '#64748B' }}>
                                 {totalKos > 0 ? `${totalKos} kos ditemukan` : 'Menampilkan semua kos tersedia'}
                             </p>
                         </div>
@@ -90,9 +90,9 @@ export default function KosIndex({ kos, filters: initialFilters, districts, erro
                             onClick={() => setDrawerOpen(true)}
                             className="lg:hidden flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-xl relative"
                             style={{
-                                backgroundColor: activeFilterCount > 0 ? '#FEF2F0' : '#FFFFFF',
-                                border: `1.5px solid ${activeFilterCount > 0 ? '#C0392B' : '#EAE0DC'}`,
-                                color: activeFilterCount > 0 ? '#C0392B' : '#2D1B18',
+                                backgroundColor: activeFilterCount > 0 ? '#EFF6FF' : '#FFFFFF',
+                                border: `1.5px solid ${activeFilterCount > 0 ? '#2563EB' : '#E2E8F0'}`,
+                                color: activeFilterCount > 0 ? '#2563EB' : '#1E293B',
                             }}>
                             <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z" />
@@ -100,7 +100,7 @@ export default function KosIndex({ kos, filters: initialFilters, districts, erro
                             Filter
                             {activeFilterCount > 0 && (
                                 <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full text-xs font-bold flex items-center justify-center"
-                                    style={{ backgroundColor: '#C0392B', color: '#FFFFFF' }}>
+                                    style={{ backgroundColor: '#2563EB', color: '#FFFFFF' }}>
                                     {activeFilterCount}
                                 </span>
                             )}
@@ -120,13 +120,13 @@ export default function KosIndex({ kos, filters: initialFilters, districts, erro
                             {(filters.price_min || filters.price_max) && (
                                 <button onClick={handleApply}
                                     className="w-full mt-3 py-2.5 text-sm font-semibold rounded-xl transition-colors"
-                                    style={{ backgroundColor: '#C0392B', color: '#FFFFFF' }}
-                                    onMouseEnter={e => e.currentTarget.style.backgroundColor = '#A93226'}
-                                    onMouseLeave={e => e.currentTarget.style.backgroundColor = '#C0392B'}>
+                                    style={{ backgroundColor: '#2563EB', color: '#FFFFFF' }}
+                                    onMouseEnter={e => e.currentTarget.style.backgroundColor = '#1D4ED8'}
+                                    onMouseLeave={e => e.currentTarget.style.backgroundColor = '#2563EB'}>
                                     Terapkan Filter Harga
                                 </button>
                             )}
-                            {priceError && <p className="mt-2 text-xs" style={{ color: '#C0392B' }}>{priceError}</p>}
+                            {priceError && <p className="mt-2 text-xs" style={{ color: '#2563EB' }}>{priceError}</p>}
                         </aside>
 
                         {/* ── Grid Kos ── */}
@@ -140,18 +140,18 @@ export default function KosIndex({ kos, filters: initialFilters, districts, erro
                                 </>
                             ) : (
                                 <div className="flex flex-col items-center justify-center py-20 rounded-2xl text-center"
-                                    style={{ backgroundColor: '#FFFFFF', border: '1px solid #EAE0DC' }}>
+                                    style={{ backgroundColor: '#FFFFFF', border: '1px solid #E2E8F0' }}>
                                     <div className="w-16 h-16 rounded-full flex items-center justify-center mb-4"
-                                        style={{ backgroundColor: '#F5EDE9' }}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="#8C6B63" strokeWidth={1.5}>
+                                        style={{ backgroundColor: '#F0F7FF' }}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="#64748B" strokeWidth={1.5}>
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                         </svg>
                                     </div>
-                                    <p className="text-sm font-semibold mb-1" style={{ color: '#2D1B18' }}>Tidak ada kos yang ditemukan</p>
-                                    <p className="text-xs mb-4" style={{ color: '#8C6B63' }}>Coba ubah atau reset filter pencarian</p>
+                                    <p className="text-sm font-semibold mb-1" style={{ color: '#1E293B' }}>Tidak ada kos yang ditemukan</p>
+                                    <p className="text-xs mb-4" style={{ color: '#64748B' }}>Coba ubah atau reset filter pencarian</p>
                                     <button onClick={handleReset}
                                         className="px-4 py-2 text-sm font-medium rounded-lg transition-colors"
-                                        style={{ backgroundColor: '#F5EDE9', color: '#C0392B' }}>
+                                        style={{ backgroundColor: '#F0F7FF', color: '#2563EB' }}>
                                         Reset Filter
                                     </button>
                                 </div>
@@ -171,20 +171,20 @@ export default function KosIndex({ kos, filters: initialFilters, districts, erro
                     <div className="relative z-10 w-80 max-w-[90vw] bg-white h-full flex flex-col shadow-2xl">
                         {/* Drawer header */}
                         <div className="flex items-center justify-between px-5 py-4 shrink-0"
-                            style={{ borderBottom: '1px solid #EAE0DC' }}>
-                            <h2 className="text-base font-semibold" style={{ color: '#2D1B18' }}>
+                            style={{ borderBottom: '1px solid #E2E8F0' }}>
+                            <h2 className="text-base font-semibold" style={{ color: '#1E293B' }}>
                                 Filter Kos
                                 {activeFilterCount > 0 && (
                                     <span className="ml-2 text-xs px-2 py-0.5 rounded-full font-medium"
-                                        style={{ backgroundColor: '#FEF2F0', color: '#C0392B' }}>
+                                        style={{ backgroundColor: '#EFF6FF', color: '#2563EB' }}>
                                         {activeFilterCount} aktif
                                     </span>
                                 )}
                             </h2>
                             <button onClick={() => setDrawerOpen(false)}
                                 className="p-1.5 rounded-lg transition-colors"
-                                style={{ color: '#8C6B63' }}
-                                onMouseEnter={e => e.currentTarget.style.backgroundColor = '#F5EDE9'}
+                                style={{ color: '#64748B' }}
+                                onMouseEnter={e => e.currentTarget.style.backgroundColor = '#F0F7FF'}
                                 onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}>
                                 <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -200,23 +200,23 @@ export default function KosIndex({ kos, filters: initialFilters, districts, erro
                                 onReset={handleReset}
                                 districts={districts}
                             />
-                            {priceError && <p className="mt-2 text-xs" style={{ color: '#C0392B' }}>{priceError}</p>}
+                            {priceError && <p className="mt-2 text-xs" style={{ color: '#2563EB' }}>{priceError}</p>}
                         </div>
 
                         {/* Drawer footer — action buttons */}
-                        <div className="shrink-0 p-4 flex gap-3" style={{ borderTop: '1px solid #EAE0DC' }}>
+                        <div className="shrink-0 p-4 flex gap-3" style={{ borderTop: '1px solid #E2E8F0' }}>
                             <button onClick={handleReset}
                                 className="flex-1 py-2.5 text-sm font-medium rounded-xl transition-colors"
-                                style={{ backgroundColor: '#F5EDE9', color: '#2D1B18', border: '1px solid #EAE0DC' }}
-                                onMouseEnter={e => e.currentTarget.style.backgroundColor = '#EAE0DC'}
-                                onMouseLeave={e => e.currentTarget.style.backgroundColor = '#F5EDE9'}>
+                                style={{ backgroundColor: '#F0F7FF', color: '#1E293B', border: '1px solid #E2E8F0' }}
+                                onMouseEnter={e => e.currentTarget.style.backgroundColor = '#E2E8F0'}
+                                onMouseLeave={e => e.currentTarget.style.backgroundColor = '#F0F7FF'}>
                                 Reset
                             </button>
                             <button onClick={handleApply}
                                 className="flex-1 py-2.5 text-sm font-semibold rounded-xl transition-colors"
-                                style={{ backgroundColor: '#C0392B', color: '#FFFFFF' }}
-                                onMouseEnter={e => e.currentTarget.style.backgroundColor = '#A93226'}
-                                onMouseLeave={e => e.currentTarget.style.backgroundColor = '#C0392B'}>
+                                style={{ backgroundColor: '#2563EB', color: '#FFFFFF' }}
+                                onMouseEnter={e => e.currentTarget.style.backgroundColor = '#1D4ED8'}
+                                onMouseLeave={e => e.currentTarget.style.backgroundColor = '#2563EB'}>
                                 Terapkan
                             </button>
                         </div>

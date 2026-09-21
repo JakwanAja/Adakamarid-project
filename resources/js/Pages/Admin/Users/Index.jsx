@@ -8,7 +8,7 @@ function ToggleSwitch({ checked, onChange }) {
     return (
         <button type="button" onClick={onChange}
             className="relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full transition-colors duration-200"
-            style={{ backgroundColor: checked ? '#C0392B' : '#D1D5DB' }}>
+            style={{ backgroundColor: checked ? '#2563EB' : '#D1D5DB' }}>
             <span className="pointer-events-none inline-block h-4 w-4 rounded-full bg-white shadow mt-0.5 transition-transform duration-200"
                 style={{ marginLeft: checked ? '18px' : '2px' }} />
         </button>
@@ -19,8 +19,8 @@ function RoleBadge({ role }) {
     return (
         <span className="text-xs px-2 py-0.5 rounded-full font-semibold"
             style={{
-                backgroundColor: role === 'admin' ? '#FEF2F0' : '#EFF6FF',
-                color: role === 'admin' ? '#C0392B' : '#1D4ED8',
+                backgroundColor: role === 'admin' ? '#EFF6FF' : '#EFF6FF',
+                color: role === 'admin' ? '#2563EB' : '#1D4ED8',
             }}>
             {role === 'admin' ? 'Admin' : 'Guest'}
         </span>
@@ -61,21 +61,21 @@ function UserRow({ user, currentUserId, onDeleteClick }) {
 
     if (editing) {
         return (
-            <tr style={{ backgroundColor: '#FFFBF9', borderBottom: '1px solid #EAE0DC' }}>
+            <tr style={{ backgroundColor: '#FFFBF9', borderBottom: '1px solid #E2E8F0' }}>
                 <td className="px-4 py-3" colSpan={2}>
                     <div className="flex gap-2">
                         <div className="flex-1">
                             <input value={data.name} onChange={e => setData('name', e.target.value)}
                                 onKeyDown={handleKeyDown} autoFocus placeholder="Nama"
                                 className="w-full px-3 py-1.5 text-sm rounded-lg outline-none"
-                                style={{ border: '1px solid #C0392B', boxShadow: '0 0 0 2px rgba(192,57,43,0.1)', color: '#2D1B18' }} />
+                                style={{ border: '1px solid #2563EB', boxShadow: '0 0 0 2px rgba(192,57,43,0.1)', color: '#1E293B' }} />
                             {errors.name && <p className="text-xs mt-0.5" style={{ color: '#C0392B' }}>{errors.name}</p>}
                         </div>
                         <div className="flex-1">
                             <input value={data.email} onChange={e => setData('email', e.target.value)}
                                 onKeyDown={handleKeyDown} placeholder="Email"
                                 className="w-full px-3 py-1.5 text-sm rounded-lg outline-none"
-                                style={{ border: `1px solid ${errors.email ? '#C0392B' : '#EAE0DC'}`, color: '#2D1B18' }} />
+                                style={{ border: `1px solid ${errors.email ? '#C0392B' : '#E2E8F0'}`, color: '#1E293B' }} />
                             {errors.email && <p className="text-xs mt-0.5" style={{ color: '#C0392B' }}>{errors.email}</p>}
                         </div>
                     </div>
@@ -84,14 +84,14 @@ function UserRow({ user, currentUserId, onDeleteClick }) {
                     <div className="flex items-center gap-2">
                         <button onClick={handleSave} disabled={processing}
                             className="px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors"
-                            style={{ backgroundColor: '#C0392B', color: '#FFFFFF' }}
-                            onMouseEnter={e => e.currentTarget.style.backgroundColor = '#A93226'}
-                            onMouseLeave={e => e.currentTarget.style.backgroundColor = '#C0392B'}>
+                            style={{ backgroundColor: '#2563EB', color: '#FFFFFF' }}
+                            onMouseEnter={e => e.currentTarget.style.backgroundColor = '#1D4ED8'}
+                            onMouseLeave={e => e.currentTarget.style.backgroundColor = '#2563EB'}>
                             {processing ? 'Menyimpan...' : 'Simpan'}
                         </button>
                         <button onClick={() => setEditing(false)}
                             className="px-3 py-1.5 text-xs font-medium rounded-lg"
-                            style={{ backgroundColor: '#F5EDE9', color: '#8C6B63' }}>
+                            style={{ backgroundColor: '#F0F7FF', color: '#64748B' }}>
                             Batal
                         </button>
                     </div>
@@ -101,22 +101,22 @@ function UserRow({ user, currentUserId, onDeleteClick }) {
     }
 
     return (
-        <tr className="group" style={{ borderBottom: '1px solid #EAE0DC' }}
-            onMouseEnter={e => e.currentTarget.style.backgroundColor = '#FAFAF9'}
+        <tr className="group" style={{ borderBottom: '1px solid #E2E8F0' }}
+            onMouseEnter={e => e.currentTarget.style.backgroundColor = '#F8FAFC'}
             onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}>
             <td className="px-4 py-3">
                 <div className="flex items-center gap-2">
                     <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold shrink-0"
-                        style={{ backgroundColor: '#F5EDE9', color: '#C0392B' }}>
+                        style={{ backgroundColor: '#F0F7FF', color: '#2563EB' }}>
                         {user.name?.charAt(0)?.toUpperCase() ?? '?'}
                     </div>
                     <div>
-                        <p className="text-sm font-medium" style={{ color: '#2D1B18' }}>{user.name}</p>
-                        <p className="text-xs" style={{ color: '#8C6B63' }}>{user.email}</p>
+                        <p className="text-sm font-medium" style={{ color: '#1E293B' }}>{user.name}</p>
+                        <p className="text-xs" style={{ color: '#64748B' }}>{user.email}</p>
                     </div>
                     {isSelf && (
                         <span className="text-xs px-1.5 py-0.5 rounded-full"
-                            style={{ backgroundColor: '#F5EDE9', color: '#8C6B63' }}>
+                            style={{ backgroundColor: '#F0F7FF', color: '#64748B' }}>
                             Kamu
                         </span>
                     )}
@@ -128,16 +128,16 @@ function UserRow({ user, currentUserId, onDeleteClick }) {
             <td className="px-4 py-3">
                 <ToggleSwitch checked={user.is_active} onChange={handleToggleActive} />
             </td>
-            <td className="px-4 py-3 text-xs" style={{ color: '#8C6B63' }}>
+            <td className="px-4 py-3 text-xs" style={{ color: '#64748B' }}>
                 {formatDate(user.created_at)}
             </td>
             <td className="px-4 py-3">
                 <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                     <button onClick={() => setEditing(true)}
                         className="p-1.5 rounded-lg transition-colors"
-                        style={{ color: '#8C6B63' }} title="Edit"
-                        onMouseEnter={e => { e.currentTarget.style.backgroundColor = '#F5EDE9'; e.currentTarget.style.color = '#2D1B18'; }}
-                        onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = '#8C6B63'; }}>
+                        style={{ color: '#64748B' }} title="Edit"
+                        onMouseEnter={e => { e.currentTarget.style.backgroundColor = '#F0F7FF'; e.currentTarget.style.color = '#1E293B'; }}
+                        onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = '#64748B'; }}>
                         <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none"
                             viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
                             <path strokeLinecap="round" strokeLinejoin="round"
@@ -147,9 +147,9 @@ function UserRow({ user, currentUserId, onDeleteClick }) {
                     {!isSelf && (
                         <button onClick={() => onDeleteClick(user)}
                             className="p-1.5 rounded-lg transition-colors"
-                            style={{ color: '#8C6B63' }} title="Hapus"
-                            onMouseEnter={e => { e.currentTarget.style.backgroundColor = '#FEF2F0'; e.currentTarget.style.color = '#C0392B'; }}
-                            onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = '#8C6B63'; }}>
+                            style={{ color: '#64748B' }} title="Hapus"
+                            onMouseEnter={e => { e.currentTarget.style.backgroundColor = '#EFF6FF'; e.currentTarget.style.color = '#2563EB'; }}
+                            onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = '#64748B'; }}>
                             <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none"
                                 viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
                                 <path strokeLinecap="round" strokeLinejoin="round"
@@ -167,21 +167,21 @@ function UserTable({ users, currentUserId, onDeleteClick }) {
     if (users.length === 0) {
         return (
             <div className="bg-white rounded-xl text-center py-10"
-                style={{ border: '1px solid #EAE0DC' }}>
-                <p className="text-sm italic" style={{ color: '#8C6B63' }}>Belum ada data</p>
+                style={{ border: '1px solid #E2E8F0' }}>
+                <p className="text-sm italic" style={{ color: '#64748B' }}>Belum ada data</p>
             </div>
         );
     }
 
     return (
-        <div className="bg-white rounded-xl overflow-hidden" style={{ border: '1px solid #EAE0DC' }}>
+        <div className="bg-white rounded-xl overflow-hidden" style={{ border: '1px solid #E2E8F0' }}>
             <div className="overflow-x-auto">
                 <table className="w-full">
                     <thead>
-                        <tr style={{ borderBottom: '1px solid #EAE0DC', backgroundColor: '#FAFAF9' }}>
+                        <tr style={{ borderBottom: '1px solid #E2E8F0', backgroundColor: '#F8FAFC' }}>
                             {['Nama / Email', 'Role', 'Status', 'Terdaftar', 'Aksi'].map(h => (
                                 <th key={h} className="px-4 py-3 text-left text-xs font-semibold"
-                                    style={{ color: '#8C6B63' }}>{h}</th>
+                                    style={{ color: '#64748B' }}>{h}</th>
                             ))}
                         </tr>
                     </thead>
@@ -213,18 +213,18 @@ function AddAdminForm() {
     }
 
     const inputStyle = (hasErr) => ({
-        border: `1px solid ${hasErr ? '#C0392B' : '#EAE0DC'}`,
+        border: `1px solid ${hasErr ? '#2563EB' : '#E2E8F0'}`,
         backgroundColor: hasErr ? '#FEF2F2' : '#FFFFFF',
-        color: '#2D1B18',
+        color: '#1E293B',
     });
 
     if (!open) {
         return (
             <button onClick={() => setOpen(true)}
                 className="flex items-center gap-2 px-4 py-2.5 text-sm font-semibold rounded-lg transition-colors"
-                style={{ backgroundColor: '#C0392B', color: '#FFFFFF' }}
-                onMouseEnter={e => e.currentTarget.style.backgroundColor = '#A93226'}
-                onMouseLeave={e => e.currentTarget.style.backgroundColor = '#C0392B'}>
+                style={{ backgroundColor: '#2563EB', color: '#FFFFFF' }}
+                onMouseEnter={e => e.currentTarget.style.backgroundColor = '#1D4ED8'}
+                onMouseLeave={e => e.currentTarget.style.backgroundColor = '#2563EB'}>
                 <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none"
                     viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
@@ -236,12 +236,12 @@ function AddAdminForm() {
 
     return (
         <div className="bg-white rounded-xl p-5 mb-4 w-full max-w-2xl"
-            style={{ border: '1px solid #EAE0DC' }}>
-            <h3 className="text-sm font-semibold mb-4" style={{ color: '#2D1B18' }}>Tambah Akun Admin Baru</h3>
+            style={{ border: '1px solid #E2E8F0' }}>
+            <h3 className="text-sm font-semibold mb-4" style={{ color: '#1E293B' }}>Tambah Akun Admin Baru</h3>
             <form onSubmit={handleSubmit}>
                 <div className="grid grid-cols-2 gap-3 mb-4">
                     <div>
-                        <label className="block text-xs font-medium mb-1" style={{ color: '#2D1B18' }}>Nama</label>
+                        <label className="block text-xs font-medium mb-1" style={{ color: '#1E293B' }}>Nama</label>
                         <input value={data.name} onChange={e => setData('name', e.target.value)}
                             placeholder="Nama lengkap"
                             className="w-full px-3 py-2 text-sm rounded-lg outline-none"
@@ -249,7 +249,7 @@ function AddAdminForm() {
                         {errors.name && <p className="text-xs mt-1" style={{ color: '#C0392B' }}>{errors.name}</p>}
                     </div>
                     <div>
-                        <label className="block text-xs font-medium mb-1" style={{ color: '#2D1B18' }}>Email</label>
+                        <label className="block text-xs font-medium mb-1" style={{ color: '#1E293B' }}>Email</label>
                         <input type="email" value={data.email} onChange={e => setData('email', e.target.value)}
                             placeholder="email@contoh.com"
                             className="w-full px-3 py-2 text-sm rounded-lg outline-none"
@@ -257,7 +257,7 @@ function AddAdminForm() {
                         {errors.email && <p className="text-xs mt-1" style={{ color: '#C0392B' }}>{errors.email}</p>}
                     </div>
                     <div>
-                        <label className="block text-xs font-medium mb-1" style={{ color: '#2D1B18' }}>Password</label>
+                        <label className="block text-xs font-medium mb-1" style={{ color: '#1E293B' }}>Password</label>
                         <input type="password" value={data.password} onChange={e => setData('password', e.target.value)}
                             placeholder="Min. 8 karakter"
                             className="w-full px-3 py-2 text-sm rounded-lg outline-none"
@@ -265,7 +265,7 @@ function AddAdminForm() {
                         {errors.password && <p className="text-xs mt-1" style={{ color: '#C0392B' }}>{errors.password}</p>}
                     </div>
                     <div>
-                        <label className="block text-xs font-medium mb-1" style={{ color: '#2D1B18' }}>Konfirmasi Password</label>
+                        <label className="block text-xs font-medium mb-1" style={{ color: '#1E293B' }}>Konfirmasi Password</label>
                         <input type="password" value={data.password_confirmation}
                             onChange={e => setData('password_confirmation', e.target.value)}
                             placeholder="Ulangi password"
@@ -277,16 +277,16 @@ function AddAdminForm() {
                 <div className="flex gap-2">
                     <button type="submit" disabled={processing}
                         className="px-5 py-2 text-sm font-semibold rounded-lg transition-colors"
-                        style={{ backgroundColor: '#C0392B', color: '#FFFFFF', cursor: processing ? 'not-allowed' : 'pointer' }}
-                        onMouseEnter={e => { if (!processing) e.currentTarget.style.backgroundColor = '#A93226'; }}
-                        onMouseLeave={e => { if (!processing) e.currentTarget.style.backgroundColor = '#C0392B'; }}>
+                        style={{ backgroundColor: '#2563EB', color: '#FFFFFF', cursor: processing ? 'not-allowed' : 'pointer' }}
+                        onMouseEnter={e => { if (!processing) e.currentTarget.style.backgroundColor = '#1D4ED8'; }}
+                        onMouseLeave={e => { if (!processing) e.currentTarget.style.backgroundColor = '#2563EB'; }}>
                         {processing ? 'Menyimpan...' : 'Simpan'}
                     </button>
                     <button type="button" onClick={() => { reset(); setOpen(false); }}
                         className="px-5 py-2 text-sm font-medium rounded-lg transition-colors"
-                        style={{ backgroundColor: '#F5EDE9', color: '#2D1B18' }}
-                        onMouseEnter={e => e.currentTarget.style.backgroundColor = '#EAE0DC'}
-                        onMouseLeave={e => e.currentTarget.style.backgroundColor = '#F5EDE9'}>
+                        style={{ backgroundColor: '#F0F7FF', color: '#1E293B' }}
+                        onMouseEnter={e => e.currentTarget.style.backgroundColor = '#E2E8F0'}
+                        onMouseLeave={e => e.currentTarget.style.backgroundColor = '#F0F7FF'}>
                         Batal
                     </button>
                 </div>
@@ -319,8 +319,8 @@ export default function UsersIndex({ admins, guests }) {
 
             <div className="flex items-start justify-between mb-6 flex-wrap gap-4">
                 <div>
-                    <h2 className="text-xl font-semibold" style={{ color: '#2D1B18' }}>Manajemen Pengguna</h2>
-                    <p className="text-sm mt-0.5" style={{ color: '#8C6B63' }}>
+                    <h2 className="text-xl font-semibold" style={{ color: '#1E293B' }}>Manajemen Pengguna</h2>
+                    <p className="text-sm mt-0.5" style={{ color: '#64748B' }}>
                         {(admins?.length ?? 0) + (guests?.length ?? 0)} akun terdaftar
                     </p>
                 </div>
@@ -328,19 +328,19 @@ export default function UsersIndex({ admins, guests }) {
             </div>
 
             {/* Tabs */}
-            <div className="flex gap-1 mb-5 p-1 rounded-xl w-fit" style={{ backgroundColor: '#F5EDE9' }}>
+            <div className="flex gap-1 mb-5 p-1 rounded-xl w-fit" style={{ backgroundColor: '#F0F7FF' }}>
                 {tabs.map(tab => (
                     <button key={tab.key} onClick={() => setActiveTab(tab.key)}
                         className="flex items-center gap-1.5 px-5 py-2 text-sm font-medium rounded-lg transition-colors"
                         style={{
-                            backgroundColor: activeTab === tab.key ? '#C0392B' : 'transparent',
-                            color: activeTab === tab.key ? '#FFFFFF' : '#8C6B63',
+                            backgroundColor: activeTab === tab.key ? '#2563EB' : 'transparent',
+                            color: activeTab === tab.key ? '#FFFFFF' : '#64748B',
                         }}>
                         {tab.label}
                         <span className="text-xs px-1.5 py-0.5 rounded-full"
                             style={{
-                                backgroundColor: activeTab === tab.key ? 'rgba(255,255,255,0.25)' : '#EAE0DC',
-                                color: activeTab === tab.key ? '#FFFFFF' : '#8C6B63',
+                                backgroundColor: activeTab === tab.key ? 'rgba(255,255,255,0.25)' : '#E2E8F0',
+                                color: activeTab === tab.key ? '#FFFFFF' : '#64748B',
                             }}>
                             {tab.count}
                         </span>

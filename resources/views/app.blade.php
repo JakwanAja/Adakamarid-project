@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="AdaKamar.id — Platform iklan kos terpercaya untuk area Yogyakarta. Temukan kos putra, putri, dan campur dengan informasi lengkap.">
-    <meta name="theme-color" content="#2D1B18">
+    <meta name="theme-color" content="#2563EB">
 
     <title inertia>{{ config('app.name', 'AdaKamar.id') }}</title>
 

@@ -24,9 +24,9 @@ export default function KosCard({ kos }) {
     return (
         <Link href={`/kos/${kos.slug}`}
             className="block bg-white rounded-2xl overflow-hidden transition-all duration-200 group"
-            style={{ border: '1px solid #EAE0DC', textDecoration: 'none' }}
+            style={{ border: '1px solid #E2E8F0', textDecoration: 'none' }}
             onMouseEnter={e => {
-                e.currentTarget.style.boxShadow = '0 8px 24px rgba(45,27,24,0.12)';
+                e.currentTarget.style.boxShadow = '0 8px 24px rgba(15,23,42,0.10)';
                 e.currentTarget.style.transform = 'translateY(-2px)';
             }}
             onMouseLeave={e => {
@@ -46,7 +46,7 @@ export default function KosCard({ kos }) {
                 {kos.is_plus && (
                     <div className="absolute top-2.5 left-2.5">
                         <span className="text-xs font-bold px-2 py-1 rounded-full"
-                            style={{ backgroundColor: '#C0392B', color: '#FFFFFF' }}>
+                            style={{ backgroundColor: '#2563EB', color: '#FFFFFF' }}>
                             Plus
                         </span>
                     </div>
@@ -55,7 +55,7 @@ export default function KosCard({ kos }) {
                 {kos.rating_avg > 0 && (
                     <div className="absolute top-2.5 right-2.5">
                         <span className="flex items-center gap-1 text-xs font-semibold px-2 py-1 rounded-full"
-                            style={{ backgroundColor: 'rgba(45,27,24,0.75)', color: '#FFFFFF' }}>
+                            style={{ backgroundColor: 'rgba(15,23,42,0.75)', color: '#FFFFFF' }}>
                             <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3" viewBox="0 0 20 20" fill="#FCD34D">
                                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                             </svg>
@@ -67,16 +67,16 @@ export default function KosCard({ kos }) {
 
             {/* Info */}
             <div className="p-3.5">
-                <h3 className="text-sm font-semibold truncate mb-1" style={{ color: '#2D1B18' }}>
+                <h3 className="text-sm font-semibold truncate mb-1" style={{ color: '#1E293B' }}>
                     {kos.name}
                 </h3>
 
                 <div className="flex items-center gap-1 mb-2.5">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="#8C6B63" strokeWidth={2}>
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="#64748B" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                         <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
-                    <span className="text-xs truncate" style={{ color: '#8C6B63' }}>{kos.district}</span>
+                    <span className="text-xs truncate" style={{ color: '#64748B' }}>{kos.district}</span>
                 </div>
 
                 {/* Badges: tipe kos + SEMUA label harga */}
@@ -88,7 +88,7 @@ export default function KosCard({ kos }) {
                     {activePrices.map(p => (
                         <span key={p.id ?? p.type}
                             className="text-xs px-2 py-0.5 rounded-full font-medium capitalize"
-                            style={{ backgroundColor: '#F5EDE9', color: '#8C6B63' }}>
+                            style={{ backgroundColor: '#F0F7FF', color: '#64748B' }}>
                             {p.type}
                         </span>
                     ))}
@@ -98,12 +98,12 @@ export default function KosCard({ kos }) {
                 {lowestPrice ? (
                     <p className="text-sm font-bold" style={{ color: '#C0392B' }}>
                         {formatPrice(lowestPrice.price)}
-                        <span className="text-xs font-normal ml-1" style={{ color: '#8C6B63' }}>
+                        <span className="text-xs font-normal ml-1" style={{ color: '#64748B' }}>
                             /{lowestPrice.type}
                         </span>
                     </p>
                 ) : (
-                    <p className="text-xs italic" style={{ color: '#8C6B63' }}>Hubungi pemilik</p>
+                    <p className="text-xs italic" style={{ color: '#64748B' }}>Hubungi pemilik</p>
                 )}
             </div>
         </Link>
