@@ -370,7 +370,8 @@ export default function KosShow({ kos, facilitiesByCategory, similarKos, userRev
     const typeColor = TYPE_COLORS[kos.type] ?? { bg: '#F5F5F5', text: '#666' };
 
     const waNumber  = kos.contact_whatsapp?.replace(/^0+/, '62') ?? '';
-    const waMessage = encodeURIComponent(`Halo, saya tertarik dengan ${kos.name} yang saya temukan di AdaKamar.id`);
+    const kosUrl    = `${window.location.origin}/kos/${kos.slug}`;
+    const waMessage = encodeURIComponent(`Halo, saya tertarik dengan kos berikut yang saya temukan di AdaKamar.id:\n\n*${kos.name}*\n${kosUrl}\n\nApakah kamar masih tersedia?`);
     const waLink    = waNumber ? `https://wa.me/${waNumber}?text=${waMessage}` : null;
 
     const hasFacilities = Object.values(facilitiesByCategory ?? {}).some(arr => arr.length > 0);
