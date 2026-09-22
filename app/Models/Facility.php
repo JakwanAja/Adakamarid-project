@@ -11,6 +11,7 @@ class Facility extends Model
     protected $fillable = [
         'name',
         'category',
+        'icon',
     ];
 
     protected function casts(): array

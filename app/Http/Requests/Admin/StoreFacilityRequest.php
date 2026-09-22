@@ -16,6 +16,8 @@ class StoreFacilityRequest extends FormRequest
         return [
             'name'     => ['required', 'string', 'max:100'],
             'category' => ['required', 'string', 'in:kamar,bersama,sekitar'],
+            'icon'     => ['nullable', 'string', 'max:50'],
+
         ];
     }
 

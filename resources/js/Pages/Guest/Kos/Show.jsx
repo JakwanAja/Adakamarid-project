@@ -1,6 +1,7 @@
 import GuestLayout from '@/Layouts/GuestLayout';
 import KosCard from '@/Components/Guest/KosCard';
 import { Head, Link, usePage, router } from '@inertiajs/react';
+import { FacilityIcon } from '@/Components/Shared/FacilityIcons';
 import { useState, useRef, useEffect } from 'react';
 
 // ── Constants ─────────────────────────────────────────────────
@@ -182,11 +183,15 @@ function ReviewForm({ kos, existingReview = null }) {
 }
 
 // ── Facility Badge ────────────────────────────────────────────
-function FacilityBadge({ name }) {
+function FacilityBadge({ name, icon }) {
     return (
         <span className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full font-medium"
             style={{ backgroundColor: '#F0F7FF', color: '#1E293B', border: '1px solid #E2E8F0' }}>
-            <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: '#2563EB' }} />
+            {icon ? (
+                <FacilityIcon iconKey={icon} className="w-3.5 h-3.5 shrink-0" color="#2563EB" />
+            ) : (
+                <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: '#2563EB' }} />
+            )}
             {name}
         </span>
     );
@@ -561,7 +566,7 @@ export default function KosShow({ kos, facilitiesByCategory, similarKos, userRev
                                                         {CATEGORY_LABELS[cat]}
                                                     </p>
                                                     <div className="flex flex-wrap gap-1.5 lg:gap-2">
-                                                        {items.map(f => <FacilityBadge key={f.id} name={f.name} />)}
+                                                        {items.map(f => <FacilityBadge key={f.id} name={f.name} icon={f.icon} />)}
                                                     </div>
                                                 </div>
                                             );

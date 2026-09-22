@@ -16,6 +16,8 @@ class UpdateFacilityRequest extends FormRequest
         return [
             'name'     => ['sometimes', 'required', 'string', 'max:100'],
             'category' => ['sometimes', 'required', 'string', 'in:kamar,bersama,sekitar'],
+            'icon'     => ['nullable', 'string', 'max:50'],
+
         ];
     }
 

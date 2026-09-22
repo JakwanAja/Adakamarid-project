@@ -445,29 +445,6 @@ export default function Home({ featuredKos, promotedKos, totalKos, districts }) 
             {/* ── Terakhir Kamu Lihat ───────────────────────── */}
             <HistorySection />
             <HowToSection />
-
-            {/* ── Artikel ──────────────────────────────────── */}
-            {/*<section style={{ backgroundColor: '#FFFFFF', borderTop: '1px solid #E2E8F0' }}>
-                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                    <h2 className="text-2xl font-bold mb-5" style={{ color: '#1E293B' }}>
-                        Temukan Kos Idamanmu di AdaKamar.id
-                    </h2>
-                    <div className="space-y-4 text-base leading-relaxed" style={{ color: '#475569' }}>
-                        <p>
-                            Kabar baik untuk kamu yang sedang mencari kos di Yogyakarta. <strong style={{ color: '#1E293B' }}>AdaKamar.id</strong> hadir sebagai platform iklan kos yang menghubungkan calon penyewa langsung dengan pemilik kos terpercaya di area Yogyakarta.
-                        </p>
-                        <p>
-                            AdaKamar.id berkomitmen memberi kemudahan dalam menemukan kos yang sesuai kebutuhan. Semua listing yang tersedia di AdaKamar.id adalah kos yang telah <strong style={{ color: '#1E293B' }}>bermitra resmi</strong> dan bukan listing sembarangan. Kamu bisa menelusuri informasi lengkap setiap kos, mulai dari foto, fasilitas, harga per tipe sewa, lokasi, hingga kontak pemilik, semuanya dalam satu halaman.
-                        </p>
-                        <p>
-                            Tidak ada proses booking atau pembayaran online yang rumit. Setelah menemukan kos yang cocok, kamu cukup <strong style={{ color: '#1E293B' }}>menghubungi pemilik kos langsung</strong> melalui nomor WhatsApp yang tercantum di listing. Prosesnya simpel, transparan, dan tanpa perantara.
-                        </p>
-                        <p>
-                            Manfaatkan fitur pencarian dan filter AdaKamar.id untuk menyaring kos berdasarkan kecamatan, tipe kos (putra/putri/campur), tipe sewa (harian/bulanan/tahunan), dan rentang harga. Temukan kos idamanmu di Yogyakarta dengan mudah, langsung dari genggaman.
-                        </p>
-                    </div>
-                </div>
-            </section>*/}
         </GuestLayout>
     );
 }
