@@ -22,6 +22,14 @@ class KosController extends Controller
             'search', 'type', 'district', 'price_type', 'price_min', 'price_max',
         ]);
 
+        // Param districts (array) dari filter area populer / kampus
+        if ($request->filled('districts')) {
+            $districts = $request->input('districts');
+            $filters['districts'] = is_array($districts)
+                ? $districts
+                : explode(',', $districts);
+        }
+
         if (!empty($filters['price_min']) && !empty($filters['price_max'])) {
             if ((int) $filters['price_min'] > (int) $filters['price_max']) {
                 return Inertia::render('Guest/Kos/Index', [

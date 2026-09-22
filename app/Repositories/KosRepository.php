@@ -32,6 +32,11 @@ class KosRepository
             $query->where('district', $filters['district']);
         }
 
+        // Filter districts (array) — dipakai untuk area populer dan kampus
+        if (!empty($filters['districts']) && is_array($filters['districts'])) {
+            $query->whereIn('district', $filters['districts']);
+        }
+
         if (!empty($filters['price_type'])) {
             $query->whereHas('activePrices', function ($q) use ($filters) {
                 $q->where('type', $filters['price_type']);

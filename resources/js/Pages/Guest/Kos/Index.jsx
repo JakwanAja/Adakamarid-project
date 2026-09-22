@@ -3,6 +3,7 @@ import KosCard from '@/Components/Guest/KosCard';
 import FilterPanel from '@/Components/Guest/FilterPanel';
 import Pagination from '@/Components/Shared/Pagination';
 import { Head, router } from '@inertiajs/react';
+import { POPULAR_AREAS, CAMPUS_LIST } from '@/Components/Shared/AreaData';
 import { useState, useEffect } from 'react';
 
 export default function KosIndex({ kos, filters: initialFilters, districts, errors }) {
@@ -14,6 +15,11 @@ export default function KosIndex({ kos, filters: initialFilters, districts, erro
         price_min:  initialFilters?.price_min ?? '',
         price_max:  initialFilters?.price_max ?? '',
     });
+
+    // Label area aktif (dari klik area populer/kampus)
+    const areaLabel   = initialFilters?.area_label ?? '';
+    const hasDistricts = !!(initialFilters?.districts);
+    const isAreaFilter = hasDistricts || areaLabel;
     const [priceError, setPriceError] = useState('');
     const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -44,6 +50,7 @@ export default function KosIndex({ kos, filters: initialFilters, districts, erro
         const empty = { search: '', type: '', district: '', price_type: '', price_min: '', price_max: '' };
         setFilters(empty);
         setPriceError('');
+        // Reset juga area filter
         router.get(route('kos.index'), {}, { preserveState: true, replace: true });
         setDrawerOpen(false);
     }
@@ -86,6 +93,27 @@ export default function KosIndex({ kos, filters: initialFilters, districts, erro
                         </div>
 
                         {/* Tombol Filter — hanya muncul di mobile */}
+                        {/* Badge area aktif */}
+                        {isAreaFilter && (
+                            <div className="hidden sm:flex items-center gap-2 ml-3">
+                                <span className="inline-flex items-center gap-1.5 text-xs px-3 py-1 rounded-full font-medium"
+                                    style={{ backgroundColor: '#EFF6FF', color: '#2563EB', border: '1px solid #BFDBFE' }}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    </svg>
+                                    {areaLabel || 'Area terpilih'}
+                                </span>
+                                <button onClick={handleReset}
+                                    className="text-xs transition-colors"
+                                    style={{ color: '#64748B' }}
+                                    onMouseEnter={e => e.currentTarget.style.color = '#2563EB'}
+                                    onMouseLeave={e => e.currentTarget.style.color = '#64748B'}>
+                                    &times; Hapus
+                                </button>
+                            </div>
+                        )}
+
                         <button
                             onClick={() => setDrawerOpen(true)}
                             className="lg:hidden flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-xl relative"

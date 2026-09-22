@@ -2,6 +2,7 @@ import GuestLayout from '@/Layouts/GuestLayout';
 import KosCard from '@/Components/Guest/KosCard';
 import { Head, Link, router } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
+import { POPULAR_AREAS, CAMPUS_LIST } from '@/Components/Shared/AreaData';
 
 // ── Shared UI helpers ─────────────────────────────────────────
 function ChevronDown() {
@@ -138,6 +139,142 @@ function HistorySection() {
 }
 
 
+
+// ── AreaSection — Area Populer & Kampus ──────────────────────
+function AreaSection() {
+    const [activeTab, setActiveTab] = useState('area'); // 'area' | 'campus'
+
+    function handleAreaClick(item) {
+        // Kirim districts sebagai comma-separated string
+        const districts = item.districts.join(',');
+        window.location.href = `/kos?districts=${encodeURIComponent(districts)}&area_label=${encodeURIComponent(item.label)}`;
+    }
+
+    return (
+        <section style={{ backgroundColor: '#FFFFFF', borderTop: '1px solid #E2E8F0' }}>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+                {/* Header */}
+                <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-7">
+                    <div>
+                        <h2 className="text-xl font-bold" style={{ color: '#1E293B' }}>
+                            Cari Kos Berdasarkan Lokasi
+                        </h2>
+                        <p className="text-sm mt-1" style={{ color: '#64748B' }}>
+                            Temukan kos di area atau dekat kampus pilihanmu
+                        </p>
+                    </div>
+
+                    {/* Tab toggle */}
+                    <div className="flex items-center rounded-xl p-1 shrink-0"
+                        style={{ backgroundColor: '#F1F5F9', border: '1px solid #E2E8F0' }}>
+                        {[
+                            { key: 'area',   label: 'Area Populer' },
+                            { key: 'campus', label: 'Kampus' },
+                        ].map(tab => (
+                            <button
+                                key={tab.key}
+                                onClick={() => setActiveTab(tab.key)}
+                                className="px-4 py-1.5 text-sm font-medium rounded-lg transition-all"
+                                style={{
+                                    backgroundColor: activeTab === tab.key ? '#2563EB' : 'transparent',
+                                    color:           activeTab === tab.key ? '#FFFFFF'  : '#64748B',
+                                    boxShadow:       activeTab === tab.key ? '0 1px 3px rgba(37,99,235,0.3)' : 'none',
+                                }}>
+                                {tab.label}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
+                {/* ── Area Populer ── */}
+                {activeTab === 'area' && (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+                        {POPULAR_AREAS.map(area => (
+                            <button
+                                key={area.key}
+                                onClick={() => handleAreaClick(area)}
+                                className="flex flex-col items-start text-left p-4 rounded-2xl transition-all group"
+                                style={{
+                                    backgroundColor: '#F8FAFC',
+                                    border: '1.5px solid #E2E8F0',
+                                }}
+                                onMouseEnter={e => {
+                                    e.currentTarget.style.backgroundColor = '#EFF6FF';
+                                    e.currentTarget.style.borderColor = '#BFDBFE';
+                                    e.currentTarget.style.transform = 'translateY(-2px)';
+                                    e.currentTarget.style.boxShadow = '0 4px 12px rgba(37,99,235,0.1)';
+                                }}
+                                onMouseLeave={e => {
+                                    e.currentTarget.style.backgroundColor = '#F8FAFC';
+                                    e.currentTarget.style.borderColor = '#E2E8F0';
+                                    e.currentTarget.style.transform = 'translateY(0)';
+                                    e.currentTarget.style.boxShadow = 'none';
+                                }}
+                            >
+                                {/* Icon lokasi */}
+                                <div className="w-9 h-9 rounded-xl flex items-center justify-center mb-3"
+                                    style={{ backgroundColor: '#EFF6FF' }}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="#2563EB" strokeWidth={1.8}>
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    </svg>
+                                </div>
+                                <p className="text-sm font-bold leading-tight mb-1" style={{ color: '#1E293B' }}>
+                                    {area.label}
+                                </p>
+                                <p className="text-xs leading-relaxed" style={{ color: '#64748B' }}>
+                                    {area.description}
+                                </p>
+                            </button>
+                        ))}
+                    </div>
+                )}
+
+                {/* ── Kampus ── */}
+                {activeTab === 'campus' && (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+                        {CAMPUS_LIST.map(campus => (
+                            <button
+                                key={campus.key}
+                                onClick={() => handleAreaClick(campus)}
+                                className="flex items-center gap-2.5 px-4 py-3 rounded-xl text-left transition-all"
+                                style={{
+                                    backgroundColor: '#F8FAFC',
+                                    border: '1.5px solid #E2E8F0',
+                                }}
+                                onMouseEnter={e => {
+                                    e.currentTarget.style.backgroundColor = '#EFF6FF';
+                                    e.currentTarget.style.borderColor = '#BFDBFE';
+                                    e.currentTarget.style.transform = 'translateY(-1px)';
+                                    e.currentTarget.style.boxShadow = '0 4px 10px rgba(37,99,235,0.08)';
+                                }}
+                                onMouseLeave={e => {
+                                    e.currentTarget.style.backgroundColor = '#F8FAFC';
+                                    e.currentTarget.style.borderColor = '#E2E8F0';
+                                    e.currentTarget.style.transform = 'translateY(0)';
+                                    e.currentTarget.style.boxShadow = 'none';
+                                }}
+                            >
+                                {/* Icon kampus */}
+                                <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
+                                    style={{ backgroundColor: '#EFF6FF' }}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="#2563EB" strokeWidth={1.8}>
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 3L2 9h20L12 3zm-7 6v9h4v-5h6v5h4V9" />
+                                    </svg>
+                                </div>
+                                <span className="text-sm font-medium" style={{ color: '#1E293B' }}>
+                                    {campus.label}
+                                </span>
+                            </button>
+                        ))}
+                    </div>
+                )}
+
+            </div>
+        </section>
+    );
+}
 // ── HowToSection — Cara Pesan ─────────────────────────────────
 const HOW_TO_STEPS = [
     {
@@ -441,6 +578,9 @@ export default function Home({ featuredKos, promotedKos, totalKos, districts }) 
                     </div>
                 )}
             </section>
+
+            {/* ── Area Populer & Kampus ────────────────────── */}
+            <AreaSection />
 
             {/* ── Terakhir Kamu Lihat ───────────────────────── */}
             <HistorySection />
