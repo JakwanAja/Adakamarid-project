@@ -79,7 +79,7 @@ export default function KosIndex({ kos, filters: initialFilters, districts, erro
 
     return (
         <GuestLayout>
-            <Head title="Cari Kos di Yogyakarta" />
+            <Head title="Cari Kamar di Yogyakarta" />
 
             <div style={{ backgroundColor: '#F8FAFC', minHeight: '100vh' }}>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -87,9 +87,9 @@ export default function KosIndex({ kos, filters: initialFilters, districts, erro
                     {/* Header */}
                     <div className="flex items-center justify-between mb-5">
                         <div>
-                            <h1 className="text-xl font-bold" style={{ color: '#1E293B' }}>Kos di Yogyakarta</h1>
+                            <h1 className="text-xl font-bold" style={{ color: '#1E293B' }}>Kamar di Yogyakarta</h1>
                             <p className="text-sm mt-0.5" style={{ color: '#64748B' }}>
-                                {totalKos > 0 ? `${totalKos} kos ditemukan` : 'Menampilkan semua kos tersedia'}
+                                {totalKos > 0 ? `${totalKos} kamar ditemukan` : 'Menampilkan semua kos tersedia'}
                             </p>
                         </div>
 

@@ -133,7 +133,7 @@ export default function GuestLayout({ children }) {
                                 </svg>
                                 <input type="text" value={searchValue}
                                     onChange={e => setSearchValue(e.target.value)}
-                                    placeholder="Cari kos di Yogyakarta..."
+                                    placeholder="Cari properti di Yogyakarta..."
                                     className="flex-1 px-3 py-2 text-sm outline-none bg-transparent"
                                     style={{ color: '#1E293B' }} />
                                 <button type="submit"
@@ -161,7 +161,7 @@ export default function GuestLayout({ children }) {
                                 className="h-8 w-auto object-contain object-left mb-3"
                                 style={{ filter: 'brightness(0) invert(1)' }} />
                             <p className="text-sm leading-relaxed" style={{ color: 'rgba(248,250,252,0.60)' }}>
-                                Platform iklan kos terkurasi untuk area Yogyakarta. Informasi lengkap, kontak langsung ke pemilik.
+                                Platform listing properti terkurasi untuk area Yogyakarta. Kos, Guesthouse, dan Villa, kontak langsung ke pemilik.
                             </p>
                         </div>
                         <div>
@@ -187,7 +187,7 @@ export default function GuestLayout({ children }) {
                         <div>
                             <p className="text-xs font-bold uppercase tracking-wider mb-4" style={{ color: 'rgba(248,250,252,0.40)' }}>Tentang</p>
                             <p className="text-sm leading-relaxed" style={{ color: 'rgba(248,250,252,0.60)' }}>
-                                AdaKamar.id adalah platform iklan kos khusus area Yogyakarta. Seluruh listing dikelola oleh tim kami untuk memastikan informasi yang akurat dan terpercaya.
+                                AdaKamar.id adalah platform listing properti khusus area Yogyakarta. Seluruh listing dikelola oleh tim kami untuk memastikan informasi yang akurat dan terpercaya.
                             </p>
                         </div>
                     </div>

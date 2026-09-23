@@ -129,7 +129,7 @@ function ReviewForm({ kos, existingReview = null }) {
                     Komentar <span className="text-xs font-normal" style={{ color: '#64748B' }}>(opsional)</span>
                 </label>
                 <textarea value={comment} onChange={e => setComment(e.target.value)}
-                    rows={3} maxLength={1000} placeholder="Ceritakan pengalamanmu di kos ini..."
+                    rows={3} maxLength={1000} placeholder="Ceritakan pengalamanmu di properti ini..."
                     className="w-full px-3.5 py-2.5 text-sm rounded-xl outline-none resize-none transition-all"
                     style={{ border: `1px solid ${errors.comment ? '#C0392B' : '#E2E8F0'}`, backgroundColor: '#FFFFFF', color: '#1E293B' }}
                     onFocus={e => { e.target.style.borderColor = '#2563EB'; e.target.style.boxShadow = '0 0 0 3px rgba(192,57,43,0.1)'; }}
@@ -200,8 +200,6 @@ function FacilityBadge({ name, icon }) {
 }
 
 // ── Photo Gallery ─────────────────────────────────────────────
-// Desktop: mosaic 2 kolom (foto besar kiri + grid 4 slot kanan)
-// Mobile:  slider 1 foto dengan navigasi panah
 function PhotoGallery({ photos }) {
     const sorted = photos ? [...photos].sort((a, b) => a.sort_order - b.sort_order) : [];
     const [activeIdx, setActiveIdx] = useState(0);
@@ -378,7 +376,7 @@ export default function KosShow({ kos, facilitiesByCategory, similarKos, userRev
 
     const waNumber  = kos.contact_whatsapp?.replace(/^0+/, '62') ?? '';
     const kosUrl    = `${window.location.origin}/kos/${kos.slug}`;
-    const waMessage = encodeURIComponent(`Halo, saya tertarik dengan kos berikut yang saya temukan di AdaKamar.id:\n\n*${kos.name}*\n${kosUrl}\n\nApakah kamar masih tersedia?`);
+    const waMessage = encodeURIComponent(`Halo, saya tertarik dengan properti berikut yang saya temukan di AdaKamar.id:\n\n*${kos.name}*\n${kosUrl}\n\nApakah kamar masih tersedia?`);
     const waLink    = waNumber ? `https://wa.me/${waNumber}?text=${waMessage}` : null;
 
     const hasFacilities = Object.values(facilitiesByCategory ?? {}).some(arr => arr.length > 0);
@@ -413,7 +411,7 @@ export default function KosShow({ kos, facilitiesByCategory, similarKos, userRev
                         <Link href="/kos" style={{ color: '#64748B' }}
                             onMouseEnter={e => e.currentTarget.style.color = '#2563EB'}
                             onMouseLeave={e => e.currentTarget.style.color = '#64748B'}>
-                            Cari Kos
+                            Cari Properti
                         </Link>
                         <span>&rsaquo;</span>
                         <span className="truncate max-w-[200px] font-medium" style={{ color: '#1E293B' }}>
@@ -452,7 +450,7 @@ export default function KosShow({ kos, facilitiesByCategory, similarKos, userRev
                                 <div className="flex flex-wrap items-center gap-2 lg:gap-3">
                                     <span className="text-xs px-2.5 py-1 rounded-full font-semibold"
                                         style={{ backgroundColor: typeColor.bg, color: typeColor.text }}>
-                                        {['guesthouse', 'villa'].includes(kos.type) ? TYPE_LABELS[kos.type] : ('Kos ' + TYPE_LABELS[kos.type])}
+                                        Kos {TYPE_LABELS[kos.type]}
                                     </span>
                                     <div className="flex items-center gap-1.5">
                                         <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 shrink-0"
@@ -471,7 +469,7 @@ export default function KosShow({ kos, facilitiesByCategory, similarKos, userRev
                                                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M3 14h18M5 10V6a1 1 0 011-1h12a1 1 0 011 1v4M3 18v-4h18v4M3 18h18" />
                                             </svg>
                                             <span className="text-sm font-semibold" style={{ color: '#7C3AED' }}>
-                                                {kos.rooms_available} kamar
+                                                {kos.rooms_available} kamar tersedia
                                             </span>
                                         </div>
                                     )}
@@ -620,7 +618,7 @@ export default function KosShow({ kos, facilitiesByCategory, similarKos, userRev
                                 <div className="bg-white rounded-2xl p-4 lg:p-5"
                                     style={{ border: '1px solid #E2E8F0' }}>
                                     <h2 className="text-sm lg:text-base font-semibold mb-2.5 lg:mb-3"
-                                        style={{ color: '#1E293B' }}>Peraturan Kos</h2>
+                                        style={{ color: '#1E293B' }}>Peraturan</h2>
                                     <p className="text-sm leading-relaxed whitespace-pre-line"
                                         style={{ color: '#475569' }}>
                                         {kos.rules}
@@ -740,7 +738,7 @@ export default function KosShow({ kos, facilitiesByCategory, similarKos, userRev
                         <section className="mt-8 lg:mt-10">
                             <div className="flex items-center justify-between mb-4 lg:mb-5">
                                 <h2 className="text-base lg:text-lg font-bold" style={{ color: '#1E293B' }}>
-                                    Kos Serupa di {kos.district}
+                                    Properti Serupa di {kos.district}
                                 </h2>
                                 <Link href={`/kos?district=${encodeURIComponent(kos.district)}`}
                                     className="text-sm font-semibold transition-colors"

@@ -117,7 +117,7 @@ function HistorySection() {
                 <div>
                     <h2 className="text-lg font-bold" style={{ color: '#1E293B' }}>Terakhir Kamu Lihat</h2>
                     <p className="text-sm mt-0.5" style={{ color: '#64748B' }}>
-                        Lanjutkan pencarian kos yang sudah kamu buka
+                        Lanjutkan pencarian properti yang sudah kamu buka
                     </p>
                 </div>
                 <button
@@ -158,10 +158,10 @@ function AreaSection() {
                 <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-7">
                     <div>
                         <h2 className="text-xl font-bold" style={{ color: '#1E293B' }}>
-                            Cari Kos Berdasarkan Lokasi
+                            Cari Properti Berdasarkan Lokasi
                         </h2>
                         <p className="text-sm mt-1" style={{ color: '#64748B' }}>
-                            Temukan kos di area atau dekat kampus pilihanmu
+                            Temukan properti di area atau dekat kampus pilihanmu
                         </p>
                     </div>
 
@@ -279,9 +279,9 @@ function AreaSection() {
 const HOW_TO_STEPS = [
     {
         number: '01',
-        title: 'Temukan Kos yang Cocok',
-        desc: 'Gunakan fitur pencarian dan filter untuk menemukan kos yang sesuai lokasi, tipe, dan budget kamu.',
-        bubble: 'Kamu: "Saya tertarik dengan kos ini, apakah masih tersedia?"',
+        title: 'Temukan Properti yang Cocok',
+        desc: 'Gunakan fitur pencarian dan filter untuk menemukan properti yang sesuai lokasi, tipe, dan budget kamu.',
+        bubble: 'Kamu: "Saya tertarik dengan properti ini, apakah masih tersedia?"',
         icon: (
             <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth={1.8}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -302,7 +302,7 @@ const HOW_TO_STEPS = [
     {
         number: '03',
         title: 'Hubungi Pemilik via WhatsApp',
-        desc: 'Klik tombol WhatsApp di halaman detail kos. Negosiasi dan konfirmasi ketersediaan langsung dengan pemilik.',
+        desc: 'Klik tombol WhatsApp di halaman detail properti. Negosiasi dan konfirmasi ketersediaan langsung dengan pemilik.',
         bubble: 'Pemilik: "Masih tersedia, Kak. Silakan survey kapan saja."',
         icon: (
             <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth={1.8}>
@@ -313,7 +313,7 @@ const HOW_TO_STEPS = [
     {
         number: '04',
         title: 'Pindah & Tinggal Nyaman',
-        desc: 'Setelah deal dengan pemilik, lakukan pembayaran langsung dan nikmati kos barumu di Yogyakarta.',
+        desc: 'Setelah deal dengan pemilik, lakukan pembayaran langsung dan nikmati properti barumu di Yogyakarta.',
         bubble: 'Pemilik: "Deal! Silakan transfer DP ke rekening berikut..."',
         icon: (
             <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth={1.8}>
@@ -336,11 +336,11 @@ function HowToSection() {
                     </span>
                     <h2 className="text-2xl sm:text-3xl font-bold leading-tight mb-3"
                         style={{ color: '#1E293B' }}>
-                        Cari kos cuma 4 langkah,<br className="hidden sm:block" /> semua lewat WhatsApp
+                        Cari properti cuma 4 langkah,<br className="hidden sm:block" /> semua lewat WhatsApp
                     </h2>
                     <p className="text-sm sm:text-base max-w-md mx-auto"
                         style={{ color: '#64748B' }}>
-                        Gak perlu ribet, tinggal pilih kos yang sudah terdaftar di AdaKamar.id dan hubungi langsung pemiliknya.
+                        Gak perlu ribet, tinggal pilih properti yang sudah terdaftar di AdaKamar.id dan hubungi langsung pemiliknya.
                     </p>
                 </div>
 
@@ -404,7 +404,7 @@ function HowToSection() {
 // ── Main Page ─────────────────────────────────────────────────
 export default function Home({ featuredKos, promotedKos, totalKos, districts }) {
     const [filterBar, setFilterBar] = useState({
-        district: '', type: '', price_type: 'bulanan', price_min: '', price_max: '',
+        district: '', type: '', price_type: '', price_min: '', price_max: '',
     });
     const [priceError, setPriceError] = useState('');
 
@@ -426,7 +426,7 @@ export default function Home({ featuredKos, promotedKos, totalKos, districts }) 
 
     return (
         <GuestLayout>
-            <Head title="Temukan Kos di Yogyakarta" />
+            <Head title="Temukan Properti di Yogyakarta" />
 
             {/* ── Hero pendek + Filter card overlap ──────── */}
             <div className="relative">
@@ -442,10 +442,10 @@ export default function Home({ featuredKos, promotedKos, totalKos, districts }) 
                     <div className="absolute inset-0" style={{ backgroundColor: 'rgba(15,23,42,0.62)' }} />
                     <div className="relative z-10 max-w-2xl mx-auto" style={{ paddingBottom: '48px' }}>
                         <h1 className="text-2xl md:text-3xl font-bold leading-snug" style={{ color: '#FFFFFF' }}>
-                            Cari Kos? Ingat AdaKamar
+                            Cari Kamar Jadi Gampang, Semua di Adakamar.
                         </h1>
                         <p className="text-sm mt-2" style={{ color: 'rgba(255,255,255,0.72)' }}>
-                            Kos, Guesthouse, Villa — semua ada di sini. Informasi lengkap, hubungi pemilik langsung.
+                            Kos, Guesthouse, Villa semua ada di sini. Informasi lengkap, hubungi pemilik langsung.
                         </p>
                     </div>
                 </section>
@@ -575,8 +575,8 @@ export default function Home({ featuredKos, promotedKos, totalKos, districts }) 
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5" />
                             </svg>
                         </div>
-                        <p className="text-sm font-medium" style={{ color: '#1E293B' }}>Belum ada kos tersedia</p>
-                        <p className="text-xs mt-1" style={{ color: '#64748B' }}>Tambahkan data kos melalui panel admin</p>
+                        <p className="text-sm font-medium" style={{ color: '#1E293B' }}>Belum ada properti tersedia</p>
+                        <p className="text-xs mt-1" style={{ color: '#64748B' }}>Tambahkan data properti melalui panel admin</p>
                     </div>
                 )}
             </section>
