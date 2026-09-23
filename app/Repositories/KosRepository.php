@@ -89,7 +89,7 @@ class KosRepository
      * Ambil kos yang sedang dipromosikan admin (is_promoted = true).
      * Max 8, diurutkan: is_plus dulu, lalu rating tertinggi.
      */
-    public function getPromoted(int $limit = 8): Collection
+    public function getPromoted(int $limit = 4): Collection
     {
         return Kos::with(['primaryPhoto', 'activePrices'])
             ->where('is_active', true)
