@@ -127,8 +127,8 @@ class Kos extends Model
 
     public function recalculateRating(): void
     {
-        $avg = $this->reviews()->avg('rating') ?? 0;
-        $count = $this->reviews()->count();
+        $avg   = $this->reviews()->where('status', 'approved')->avg('rating') ?? 0;
+        $count = $this->reviews()->where('status', 'approved')->count();
 
         $this->update([
             'rating_avg'   => round($avg, 2),

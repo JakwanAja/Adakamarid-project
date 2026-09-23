@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Guest;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Admin\KosController as AdminKosController;
 use App\Models\Kos;
+use App\Models\Review;
 use App\Services\Guest\KosService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -60,8 +61,10 @@ class KosController extends Controller
             'photos',
             'activePrices',
             'facilities',
+            // BUG FIX: hanya load reviews yang sudah APPROVED untuk ditampilkan ke publik
             'reviews' => function ($q) {
-                $q->orderBy('created_at', 'desc')
+                $q->where('status', 'approved')
+                  ->orderBy('created_at', 'desc')
                   ->with(['user', 'photos']);
             },
         ]);
@@ -75,11 +78,13 @@ class KosController extends Controller
             'sekitar' => $kos->facilities->where('category', 'sekitar')->values(),
         ];
 
-        // Cari ulasan milik user yang sedang login (null jika belum login atau belum review)
+        // BUG FIX: userReview di-query langsung (bukan dari $kos->reviews yang sudah difilter approved)
+        // agar ulasan pending/rejected milik sendiri tetap terbaca untuk ditampilkan badge status
         $userReview = null;
         if (auth()->check()) {
-            $userReview = $kos->reviews
+            $userReview = Review::where('kos_id', $kos->id)
                 ->where('user_id', auth()->id())
+                ->with('photos')
                 ->first();
         }
 

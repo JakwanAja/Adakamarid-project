@@ -15,6 +15,7 @@ class Review extends Model
         'user_id',
         'rating',
         'comment',
+        'status',
     ];
 
     protected function casts(): array
@@ -25,6 +26,18 @@ class Review extends Model
         ];
     }
 
+    // ── Scopes ───────────────────────────────────────────────
+    public function scopeApproved($query)
+    {
+        return $query->where('status', 'approved');
+    }
+
+    public function scopePending($query)
+    {
+        return $query->where('status', 'pending');
+    }
+
+    // ── Relations ────────────────────────────────────────────
     public function kos()
     {
         return $this->belongsTo(Kos::class);

@@ -26,7 +26,7 @@ class ReviewController extends Controller
                 $request->file('photos', [])
             );
 
-            return back()->with('success', 'Ulasan berhasil dikirim. Terima kasih!');
+            return back()->with('success', 'Ulasan kamu berhasil dikirim dan sedang menunggu persetujuan admin.');
         } catch (\RuntimeException $e) {
             return back()->with('error', $e->getMessage());
         }
@@ -42,7 +42,7 @@ class ReviewController extends Controller
                 $request->file('photos', [])
             );
 
-            return back()->with('success', 'Ulasan berhasil diperbarui.');
+            return back()->with('success', 'Ulasan kamu berhasil diperbarui dan sedang menunggu persetujuan admin.');
         } catch (\RuntimeException $e) {
             return back()->with('error', $e->getMessage());
         }

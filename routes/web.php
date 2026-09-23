@@ -80,6 +80,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::put('/kos/{kos}/facilities', [AdminKosController::class, 'updateFacilities'])->name('kos.facilities.update');
     // Ulasan
     Route::get('/reviews', [AdminReviewController::class, 'index'])->name('reviews.index');
+    Route::patch('/reviews/{review}/approve', [AdminReviewController::class, 'approve'])->name('reviews.approve');
+    Route::patch('/reviews/{review}/reject', [AdminReviewController::class, 'reject'])->name('reviews.reject');
     Route::delete('/reviews/{review}', [AdminReviewController::class, 'destroy'])->name('reviews.destroy');
     // Users
     Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
