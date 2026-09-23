@@ -442,10 +442,10 @@ export default function Home({ featuredKos, promotedKos, totalKos, districts }) 
                     <div className="absolute inset-0" style={{ backgroundColor: 'rgba(15,23,42,0.62)' }} />
                     <div className="relative z-10 max-w-2xl mx-auto" style={{ paddingBottom: '48px' }}>
                         <h1 className="text-2xl md:text-3xl font-bold leading-snug" style={{ color: '#FFFFFF' }}>
-                            Temukan Kos Terbaik di Yogyakarta
+                            Cari Kos? Ingat AdaKamar
                         </h1>
                         <p className="text-sm mt-2" style={{ color: 'rgba(255,255,255,0.72)' }}>
-                            Listing pilihan, informasi lengkap, langsung hubungi pemilik
+                            Kos, Guesthouse, Villa — semua ada di sini. Informasi lengkap, hubungi pemilik langsung.
                         </p>
                     </div>
                 </section>
@@ -478,9 +478,11 @@ export default function Home({ featuredKos, promotedKos, totalKos, districts }) 
                                         onFocus={e => e.target.style.borderColor = '#2563EB'}
                                         onBlur={e => e.target.style.borderColor = '#CBD5E1'}>
                                         <option value="">Semua Tipe</option>
-                                        <option value="putra">Putra</option>
-                                        <option value="putri">Putri</option>
-                                        <option value="campur">Campur</option>
+                                        <option value="putra">Kos Putra</option>
+                                        <option value="putri">Kos Putri</option>
+                                        <option value="campur">Kos Campur</option>
+                                        <option value="guesthouse">Guesthouse</option>
+                                        <option value="villa">Villa</option>
                                     </select>
                                     <ChevronDown />
                                 </div>
@@ -557,8 +559,8 @@ export default function Home({ featuredKos, promotedKos, totalKos, districts }) 
             <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8"
                 style={hasPromoted ? { borderTop: '1px solid #E2E8F0', paddingTop: '32px' } : {}}>
                 <SectionHeader
-                    title="Kos Tersedia di Yogyakarta"
-                    subtitle={totalKos > 0 ? `${totalKos} kos tersedia di Yogyakarta` : 'Listing pilihan, langsung dari pemilik'}
+                    title="Properti Tersedia di Yogyakarta"
+                    subtitle={totalKos > 0 ? `${totalKos} properti tersedia di Yogyakarta` : 'Kos, Guesthouse, Villa pilihan di Yogyakarta'}
                     href="/kos"
                     hrefLabel="Lihat Semua"
                 />

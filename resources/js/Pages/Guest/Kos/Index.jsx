@@ -14,6 +14,7 @@ export default function KosIndex({ kos, filters: initialFilters, districts, erro
         price_type: initialFilters?.price_type ?? '',
         price_min:  initialFilters?.price_min ?? '',
         price_max:  initialFilters?.price_max ?? '',
+        rooms_min:  initialFilters?.rooms_min ?? '',
     });
 
     // Label area aktif (dari klik area populer/kampus)

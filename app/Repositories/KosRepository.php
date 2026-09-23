@@ -81,7 +81,7 @@ class KosRepository
             ->where('is_active', true)
             ->orderBy('is_plus', 'desc')
             ->orderBy('created_at', 'desc')
-            ->limit(8)
+            ->limit(4)
             ->get();
     }
 

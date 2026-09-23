@@ -4,11 +4,13 @@ import FlashMessage from '@/Components/Shared/FlashMessage';
 import { Head, Link, router } from '@inertiajs/react';
 import { useState, useMemo } from 'react';
 
-const TYPE_LABELS = { putra: 'Putra', putri: 'Putri', campur: 'Campur' };
+const TYPE_LABELS = { putra: 'Putra', putri: 'Putri', campur: 'Campur', guesthouse: 'Guesthouse', villa: 'Villa' };
 const TYPE_COLORS = {
-    putra:  { bg: '#EFF6FF', text: '#1D4ED8' },
-    putri:  { bg: '#FDF2F8', text: '#BE185D' },
-    campur: { bg: '#F0FDF4', text: '#15803D' },
+    putra:      { bg: '#EFF6FF', text: '#1D4ED8' },
+    putri:      { bg: '#FDF2F8', text: '#BE185D' },
+    campur:     { bg: '#F0FDF4', text: '#15803D' },
+    guesthouse: { bg: '#F5F3FF', text: '#7C3AED' },
+    villa:      { bg: '#FFFBEB', text: '#B45309' },
 };
 
 function ToggleSwitch({ checked, onChange }) {

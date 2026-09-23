@@ -1,7 +1,9 @@
 const TYPE_OPTIONS = [
-    { value: 'putra',  label: 'Kos Putra' },
-    { value: 'putri',  label: 'Kos Putri' },
-    { value: 'campur', label: 'Kos Campur' },
+    { value: 'putra',      label: 'Kos Putra' },
+    { value: 'putri',      label: 'Kos Putri' },
+    { value: 'campur',     label: 'Kos Campur' },
+    { value: 'guesthouse', label: 'Guesthouse' },
+    { value: 'villa',      label: 'Villa' },
 ];
 
 const PRICE_OPTIONS = [
@@ -10,9 +12,9 @@ const PRICE_OPTIONS = [
     { value: 'tahunan', label: 'Tahunan' },
 ];
 
-function FilterSection({ title, children }) {
+function FilterSection({ title, children, noBorder = false }) {
     return (
-        <div className="pb-5 mb-5" style={{ borderBottom: '1px solid #E2E8F0' }}>
+        <div className="pb-5 mb-5" style={noBorder ? {} : { borderBottom: '1px solid #E2E8F0' }}>
             <p className="text-xs font-bold uppercase tracking-wider mb-3" style={{ color: '#64748B' }}>{title}</p>
             {children}
         </div>
@@ -36,7 +38,8 @@ export default function FilterPanel({ filters, onFilterChange, onReset, district
         onFilterChange({ ...filters, [key]: value });
     }
 
-    const hasActiveFilter = Object.values(filters).some(v => v !== '');
+    const isGuesthouse = filters.type === 'guesthouse';
+    const hasActiveFilter = Object.entries(filters).some(([k, v]) => v !== '' && k !== 'price_type');
 
     return (
         <div className="bg-white rounded-2xl p-5" style={{ border: '1px solid #E2E8F0' }}>
@@ -66,20 +69,47 @@ export default function FilterPanel({ filters, onFilterChange, onReset, district
                 </select>
             </FilterSection>
 
-            {/* Tipe Kos */}
-            <FilterSection title="Tipe Kos">
-                <RadioOption name="type" value="" checked={!filters.type} onChange={() => handleChange('type', '')} label="Semua" />
+            {/* Tipe Properti */}
+            <FilterSection title="Tipe Properti">
+                <RadioOption name="type" value="" checked={!filters.type}
+                    onChange={() => handleChange('type', '')} label="Semua" />
                 {TYPE_OPTIONS.map(opt => (
                     <RadioOption key={opt.value} name="type" value={opt.value}
                         checked={filters.type === opt.value}
-                        onChange={() => handleChange('type', opt.value)}
+                        onChange={() => {
+                            // Reset rooms_min saat pindah dari guesthouse
+                            const newFilters = { ...filters, type: opt.value };
+                            if (opt.value !== 'guesthouse') newFilters.rooms_min = '';
+                            onFilterChange(newFilters);
+                        }}
                         label={opt.label} />
                 ))}
             </FilterSection>
 
+            {/* Filter Jumlah Kamar — hanya muncul saat tipe Guesthouse */}
+            {isGuesthouse && (
+                <FilterSection title="Jumlah Kamar Minimum">
+                    <input
+                        type="number"
+                        min="1"
+                        placeholder="Contoh: 2"
+                        value={filters.rooms_min ?? ''}
+                        onChange={e => handleChange('rooms_min', e.target.value)}
+                        className="w-full px-3 py-2.5 text-sm rounded-xl outline-none"
+                        style={{ border: '1px solid #E2E8F0', color: '#1E293B', backgroundColor: '#FFFFFF' }}
+                        onFocus={e => { e.target.style.borderColor = '#2563EB'; e.target.style.boxShadow = '0 0 0 3px rgba(37,99,235,0.1)'; }}
+                        onBlur={e => { e.target.style.borderColor = '#E2E8F0'; e.target.style.boxShadow = 'none'; }}
+                    />
+                    <p className="text-xs mt-1.5" style={{ color: '#64748B' }}>
+                        Tampilkan guesthouse dengan minimal X kamar
+                    </p>
+                </FilterSection>
+            )}
+
             {/* Tipe Sewa */}
             <FilterSection title="Tipe Sewa">
-                <RadioOption name="price_type" value="" checked={!filters.price_type} onChange={() => handleChange('price_type', '')} label="Semua" />
+                <RadioOption name="price_type" value="" checked={!filters.price_type}
+                    onChange={() => handleChange('price_type', '')} label="Semua" />
                 {PRICE_OPTIONS.map(opt => (
                     <RadioOption key={opt.value} name="price_type" value={opt.value}
                         checked={filters.price_type === opt.value}
@@ -97,7 +127,7 @@ export default function FilterPanel({ filters, onFilterChange, onReset, district
                         onChange={e => handleChange('price_min', e.target.value)}
                         className="w-full px-3 py-2.5 text-sm rounded-xl outline-none"
                         style={{ border: '1px solid #E2E8F0', color: '#1E293B', backgroundColor: '#FFFFFF' }}
-                        onFocus={e => { e.target.style.borderColor = '#2563EB'; e.target.style.boxShadow = '0 0 0 3px rgba(192,57,43,0.1)'; }}
+                        onFocus={e => { e.target.style.borderColor = '#2563EB'; e.target.style.boxShadow = '0 0 0 3px rgba(37,99,235,0.1)'; }}
                         onBlur={e => { e.target.style.borderColor = '#E2E8F0'; e.target.style.boxShadow = 'none'; }}
                     />
                     <input type="number" min="0" placeholder="Harga maksimum"
@@ -105,7 +135,7 @@ export default function FilterPanel({ filters, onFilterChange, onReset, district
                         onChange={e => handleChange('price_max', e.target.value)}
                         className="w-full px-3 py-2.5 text-sm rounded-xl outline-none"
                         style={{ border: '1px solid #E2E8F0', color: '#1E293B', backgroundColor: '#FFFFFF' }}
-                        onFocus={e => { e.target.style.borderColor = '#2563EB'; e.target.style.boxShadow = '0 0 0 3px rgba(192,57,43,0.1)'; }}
+                        onFocus={e => { e.target.style.borderColor = '#2563EB'; e.target.style.boxShadow = '0 0 0 3px rgba(37,99,235,0.1)'; }}
                         onBlur={e => { e.target.style.borderColor = '#E2E8F0'; e.target.style.boxShadow = 'none'; }}
                     />
                 </div>

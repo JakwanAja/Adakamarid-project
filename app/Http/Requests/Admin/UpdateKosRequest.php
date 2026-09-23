@@ -14,7 +14,8 @@ class UpdateKosRequest extends FormRequest
             'name'                 => ['sometimes', 'required', 'string', 'max:150'],
             'description'          => ['nullable', 'string'],
             'rules'                => ['nullable', 'string'],
-            'type'                 => ['sometimes', 'required', 'in:putra,putri,campur'],
+            'type'                 => ['sometimes', 'required', 'in:putra,putri,campur,guesthouse,villa'],
+            'rooms_available'      => ['nullable', 'integer', 'min:1', 'max:999'],
             'district'             => ['sometimes', 'required', 'string', 'max:100'],
             'address'              => ['sometimes', 'required', 'string', 'max:255'],
             'latitude'             => ['nullable', 'numeric', 'between:-90,90'],
@@ -33,7 +34,9 @@ class UpdateKosRequest extends FormRequest
     {
         return [
             'name.max'               => 'Nama kos maksimal 150 karakter.',
-            'type.in'                => 'Tipe kos harus putra, putri, atau campur.',
+            'type.in'                => 'Tipe properti tidak valid.',
+            'rooms_available.min'    => 'Jumlah kamar minimal 1.',
+            'rooms_available.max'    => 'Jumlah kamar maksimal 999.',
             'contact_whatsapp.regex' => 'Nomor WhatsApp harus berupa 10-13 digit angka.',
         ];
     }

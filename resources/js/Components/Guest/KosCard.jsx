@@ -1,10 +1,12 @@
 import { Link } from '@inertiajs/react';
 
-const TYPE_LABELS = { putra: 'Putra', putri: 'Putri', campur: 'Campur' };
+const TYPE_LABELS = { putra: 'Putra', putri: 'Putri', campur: 'Campur', guesthouse: 'Guesthouse', villa: 'Villa' };
 const TYPE_COLORS = {
-    putra:  { bg: '#EFF6FF', text: '#1D4ED8' },
-    putri:  { bg: '#FDF2F8', text: '#BE185D' },
-    campur: { bg: '#F0FDF4', text: '#15803D' },
+    putra:      { bg: '#EFF6FF', text: '#1D4ED8' },
+    putri:      { bg: '#FDF2F8', text: '#BE185D' },
+    campur:     { bg: '#F0FDF4', text: '#15803D' },
+    guesthouse: { bg: '#F5F3FF', text: '#7C3AED' },
+    villa:      { bg: '#FFFBEB', text: '#B45309' },
 };
 
 function formatPrice(price) {
@@ -93,6 +95,18 @@ export default function KosCard({ kos }) {
                         </span>
                     ))}
                 </div>
+
+                {/* Badge kamar — hanya untuk Guesthouse */}
+                {kos.type === 'guesthouse' && kos.rooms_available > 0 && (
+                    <div className="flex items-center gap-1 mb-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="#7C3AED" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M3 14h18M5 10V6a1 1 0 011-1h12a1 1 0 011 1v4M3 18v-4h18v4M3 18h18" />
+                        </svg>
+                        <span className="text-xs font-medium" style={{ color: '#7C3AED' }}>
+                            {kos.rooms_available} kamar
+                        </span>
+                    </div>
+                )}
 
                 {/* Harga terendah */}
                 {lowestPrice ? (

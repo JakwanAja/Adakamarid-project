@@ -17,6 +17,14 @@ use Inertia\Inertia;
 
 class KosController extends Controller
 {
+    const PROPERTY_TYPES = [
+        ['value' => 'putra',      'label' => 'Kos Putra'],
+        ['value' => 'putri',      'label' => 'Kos Putri'],
+        ['value' => 'campur',     'label' => 'Kos Campur'],
+        ['value' => 'guesthouse', 'label' => 'Guesthouse'],
+        ['value' => 'villa',      'label' => 'Villa'],
+    ];
+
     const DISTRICTS = [
         'Danurejan', 'Gedongtengen', 'Gondokusuman', 'Gondomanan',
         'Jetis', 'Kotagede', 'Kraton', 'Mantrijeron', 'Mergangsan',
