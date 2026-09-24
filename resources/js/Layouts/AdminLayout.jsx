@@ -66,7 +66,7 @@ const navGroups = [
     {
         label: 'Konten',
         items: [
-            { name: 'Manajemen Kos',  href: '/admin/kos',         icon: icons.kos },
+            { name: 'Manajemen Kamar', href: '/admin/kos',         icon: icons.kos },
             { name: 'Fasilitas',      href: '/admin/facilities',   icon: icons.facility },
         ],
     },

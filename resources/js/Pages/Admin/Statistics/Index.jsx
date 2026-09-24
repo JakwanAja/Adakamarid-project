@@ -70,9 +70,9 @@ export default function StatisticsIndex({ stats }) {
                 </p>
             </div>
 
-            {/* ── Ringkasan Kos ── */}
+            {/* ── Ringkasan Properti ── */}
             <div className="mb-8">
-                <SectionTitle>Ringkasan Kos</SectionTitle>
+                <SectionTitle>Ringkasan Properti</SectionTitle>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <StatCard label="Total Kos"    value={s.total_kos}   icon="🏘️" iconBg="#F0F7FF"  iconColor="#1E293B" />
                     <StatCard label="Kos Aktif"    value={s.active_kos}  icon="✅" iconBg="#F0FDF4"  iconColor="#16A34A" />
@@ -81,17 +81,17 @@ export default function StatisticsIndex({ stats }) {
                 </div>
             </div>
 
-            {/* ── Kos per Tipe ── */}
+            {/* ── Properti per Tipe ── */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
                 <div className="bg-white rounded-xl p-5" style={{ border: '1px solid #E2E8F0' }}>
-                    <SectionTitle>Kos per Tipe</SectionTitle>
+                    <SectionTitle>Properti per Tipe</SectionTitle>
                     <ProgressBar label="Putra"  value={s.kos_putra}  total={s.total_kos} color="#1D4ED8" />
                     <ProgressBar label="Putri"  value={s.kos_putri}  total={s.total_kos} color="#BE185D" />
                     <ProgressBar label="Campur" value={s.kos_campur} total={s.total_kos} color="#15803D" />
                 </div>
 
                 <div className="bg-white rounded-xl p-5" style={{ border: '1px solid #E2E8F0' }}>
-                    <SectionTitle>Kos per Status</SectionTitle>
+                    <SectionTitle>Properti per Status</SectionTitle>
                     <ProgressBar label="Aktif"     value={s.active_kos}   total={s.total_kos} color="#16A34A" />
                     <ProgressBar label="Nonaktif"  value={s.inactive_kos} total={s.total_kos} color="#9CA3AF" />
                     <ProgressBar label="Berlabel Plus" value={s.plus_kos} total={s.total_kos} color="#3B82F6" />

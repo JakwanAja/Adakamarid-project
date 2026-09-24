@@ -22,14 +22,14 @@ const ReviewIcon = () => (
 export default function AdminDashboard({ stats, recent_kos, recent_reviews }) {
     const statCards = [
         {
-            label: 'Kos Aktif',
+            label: 'Properti Aktif',
             value: stats?.active_kos ?? 0,
             icon: <KosIcon />,
             iconBg: '#EFF6FF',
             iconColor: '#2563EB',
         },
         {
-            label: 'Kos Plus',
+            label: 'Properti Plus',
             value: stats?.plus_kos ?? 0,
             icon: <StarIcon />,
             iconBg: '#FEFBE8',
@@ -82,7 +82,7 @@ export default function AdminDashboard({ stats, recent_kos, recent_reviews }) {
                 {/* Recent Kos */}
                 <div className="bg-white rounded-xl p-5" style={{ border: '1px solid #E2E8F0' }}>
                     <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-sm font-semibold" style={{ color: '#1E293B' }}>Kos Terbaru</h3>
+                        <h3 className="text-sm font-semibold" style={{ color: '#1E293B' }}>Properti Terbaru</h3>
                         <Link
                             href="/admin/kos"
                             className="text-xs font-medium transition-colors"
@@ -117,7 +117,7 @@ export default function AdminDashboard({ stats, recent_kos, recent_reviews }) {
                             ))}
                         </ul>
                     ) : (
-                        <p className="text-sm text-center py-8 italic" style={{ color: '#64748B' }}>Belum ada data kos</p>
+                        <p className="text-sm text-center py-8 italic" style={{ color: '#64748B' }}>Belum ada data properti</p>
                     )}
                 </div>
 

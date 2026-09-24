@@ -249,16 +249,16 @@ export default function KosIndex({ kosList }) {
     const promotedCount = kosList.filter(k => k.is_promoted).length;
 
     return (
-        <AdminLayout title="Manajemen Kos">
-            <Head title="Manajemen Kos" />
+        <AdminLayout title="Manajemen Kamar">
+            <Head title="Manajemen Kamar" />
             <FlashMessage />
 
             {/* Header */}
             <div className="flex items-center justify-between mb-5">
                 <div>
-                    <h2 className="text-xl font-semibold" style={{ color: '#1E293B' }}>Manajemen Kos</h2>
+                    <h2 className="text-xl font-semibold" style={{ color: '#1E293B' }}>Manajemen Kamar</h2>
                     <p className="text-sm mt-0.5" style={{ color: '#64748B' }}>
-                        {kosList.length} kos terdaftar
+                        {kosList.length} properti terdaftar
                         {promotedCount > 0 && (
                             <span className="ml-2 text-xs px-2 py-0.5 rounded-full font-medium"
                                 style={{ backgroundColor: '#EFF6FF', color: '#1D4ED8' }}>
@@ -275,7 +275,7 @@ export default function KosIndex({ kosList }) {
                     <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
                     </svg>
-                    Tambah Kos
+                    Tambah Properti
                 </Link>
             </div>
 
@@ -351,7 +351,7 @@ export default function KosIndex({ kosList }) {
             <div className="bg-white rounded-xl overflow-hidden" style={{ border: '1px solid #E2E8F0' }}>
                 {filtered.length === 0 ? (
                     <div className="text-center py-16">
-                        <p className="text-sm font-medium" style={{ color: '#1E293B' }}>Tidak ada kos ditemukan</p>
+                        <p className="text-sm font-medium" style={{ color: '#1E293B' }}>Tidak ada properti ditemukan</p>
                         <p className="text-xs mt-1" style={{ color: '#64748B' }}>Coba ubah filter pencarian</p>
                     </div>
                 ) : (
