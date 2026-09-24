@@ -302,6 +302,8 @@ export default function KosIndex({ kosList }) {
                     <option value="putra">Putra</option>
                     <option value="putri">Putri</option>
                     <option value="campur">Campur</option>
+                    <option value="guesthouse">Guesthouse</option>
+                    <option value="villa">Villa</option>
                 </select>
 
                 {/* Status */}

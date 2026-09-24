@@ -135,7 +135,7 @@ function AreaSidebar() {
             </div>
 
             {/* ── Area Populer ── */}
-            <div>
+            <div style={{ marginTop: '8px', borderTop: '2px solid #E2E8F0' }}>
                 <div className="flex items-center gap-2 px-4 py-2.5" style={{ borderBottom: '1px solid #F1F5F9', backgroundColor: '#F8FAFC' }}>
                     <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="#2563EB" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />

@@ -93,7 +93,15 @@ class KosController extends Controller
 
     public function update(UpdateKosRequest $request, Kos $kos)
     {
-        $this->kosService->update($kos, $request->validated());
+        $slugBefore = $kos->slug;
+        $updated    = $this->kosService->update($kos, $request->validated());
+
+        // Jika slug berubah (karena nama diubah), redirect ke URL baru agar tidak 404
+        if ($updated->slug !== $slugBefore) {
+            return redirect()
+                ->route('admin.kos.edit', $updated->slug)
+                ->with('success', 'Data kos berhasil diperbarui.');
+        }
 
         return back()->with('success', 'Data kos berhasil diperbarui.');
     }
