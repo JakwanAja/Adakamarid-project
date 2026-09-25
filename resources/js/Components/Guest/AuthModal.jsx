@@ -255,19 +255,16 @@ export default function AuthModal({ open, mode = 'login', onClose }) {
 
     return (
         <div
-            className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4"
             style={{ backgroundColor: 'rgba(45,27,24,0.5)' }}
             onClick={onClose}
         >
             <div
-                className="bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl w-full sm:max-w-sm max-h-[92vh] sm:max-h-[90vh] overflow-y-auto"
-                style={{ border: '1px solid #E2E8F0' }}
+                className="bg-white rounded-2xl shadow-2xl w-full max-w-sm flex flex-col"
+                style={{ border: '1px solid #E2E8F0', maxHeight: '92dvh' }}
                 onClick={e => e.stopPropagation()}
             >
-                {/* Handle bar — hanya tampil di mobile */}
-                <div className="sm:hidden flex justify-center pt-3 pb-0">
-                    <div className="w-10 h-1 rounded-full" style={{ backgroundColor: '#E2E8F0' }} />
-                </div>
+
                 {/* Header modal */}
                 <div className="flex items-center justify-between px-5 pt-4 pb-0">
                     <img src="/image/logo.png" alt="AdaKamar.id"
@@ -286,7 +283,7 @@ export default function AuthModal({ open, mode = 'login', onClose }) {
                 </div>
 
                 {/* Body */}
-                <div className="px-5 py-4">
+                <div className="px-5 pt-4 pb-8 sm:pb-4 overflow-y-auto flex-1">
                     {activeMode === 'login' ? (
                         <LoginForm
                             onSwitchToRegister={() => setActiveMode('register')}
