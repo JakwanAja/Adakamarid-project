@@ -37,7 +37,7 @@ export default function KosCard({ kos }) {
             }}
         >
             {/* Foto */}
-            <div className="relative overflow-hidden" style={{ aspectRatio: '4/3' }}>
+            <div className="relative overflow-hidden" style={{ aspectRatio: '16/9' }}>
                 <img
                     src={primaryPhoto ? `/storage/${primaryPhoto.path}` : '/image/placeholder_empty.png'}
                     alt={kos.name}
@@ -69,7 +69,7 @@ export default function KosCard({ kos }) {
 
             {/* Info */}
             <div className="p-3.5">
-                <h3 className="text-sm font-semibold truncate mb-1" style={{ color: '#1E293B' }}>
+                <h3 className="text-sm font-semibold mb-1.5 leading-snug" style={{ color: '#1E293B', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                     {kos.name}
                 </h3>
 

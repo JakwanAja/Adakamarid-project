@@ -258,9 +258,6 @@ export default function Home({ featuredKos, promotedKos, totalKos, districts }) 
                         <h1 className="text-2xl md:text-3xl font-bold leading-snug" style={{ color: '#FFFFFF' }}>
                             Cari Kamar Jadi Gampang, Semua di Adakamar.
                         </h1>
-                        <p className="text-sm mt-2" style={{ color: 'rgba(255,255,255,0.72)' }}>
-                            Kos, Guesthouse, Villa semua ada di sini. Informasi lengkap, hubungi pemilik langsung.
-                        </p>
                     </div>
                 </section>
                 <div className="relative z-20 max-w-5xl mx-auto px-4 sm:px-6" style={{ marginTop: '-44px' }}>

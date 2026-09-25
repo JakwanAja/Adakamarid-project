@@ -87,12 +87,12 @@ export default function GuestLayout({ children }) {
                                 onMouseLeave={e => { e.currentTarget.style.color = '#64748B'; e.currentTarget.style.backgroundColor = 'transparent'; }}>
                                 Pusat Bantuan
                             </Link>
-                            <Link href="/syarat-ketentuan"
+                            <Link href="/tentang-kami"
                                 className="px-3 py-2 text-sm transition-colors rounded-lg"
                                 style={{ color: '#64748B' }}
                                 onMouseEnter={e => { e.currentTarget.style.color = '#1E293B'; e.currentTarget.style.backgroundColor = '#F0F7FF'; }}
                                 onMouseLeave={e => { e.currentTarget.style.color = '#64748B'; e.currentTarget.style.backgroundColor = 'transparent'; }}>
-                                Syarat & Ketentuan
+                                Tentang Kami
                             </Link>
                             <div className="w-px h-5 mx-1" style={{ backgroundColor: '#E2E8F0' }} />
                         </div>
@@ -169,6 +169,7 @@ export default function GuestLayout({ children }) {
                             <ul className="space-y-2.5">
                                 {[
                                     { label: 'Cari Kos',             href: '/kos' },
+                                    { label: 'Tentang Kami',         href: '/tentang-kami' },
                                     { label: 'Pusat Bantuan',        href: '/pusat-bantuan' },
                                     { label: 'Syarat dan Ketentuan', href: '/syarat-ketentuan' },
                                     { label: 'Waspada Penipuan',     href: '/waspada-penipuan' },
@@ -198,6 +199,7 @@ export default function GuestLayout({ children }) {
                             </p>
                             <div className="flex items-center gap-4 flex-wrap justify-center">
                                 {[
+                                    { label: 'Tentang Kami',         href: '/tentang-kami' },
                                     { label: 'Pusat Bantuan',        href: '/pusat-bantuan' },
                                     { label: 'Syarat dan Ketentuan', href: '/syarat-ketentuan' },
                                     { label: 'Waspada Penipuan',     href: '/waspada-penipuan' },

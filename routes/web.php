@@ -26,6 +26,8 @@ Route::get('/syarat-ketentuan', [GuestPageController::class, 'show'])->defaults(
     ->name('pages.syarat-ketentuan');
 Route::get('/pusat-bantuan', [GuestPageController::class, 'show'])->defaults('slug', 'pusat-bantuan')
     ->name('pages.pusat-bantuan');
+Route::get('/tentang-kami', [GuestPageController::class, 'show'])->defaults('slug', 'tentang-kami')
+    ->name('pages.tentang-kami');
 Route::get('/waspada-penipuan', [GuestPageController::class, 'show'])->defaults('slug', 'waspada-penipuan')
     ->name('pages.waspada-penipuan');
 
