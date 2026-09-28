@@ -7,8 +7,6 @@ Platform listing properti sewa terkurasi untuk area Yogyakarta. Kos, Guesthouse,
 
 ![Halaman Utama AdaKamar](docs/landingpage.png)
 
-![Halaman Detail Properti](docs/detaillisting.png)
-
 ![Panel Admin](docs/dashboard.png)
 
 ---
