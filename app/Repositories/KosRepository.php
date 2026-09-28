@@ -55,8 +55,7 @@ class KosRepository
             });
         }
 
-        return $query->orderBy('is_plus', 'desc')
-                     ->orderBy('created_at', 'desc')
+        return $query->orderBy('updated_at', 'desc')
                      ->paginate(15)
                      ->withQueryString();
     }
@@ -73,13 +72,12 @@ class KosRepository
     }
 
     /**
-     * Ambil kos aktif untuk homepage — Plus dulu, lalu terbaru, max 8.
+     * Ambil kos aktif untuk homepage — diurutkan terbaru, max 4.
      */
     public function getActiveForHomepage(): Collection
     {
         return Kos::with(['primaryPhoto', 'activePrices'])
             ->where('is_active', true)
-            ->orderBy('is_plus', 'desc')
             ->orderBy('created_at', 'desc')
             ->limit(4)
             ->get();
@@ -87,15 +85,14 @@ class KosRepository
 
     /**
      * Ambil kos yang sedang dipromosikan admin (is_promoted = true).
-     * Max 8, diurutkan: is_plus dulu, lalu rating tertinggi.
+     * Max 8, diurutkan berdasarkan perubahan terbaru.
      */
     public function getPromoted(int $limit = 4): Collection
     {
         return Kos::with(['primaryPhoto', 'activePrices'])
             ->where('is_active', true)
             ->where('is_promoted', true)
-            ->orderBy('is_plus', 'desc')
-            ->orderBy('rating_avg', 'desc')
+            ->orderBy('updated_at', 'desc')
             ->limit($limit)
             ->get();
     }
