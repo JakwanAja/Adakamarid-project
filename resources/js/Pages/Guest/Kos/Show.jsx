@@ -381,17 +381,6 @@ export default function KosShow({ kos, facilitiesByCategory, similarKos, userRev
 
     const hasFacilities = Object.values(facilitiesByCategory ?? {}).some(arr => arr.length > 0);
 
-    // View history tracking
-    useEffect(() => {
-        if (!kos?.id) return;
-        try {
-            const raw = localStorage.getItem('kos_history');
-            const prev = raw ? JSON.parse(raw) : [];
-            const deduped = Array.isArray(prev) ? prev.filter(id => id !== kos.id) : [];
-            deduped.unshift(kos.id);
-            localStorage.setItem('kos_history', JSON.stringify(deduped.slice(0, 20)));
-        } catch {}
-    }, [kos?.id]);
 
     return (
         <GuestLayout>

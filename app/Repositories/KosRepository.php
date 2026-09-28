@@ -111,21 +111,6 @@ class KosRepository
             ->get();
     }
 
-    /**
-     * Ambil kos aktif berdasarkan array IDs (untuk view history).
-     * Urutan dipertahankan sesuai array IDs yang dikirim.
-     */
-    public function getByIds(array $ids, int $limit = 8): Collection
-    {
-        if (empty($ids)) return collect();
-
-        return Kos::with(['primaryPhoto', 'activePrices'])
-            ->where('is_active', true)
-            ->whereIn('id', $ids)
-            ->orderByRaw('FIELD(id, ' . implode(',', array_map('intval', $ids)) . ')')
-            ->limit($limit)
-            ->get();
-    }
 
     public function findBySlug(string $slug): ?Kos
     {

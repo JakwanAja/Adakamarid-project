@@ -46,55 +46,6 @@ function SectionHeader({ title, subtitle, href, hrefLabel }) {
     );
 }
 
-// ── HistorySection ────────────────────────────────────────────
-function HistorySection() {
-    const [historyKos, setHistoryKos] = useState([]);
-    const [loaded, setLoaded] = useState(false);
-
-    useEffect(() => {
-        try {
-            const raw = localStorage.getItem('kos_history');
-            if (!raw) { setLoaded(true); return; }
-            const ids = JSON.parse(raw);
-            if (!Array.isArray(ids) || ids.length === 0) { setLoaded(true); return; }
-            const xsrf = decodeURIComponent(document.cookie.split('; ').find(r => r.startsWith('XSRF-TOKEN='))?.split('=')[1] ?? '');
-            fetch('/api/kos/history', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest', 'X-XSRF-TOKEN': xsrf },
-                body: JSON.stringify({ ids }),
-            })
-                .then(r => r.ok ? r.json() : [])
-                .then(data => setHistoryKos(Array.isArray(data) ? data : []))
-                .catch(() => {})
-                .finally(() => setLoaded(true));
-        } catch { setLoaded(true); }
-    }, []);
-
-    if (!loaded || historyKos.length === 0) return null;
-
-    return (
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10"
-            style={{ borderTop: '1px solid #E2E8F0', paddingTop: '32px' }}>
-            <div className="flex items-center justify-between mb-5">
-                <div>
-                    <h2 className="text-lg font-bold" style={{ color: '#1E293B' }}>Terakhir Kamu Lihat</h2>
-                    <p className="text-sm mt-0.5" style={{ color: '#64748B' }}>Lanjutkan pencarian properti yang sudah kamu buka</p>
-                </div>
-                <button onClick={() => { localStorage.removeItem('kos_history'); setHistoryKos([]); }}
-                    className="text-xs transition-colors px-3 py-1.5 rounded-lg"
-                    style={{ color: '#64748B', border: '1px solid #E2E8F0' }}
-                    onMouseEnter={e => { e.currentTarget.style.color = '#2563EB'; e.currentTarget.style.borderColor = '#2563EB'; }}
-                    onMouseLeave={e => { e.currentTarget.style.color = '#64748B'; e.currentTarget.style.borderColor = '#E2E8F0'; }}>
-                    Hapus Riwayat
-                </button>
-            </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {historyKos.map(kos => <KosCard key={kos.id} kos={kos} />)}
-            </div>
-        </section>
-    );
-}
-
 // ── AreaSidebar — Kampus (atas) + Area Populer (bawah), tanpa tab toggle ─
 function AreaSidebar() {
     function handleAreaClick(item) {
@@ -388,8 +339,6 @@ export default function Home({ featuredKos, promotedKos, totalKos, districts }) 
                 )}
             </section>
 
-            {/* ── Terakhir Kamu Lihat ───────────────────────── */}
-            <HistorySection />
 
             {/* ── Cara Pesan ───────────────────────────────── */}
             <HowToSection />
